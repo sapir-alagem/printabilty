@@ -40,5 +40,4 @@ const sendPrintJob = (req, res, next) => {
 
 
 exports.getNewPrintJob = getNewPrintJob;
-exports.postNewPrintJob = postNewPrintJob;
 exports.sendPrintJob = sendPrintJob;
