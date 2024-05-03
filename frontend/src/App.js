@@ -8,6 +8,11 @@ import './App.css';
 // import Login from '../containers/Login'
 // import RecoveryPassword from '../containers/RecoveryPassword'
 
+//Stripe peovider
+<StripeProvider publishableKey="<pk_test_51PBXVfKMsoXLCRBCsEZA0QTh2xc0zthUpR59mWMgYNIXN3parrZBHwGhewxURwTWroaC3TUxcfbOJShMdFHh8Kd700fkasyMWV}">
+	<Navigation />
+</StripeProvider>
+
 
 import Companies from './Company/pages/Companies';
 import NewCompany from './Company/pages/NewCompany';
