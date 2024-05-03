@@ -9,6 +9,7 @@ const DUMMY_PRINT_REQUEST = [
 
 router.get('/new', printJobsController.getNewPrintJob); // => http://localhost:5000/print_jobs/new
 router.post('/', printJobsController.postNewPrintJob);
+router.post('/send_print_job', printJobsController.sendPrintJob);
 
 module.exports = router;
 

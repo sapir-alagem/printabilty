@@ -6,7 +6,7 @@ const getNewPrintJob = (req, res, next) => {
     res.json({message: 'It works!'});
 };
 
-const postNewPrintJob = (req, res, next) => {
+const sendPrintJob = (req, res, next) => {
     // Assuming the file URL is in the request body
     let data = JSON.stringify({
         "file_url": req.body.file_url,
@@ -41,3 +41,4 @@ const postNewPrintJob = (req, res, next) => {
 
 exports.getNewPrintJob = getNewPrintJob;
 exports.postNewPrintJob = postNewPrintJob;
+exports.sendPrintJob = sendPrintJob;
