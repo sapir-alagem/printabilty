@@ -16,7 +16,8 @@ import './App.css';
 
 import Companies from './Company/pages/Companies';
 import NewCompany from './Company/pages/NewCompany';
-import NotFound from './pages/NotFound'
+import UploadFile from './File/Pages/UploadFilePage';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -24,7 +25,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Companies />} ></Route>
         <Route path="/companies/new" element={<NewCompany />} ></Route>
+        <Route path="/UploadFile" element={<UploadFile />} ></Route>
         <Route path="*" element={<NotFound/>}/>
+        
 
       </Routes>
 
