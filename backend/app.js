@@ -22,5 +22,7 @@ app.use((req, res, next) => {
 
 app.use('/print_jobs', PrintJobsRoutes);
 app.use('/companies', companyRoutes);
+app.use("/uploads", UploadRoutes);
+app.use(errorHandler);
 
-app.listen(5000);
+app.listen(5000, () => console.log("Listening on port 5000"));

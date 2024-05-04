@@ -25,14 +25,7 @@ function FileUploader() {
   }
 
   return (
-    <html>
-      <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width" />
-        <title>replit</title>
-        <link href="style.css" rel="stylesheet" type="text/css" />
-      </head>
-      <body>
+      <div>
         <h1>Upload a file to print</h1>
         <form id="uploadForm" encType="multipart/form-data">
           <input id="file" type="file" name="file" />
@@ -40,8 +33,7 @@ function FileUploader() {
           <button type="button" onClick={uploadFile}>Upload</button>
         </form>
         <script src="script.js"></script>
-      </body>
-    </html>
+      </div>
   );
 }
 
