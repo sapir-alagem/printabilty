@@ -23,12 +23,9 @@ function App() {
         <Route path="/companies" element={<Companies />} ></Route>
         <Route path="/companies/new" element={<NewCompany />} ></Route>
         <Route path="/UploadFile" element={<UploadFile />} ></Route>
-        <Route path="*" element={<NotFound/>}/>
         <Route path="/summary" element={<SummaryPage/>}/>
-        
-
+        <Route path="*" element={<NotFound/>}/>
       </Routes>
-
     </Router>
   );
 }
