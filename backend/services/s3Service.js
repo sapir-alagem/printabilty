@@ -8,7 +8,7 @@ exports.s3Uploadv3 = async (files) => {
   for (const file of files) {
     const uploadParams = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `uploads/${uuid()}-${file.originalname}`,
+      Key: `uploads/${file.originalname}`,
       Body: file.buffer,
     };
 

@@ -5,10 +5,11 @@ async function uploadFiles(req, res) {
   try {
     const results = await s3Uploadv3(req.files);
     console.log(results);
-    return res.json({ status: "success" });
+    const responseData = { message: 'Data received successfully!', file_url: results};
+    res.json(responseData);
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 }
 

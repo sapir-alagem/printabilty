@@ -11,20 +11,17 @@ function FileUploader() {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
-    try {
-      const response = await fetch("http://localhost:5000/uploads", {
-        method: "POST",
-        body: formData
-      });
-      
-      if (!response.ok) {
-        throw new Error("Failed to upload file");
-      }
-      
-      console.log("File uploaded successfully");
-    } catch (error) {
-      console.error("Error uploading file:", error.message);
-    }
+
+    const requestOptions = {
+      method: "POST",
+      body: formData,
+      redirect: "follow"
+    };
+
+    fetch("http://localhost:5000/uploads", requestOptions)
+  .then((response) => response.text())
+  .then((result) => console.log(result))
+  .catch((error) => alert(error.message));
   }
 
   return (
