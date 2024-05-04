@@ -69,7 +69,6 @@ module.exports = {
     newPrintJob,
     createPrintJob,
     getPrintJobs,
-    getNewPrintJob,
     sendPrintJob
 };
 

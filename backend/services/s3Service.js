@@ -10,6 +10,7 @@ exports.s3Uploadv3 = async (files) => {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: `uploads/${file.originalname}`,
       Body: file.buffer,
+      ACL: 'public-read'
     };
 
     try {
