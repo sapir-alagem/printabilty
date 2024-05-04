@@ -8,18 +8,24 @@ import './App.css';
 // import Login from '../containers/Login'
 // import RecoveryPassword from '../containers/RecoveryPassword'
 
-
+import LandingPage from './pages/LandingPage';
 import Companies from './Company/pages/Companies';
 import NewCompany from './Company/pages/NewCompany';
-import NotFound from './pages/NotFound'
+import UploadFile from './File/Pages/UploadFilePage';
+import NotFound from './pages/NotFound';
+import SummaryPage from './File/Pages/SummeryPage'
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Companies />} ></Route>
+        <Route path="/" element={<LandingPage />} ></Route>
+        <Route path="/companies" element={<Companies />} ></Route>
         <Route path="/companies/new" element={<NewCompany />} ></Route>
+        <Route path="/UploadFile" element={<UploadFile />} ></Route>
         <Route path="*" element={<NotFound/>}/>
+        <Route path="/summary" element={<SummaryPage/>}/>
+        
 
       </Routes>
 
