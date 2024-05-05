@@ -37,13 +37,13 @@ const sendPrintJob = (req, res, next) => {
     // Assuming the file URL is in the request body
     let data = JSON.stringify({
         "file_url": req.body.file_url,
-        "printer_name": "idan"
+        "printer_name": "HP_ColorLaserJet_M253-M254	"
     });
     
     let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://1f2c-212-199-228-102.ngrok-free.app/print',
+        url: 'http://127.0.0.1:12345/print',
         headers: { 
             'Content-Type': 'application/json'
         }, 
@@ -59,19 +59,11 @@ const sendPrintJob = (req, res, next) => {
         console.log(error);
         res.json({error: error});
     });
-
-    
 };
  
-
-
 module.exports = {
     newPrintJob,
     createPrintJob,
     getPrintJobs,
     sendPrintJob
 };
-
-
-// exports.getNewPrintJob = getNewPrintJob;
-// exports.sendPrintJob = sendPrintJob;
