@@ -1,4 +1,5 @@
 import React from 'react';
+import PdfPreview from '../components/pdfPreviewer';
 
 function SummaryPage() {
   const queryParams = new URLSearchParams(window.location.search);
@@ -20,8 +21,10 @@ function SummaryPage() {
 
   return (
     <div>
-      <h1>File Preview</h1>
-      <img src={fileUrl} alt="File Preview" />
+      <div>
+        <h1>PDF Preview</h1>
+        <PdfPreview pdfUrl={fileUrl} />
+      </div>
       <p>File URL: {fileUrl}</p>
       <button onClick={handleSubmit}>Send Print Job Request</button>
     </div>
