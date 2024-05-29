@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function FileUploader() {
+  const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
   const navigate = useNavigate();
 
   async function uploadFile() {
-    const selectedFile = document.getElementById("file").files[0];
-    
     if (!selectedFile) {
       console.error("No file selected");
       return;
@@ -21,21 +20,28 @@ function FileUploader() {
       redirect: "follow"
     };
 
-    fetch("http://localhost:5000/uploads", requestOptions)
-      .then(response => response.json())
-      .then(data => {
-        navigate(`/summary?file_url=${encodeURIComponent(data.file_url)}`);
-      })
-      .catch(error => alert(error.message));
+    try {
+      const response = await fetch("http://localhost:5000/uploads", requestOptions);
+      const data = await response.json();
+      navigate(`/summary?file_url=${encodeURIComponent(data.file_url)}`);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+
+  function handleFileChange(event) {
+    setSelectedFile(event.target.files[0]); // Update selected file when the input changes
   }
 
   return (
-    <div>
+    <div className="container text-center mt-5">
       <h1>Upload a file to print</h1>
       <form id="uploadForm" encType="multipart/form-data">
-        <input id="file" type="file" name="file" />
-        <br /><br />
-        <button type="button" onClick={uploadFile}>Upload</button>
+        <div className="custom-file mb-3">
+          <input type="file" className="custom-file-input" id="file" name="file" onChange={handleFileChange} />
+          <label className="custom-file-label" htmlFor="file">{selectedFile ? selectedFile.name : "Choose file"}</label>
+        </div>
+        <button type="button" className="btn btn-primary" onClick={uploadFile}>Upload</button>
       </form>
     </div>
   );

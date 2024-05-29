@@ -17,6 +17,8 @@ import UploadFile from './File/Pages/UploadFilePage';
 import NotFound from './pages/NotFound';
 import SummaryPage from './File/Pages/SummeryPage'
 import Checkout from './Payments/CheckoutPage'
+import SuccessPage from './pages/SuccessPage';
+import CancelPage from './pages/CancelPage';
 
 const stripePromise = loadStripe('pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQWuoSDk2bKOhk5WpezGx1xKKsCfu1kdkmBruvVW5UGzQ1ejQGvQm00d3c0qhxQ');
 
@@ -32,6 +34,8 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/summary" element={<SummaryPage />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/cancel" element={<CancelPage />} />
         </Routes>
       </Router>
     </Elements>

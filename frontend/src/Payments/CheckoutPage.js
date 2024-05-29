@@ -1,6 +1,6 @@
 import React from 'react';
 import { CheckoutProvider } from './CheckoutContext';
-import CheckoutForm from './CheckoutForm';
+import CheckoutForm from './CheckoutButton';
 import PrintSummary from './PrintSummary';
 
 const CheckoutPage = () => {
