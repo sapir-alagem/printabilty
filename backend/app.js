@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoPractice = require('./utils/mongo');
 require('dotenv').config();
+const cors = require('cors');
+const paymentRoutes = require('./routes/payment_routes.js');
 
 const PrintJobsRoutes = require('./routes/print_jobs_routes.js');
 const companyRoutes = require('./routes/company_routes');
@@ -23,6 +25,8 @@ app.use((req, res, next) => {
 app.use('/print_jobs', PrintJobsRoutes);
 app.use('/companies', companyRoutes);
 app.use("/uploads", UploadRoutes);
+app.use(cors());
+app.use('/payment', paymentRoutes);
 app.use(errorHandler);
 
 app.listen(5000, () => console.log("Listening on port 5000"));

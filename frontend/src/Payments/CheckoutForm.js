@@ -1,60 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { useCheckout } from './CheckoutContext';
+import axios from 'axios';
 
 const CheckoutForm = () => {
-  const { paymentDetails, setPaymentDetails } = useCheckout();
+  const { paymentDetails, printDetails } = useCheckout();
+  const stripe = useStripe();
+  const elements = useElements();
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPaymentDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Process payment here
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const { data: { clientSecret } } = await axios.post('http://localhost:5000/payment/create-payment-intent', {
+        amount: printDetails.price * 100, // Convert to cents
+      });
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+          billing_details: {
+            // Include additional billing details if needed
+          },
+        },
+      });
+
+      if (result.error) {
+        console.error(result.error.message);
+      } else if (result.paymentIntent.status === 'succeeded') {
+        console.log('Payment succeeded!');
+        // Handle post-payment success actions here
+      }
+    } catch (error) {
+      console.error('Error during payment process:', error);
+    }
+
+    setLoading(false);
   };
 
   return (
     <form onSubmit={handleSubmit} className="mt-4">
       <h2 className="mb-3">Payment Information</h2>
       <div className="form-group">
-        <label>Card Number</label>
-        <input
-          type="text"
-          className="form-control"
-          name="cardNumber"
-          value={paymentDetails.cardNumber}
-          onChange={handleChange}
-          required
-        />
+        <label>Card Details</label>
+        <CardElement className="form-control" />
       </div>
-      <div className="form-group">
-        <label>Expiry Date</label>
-        <input
-          type="text"
-          className="form-control"
-          name="expiryDate"
-          value={paymentDetails.expiryDate}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label>CVV</label>
-        <input
-          type="text"
-          className="form-control"
-          name="cvv"
-          value={paymentDetails.cvv}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <button type="submit" className="btn btn-primary mt-3">
-        Pay Now
+      <button type="submit" className="btn btn-primary mt-3" disabled={!stripe || loading}>
+        {loading ? 'Processing...' : 'Pay Now'}
       </button>
     </form>
   );

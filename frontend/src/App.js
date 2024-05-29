@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import './App.css';
 
 // import Home from './components/Home';
@@ -16,19 +18,23 @@ import NotFound from './pages/NotFound';
 import SummaryPage from './File/Pages/SummeryPage'
 import Checkout from './Payments/CheckoutPage'
 
+const stripePromise = loadStripe('pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQWuoSDk2bKOhk5WpezGx1xKKsCfu1kdkmBruvVW5UGzQ1ejQGvQm00d3c0qhxQ');
+
 function App() {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} ></Route>
-        <Route path="/companies" element={<Companies />} ></Route>
-        <Route path="/companies/new" element={<NewCompany />} ></Route>
-        <Route path="/UploadFile" element={<UploadFile />} ></Route>
-        <Route path="/checkout" element={<Checkout />} ></Route>
-        <Route path="/summary" element={<SummaryPage/>}/>
-        <Route path="*" element={<NotFound/>}/>
-      </Routes>
-    </Router>
+    <Elements stripe={stripePromise}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/companies" element={<Companies />} />
+          <Route path="/companies/new" element={<NewCompany />} />
+          <Route path="/UploadFile" element={<UploadFile />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/summary" element={<SummaryPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </Elements>
   );
 }
 
