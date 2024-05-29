@@ -14,6 +14,7 @@ import NewCompany from './Company/pages/NewCompany';
 import UploadFile from './File/Pages/UploadFilePage';
 import NotFound from './pages/NotFound';
 import SummaryPage from './File/Pages/SummeryPage'
+import Checkout from './Payments/CheckoutPage'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/companies" element={<Companies />} ></Route>
         <Route path="/companies/new" element={<NewCompany />} ></Route>
         <Route path="/UploadFile" element={<UploadFile />} ></Route>
+        <Route path="/checkout" element={<Checkout />} ></Route>
         <Route path="/summary" element={<SummaryPage/>}/>
         <Route path="*" element={<NotFound/>}/>
       </Routes>
