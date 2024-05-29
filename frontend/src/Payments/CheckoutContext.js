@@ -8,7 +8,7 @@ export const CheckoutProvider = ({ children }) => {
     duplex: false,
     color: false,
     copies: 1,
-    price: 0,
+    price: 10,
   });
   const [paymentDetails, setPaymentDetails] = useState({
     cardNumber: '',

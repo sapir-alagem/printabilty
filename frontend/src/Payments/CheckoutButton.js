@@ -16,9 +16,9 @@ const CheckoutButton = () => {
       });
 
       const sessionId = response.data.id;
-
       const stripe = await stripePromise;
       await stripe.redirectToCheckout({ sessionId });
+
     } catch (error) {
       console.error('Error creating checkout session:', error);
     }
