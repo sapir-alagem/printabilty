@@ -1,18 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate instead of useHistory
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import PdfPreview from '../components/pdfPreviewer';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import * as pdfjsLib from 'pdfjs-dist/build/pdf';
+import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
+
+// Initialize pdfjsLib worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 function SummaryPage() {
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate();
   const queryParams = new URLSearchParams(window.location.search);
   const fileUrl = queryParams.get("file_url");
   const [colorMode, setColorMode] = useState('color');
   const [printBothSides, setPrintBothSides] = useState(false);
   const [layoutMode, setLayoutMode] = useState('portrait');
-  const [printAllPages, setPrintAllPages] = useState(true); // Default to print all pages
+  const [printAllPages, setPrintAllPages] = useState(true);
   const [pageRange, setPageRange] = useState({ start: 1, end: 1 });
-  const [copies, setCopies] = useState(1); // State for number of copies
+  const [copies, setCopies] = useState(1);
+  const [numPages, setNumPages] = useState(0); // State for number of pages
+
+  useEffect(() => {
+    const fetchPdfData = async () => {
+      try {
+        const loadingTask = pdfjsLib.getDocument(fileUrl);
+        const pdf = await loadingTask.promise;
+        setNumPages(pdf.numPages);
+        setPageRange({ start: 1, end: pdf.numPages });
+      } catch (error) {
+        console.error('Error loading PDF:', error);
+      }
+    };
+
+    if (fileUrl) {
+      fetchPdfData();
+    }
+  }, [fileUrl]);
 
   const handleColorModeChange = (e) => {
     setColorMode(e.target.value);
@@ -43,7 +65,6 @@ function SummaryPage() {
   };
 
   const handleSubmit = async () => {
-    // Construct query parameters with selected options
     const params = new URLSearchParams();
     params.append('file_url', fileUrl);
     params.append('color_mode', colorMode);
@@ -52,9 +73,9 @@ function SummaryPage() {
     params.append('print_all_pages', printAllPages);
     params.append('start_page', pageRange.start);
     params.append('end_page', pageRange.end);
-    params.append('copies', copies); // Add number of copies
+    params.append('copies', copies);
+    params.append('numPages', numPages);
 
-    // Redirect to checkout page with selected options as query parameters
     navigate(`/checkout?${params.toString()}`);
   };
 
@@ -129,7 +150,9 @@ function SummaryPage() {
                 name="start"
                 value={pageRange.start}
                 onChange={handlePageRangeChange}
-                style={{ width: '100px' }} // Adjust the width as needed
+                min={1}
+                max={numPages}
+                style={{ width: '100px' }}
               />
               to
               <input
@@ -138,7 +161,9 @@ function SummaryPage() {
                 name="end"
                 value={pageRange.end}
                 onChange={handlePageRangeChange}
-                style={{ width: '100px' }} // Adjust the width as needed
+                min={1}
+                max={numPages}
+                style={{ width: '100px' }}
               />
             </label>
           </div>
@@ -153,7 +178,7 @@ function SummaryPage() {
               className="form-control mt-1"
               value={copies}
               onChange={handleCopiesChange}
-              style={{ width: '100px' }} // Adjust the width as needed
+              style={{ width: '100px' }}
             />
           </label>
         </div>

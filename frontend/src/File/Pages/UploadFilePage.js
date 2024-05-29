@@ -38,8 +38,9 @@ function FileUploader() {
       <h1>Upload a file to print</h1>
       <form id="uploadForm" encType="multipart/form-data">
         <div className="custom-file mb-3">
-          <input type="file" className="custom-file-input" id="file" name="file" onChange={handleFileChange} />
-          <label className="custom-file-label" htmlFor="file">{selectedFile ? selectedFile.name : "Choose file"}</label>
+          <input type="file" className="custom-file-input" id="file" name="file" onChange={handleFileChange} style={{ width: '100px' }} />
+          <label className="custom-file-label" htmlFor="file">{selectedFile ? selectedFile.name : "Choose file"} </label>
+          
         </div>
         <button type="button" className="btn btn-primary" onClick={uploadFile}>Upload</button>
       </form>

@@ -7,6 +7,7 @@ const PrintSummary = () => {
 
   const [printDetails, setPrintDetails] = useState({
     fileUrl: queryParams.get("file_url"),
+    numPages: queryParams.get("numPages"),
     colorMode: queryParams.get("color_mode"),
     printBothSides: queryParams.get("print_both_sides") === 'true',
     layoutMode: queryParams.get("layout_mode"),
@@ -39,6 +40,7 @@ const PrintSummary = () => {
       <h2 className="mb-3">Print Summary</h2>
       <ul className="list-group">
         <li className="list-group-item">File URL: {printDetails.fileUrl}</li>
+        <li className="list-group-item">Number of pages: {printDetails.numPages}</li>
         <li className="list-group-item">Color Mode: {printDetails.colorMode}</li>
         <li className="list-group-item">Print on Both Sides: {printDetails.printBothSides ? 'Yes' : 'No'}</li>
         <li className="list-group-item">Layout Mode: {printDetails.layoutMode}</li>
