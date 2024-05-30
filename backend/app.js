@@ -7,6 +7,8 @@ const PrintJobsRoutes = require('./routes/print_jobs_routes.js');
 const companyRoutes = require('./routes/company_routes');
 const UploadRoutes = require("./routes/uploads_routes.js");
 const errorHandler = require("./controllers/errorHandler_controller.js"); // Importing error handler
+const paymentRoutes = require('./routes/payment_routes.js');
+
 
 
 const app = express();
@@ -23,6 +25,7 @@ app.use((req, res, next) => {
 app.use('/print_jobs', PrintJobsRoutes);
 app.use('/companies', companyRoutes);
 app.use("/uploads", UploadRoutes);
+app.use('/payments', paymentRoutes);
 app.use(errorHandler);
 
 app.listen(5000, () => console.log("Listening on port 5000"));
