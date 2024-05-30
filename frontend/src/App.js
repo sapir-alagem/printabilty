@@ -16,6 +16,7 @@ import NewCompany from './Company/pages/NewCompany';
 import UploadFile from './File/Pages/UploadFilePage';
 import NotFound from './pages/NotFound';
 import SummaryPage from './File/Pages/SummeryPage'
+import Layout from './shared/components/Layout';
 import Checkout from './Payments/CheckoutPage'
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
@@ -26,18 +27,20 @@ function App() {
   return (
     <Elements stripe={stripePromise}>
       <Router>
+        <Layout>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/companies" element={<Companies />} />
-          <Route path="/companies/new" element={<NewCompany />} />
-          <Route path="/UploadFile" element={<UploadFile />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/companies" element={<Companies />} />
+            <Route path="/companies/new" element={<NewCompany />} />
+            <Route path="/UploadFile" element={<UploadFile />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/summary" element={<SummaryPage />} />
-          <Route path="*" element={<NotFound />} />
+            <Route path="/summary" element={<SummaryPage />} />
+            <Route path="*" element={<NotFound />} />
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/cancel" element={<CancelPage />} />
-        </Routes>
-      </Router>
+          </Routes>
+        </Layout>
+    </Router>
     </Elements>
   );
 }
