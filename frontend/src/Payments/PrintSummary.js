@@ -17,8 +17,9 @@ const PrintSummary = () => {
       end: parseInt(queryParams.get("end_page")),
     },
     copies: parseInt(queryParams.get("copies")),
-    price: 0,
   });
+
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     const basePrice = 10; // Example base price
@@ -29,11 +30,8 @@ const PrintSummary = () => {
 
     finalPrice *= printDetails.copies; // Multiply by number of copies
 
-    setPrintDetails((prevDetails) => ({
-      ...prevDetails,
-      price: finalPrice,
-    }));
-  }, [printDetails]);
+    setPrice(finalPrice);
+  }, [printDetails.printBothSides, printDetails.colorMode, printDetails.copies]);
 
   return (
     <div className="mt-4">
@@ -49,7 +47,7 @@ const PrintSummary = () => {
           <li className="list-group-item">Page Range: {printDetails.pageRange.start} - {printDetails.pageRange.end}</li>
         )}
         <li className="list-group-item">Total Copies: {printDetails.copies}</li>
-        <li className="list-group-item">Total Price: ${printDetails.price}</li>
+        <li className="list-group-item">Total Price: ${price}</li>
       </ul>
     </div>
   );

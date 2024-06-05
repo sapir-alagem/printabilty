@@ -17,7 +17,7 @@ function SummaryPage() {
   const [printAllPages, setPrintAllPages] = useState(true);
   const [pageRange, setPageRange] = useState({ start: 1, end: 1 });
   const [copies, setCopies] = useState(1);
-  const [numPages, setNumPages] = useState(0); // State for number of pages
+  const [numPages, setNumPages] = useState(0);
 
   useEffect(() => {
     const fetchPdfData = async () => {
@@ -82,109 +82,102 @@ function SummaryPage() {
   return (
     <div className="container mt-5">
       <div className="row">
-        <div className="col">
-          <h1>PDF Preview</h1>
-          <PdfPreview pdfUrl={fileUrl} />
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col">
-          <label className="d-block">
-            Color Mode:
-            <select className="form-select mt-1" value={colorMode} onChange={handleColorModeChange}>
-              <option value="color">Color</option>
-              <option value="black_white">Black & White</option>
-            </select>
-          </label>
-        </div>
-        <div className="col">
-          <label className="d-block">
-            Layout:
-            <select className="form-select mt-1" value={layoutMode} onChange={handleLayoutModeChange}>
-              <option value="portrait">Portrait</option>
-              <option value="landscape">Landscape</option>
-            </select>
-          </label>
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              checked={printBothSides}
-              onChange={handlePrintBothSidesChange}
-              id="printBothSides"
-            />
-            <label className="form-check-label" htmlFor="printBothSides">
-              Print on Both Sides
-            </label>
-          </div>
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col">
-          <div className="form-check">
-            <input
-              className="form-check-input"
-              type="checkbox"
-              checked={printAllPages}
-              onChange={handlePrintAllPagesChange}
-              id="printAllPages"
-            />
-            <label className="form-check-label" htmlFor="printAllPages">
-              Print All Pages
-            </label>
-          </div>
-        </div>
-      </div>
-      {!printAllPages && (
-        <div className="row mt-3">
-          <div className="col">
+        <div className="col-md-4">
+          <h1>Print Options</h1>
+          <div className="mt-3">
             <label className="d-block">
-              Page Range:
+              Color Mode:
+              <select className="form-select mt-1" value={colorMode} onChange={handleColorModeChange}>
+                <option value="color">Color</option>
+                <option value="black_white">Black & White</option>
+              </select>
+            </label>
+          </div>
+          <div className="mt-3">
+            <label className="d-block">
+              Layout:
+              <select className="form-select mt-1" value={layoutMode} onChange={handleLayoutModeChange}>
+                <option value="portrait">Portrait</option>
+                <option value="landscape">Landscape</option>
+              </select>
+            </label>
+          </div>
+          <div className="mt-3">
+            <div className="form-check">
               <input
-                type="number"
-                className="form-control mt-1"
-                name="start"
-                value={pageRange.start}
-                onChange={handlePageRangeChange}
-                min={1}
-                max={numPages}
-                style={{ width: '100px' }}
+                className="form-check-input"
+                type="checkbox"
+                checked={printBothSides}
+                onChange={handlePrintBothSidesChange}
+                id="printBothSides"
               />
-              to
+              <label className="form-check-label" htmlFor="printBothSides">
+                Print on Both Sides
+              </label>
+            </div>
+          </div>
+          <div className="mt-3">
+            <div className="form-check">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                checked={printAllPages}
+                onChange={handlePrintAllPagesChange}
+                id="printAllPages"
+              />
+              <label className="form-check-label" htmlFor="printAllPages">
+                Print All Pages
+              </label>
+            </div>
+          </div>
+          {!printAllPages && (
+            <div className="mt-3">
+              <label className="d-block">
+                Page Range:
+                <input
+                  type="number"
+                  className="form-control mt-1 d-inline-block"
+                  name="start"
+                  value={pageRange.start}
+                  onChange={handlePageRangeChange}
+                  min={1}
+                  max={numPages}
+                  style={{ width: '100px' }}
+                />
+                to
+                <input
+                  type="number"
+                  className="form-control mt-1 d-inline-block"
+                  name="end"
+                  value={pageRange.end}
+                  onChange={handlePageRangeChange}
+                  min={1}
+                  max={numPages}
+                  style={{ width: '100px' }}
+                />
+              </label>
+            </div>
+          )}
+          <div className="mt-3">
+            <label className="d-block">
+              Number of Copies:
               <input
                 type="number"
                 className="form-control mt-1"
-                name="end"
-                value={pageRange.end}
-                onChange={handlePageRangeChange}
-                min={1}
-                max={numPages}
+                value={copies}
+                onChange={handleCopiesChange}
                 style={{ width: '100px' }}
               />
             </label>
           </div>
         </div>
-      )}
-      <div className="row mt-3">
-        <div className="col">
-          <label className="d-block">
-            Number of Copies:
-            <input
-              type="number"
-              className="form-control mt-1"
-              value={copies}
-              onChange={handleCopiesChange}
-              style={{ width: '100px' }}
-            />
-          </label>
+        <div className="col-md-8">
+          <h1>PDF Preview</h1>
+          <PdfPreview pdfUrl={fileUrl} />            
         </div>
       </div>
       <div className="row mt-3">
-        <div className="col">
+        <div className="col text-left ">
           <button className="btn btn-success" onClick={handleSubmit}>Proceed to Checkout</button>
         </div>
       </div>

@@ -28,19 +28,19 @@ function App() {
     <Elements stripe={stripePromise}>
       <Router>
         <Layout>
-        <Routes>
+          <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/new" element={<NewCompany />} />
             <Route path="/UploadFile" element={<UploadFile />} />
-          <Route path="/checkout" element={<Checkout />} />
+            <Route path="/checkout" element={<Checkout />} />
             <Route path="/summary" element={<SummaryPage />} />
             <Route path="*" element={<NotFound />} />
-          <Route path="/success" element={<SuccessPage />} />
-          <Route path="/cancel" element={<CancelPage />} />
+            <Route path="/success" element={<SuccessPage />} />
+            <Route path="/cancel" element={<CancelPage />} />
           </Routes>
         </Layout>
-    </Router>
+      </Router>
     </Elements>
   );
 }

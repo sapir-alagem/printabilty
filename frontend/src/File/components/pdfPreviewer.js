@@ -10,10 +10,10 @@ const PdfPreview = ({ pdfUrl }) => {
     });
     
   return (
-    <div style={{ width: '100%', height: '250px' }}>
+    <div style={{ width: '100%', height: '400px' }}>
       <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
         <Viewer
-          plugins={[defaultLayoutPluginInstance]}
+          //plugins={[defaultLayoutPluginInstance]}
           fileUrl={pdfUrl}
         />
       </Worker>
