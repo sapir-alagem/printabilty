@@ -13,19 +13,6 @@ const checkHook = async (req, res, next) => {
 }
 
 function handleWebhook(request, response) {
-  const sig = request.headers['stripe-signature'];
-//   const payloadString = JSON.stringify(request.body);
-//   let event;
-//   try {
-//     event = stripe.webhooks.constructEvent(payloadString, sig, endpointSecret);
-
-//   } catch (err) {
-//     console.error('⚠️  Webhook signature verification failed.', err.message);
-//     return response.sendStatus(400);
-//   }
-
-  // Handle the checkout.session.completed event
-  //if (event.type === 'checkout.session.completed') {
   if (request.body['type'] === 'checkout.session.completed') {
     const session = request.body.data.object;
     const jobId = session.metadata.jobId;

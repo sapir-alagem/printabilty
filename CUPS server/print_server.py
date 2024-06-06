@@ -22,8 +22,8 @@ def print_file():
     data = request.get_json()
 
     # Check if JSON data contains the required fields
-    if not data or 'file_url' not in data or 'printer_name' not in data:
-        return jsonify({'error': 'Invalid JSON data. Required fields: file_url, printer_name'}), 400
+    if not data or 'file_url' not in data:
+        return jsonify({'error': 'Invalid JSON data. Required fields: file_url'}), 400
 
     file_url = data['file_url']
     #printer_name = data['printer_name']
@@ -43,7 +43,15 @@ def print_file():
 
     # Print the downloaded file
     try:
-        job_id = conn.printFile(printer_name, file_path, "Print Job", {})
+        options = {
+    "media": "A4",
+    "copies": data["copies"],
+    "sides": "two-sided-long-edge",
+    "page-ranges": "1-3,5",
+    "print-color-mode": "monochrome",
+    "orientation-requested": "3", #e.g., 3 for portrait, 4 for landscape
+}
+        job_id = conn.printFile(printer_name, file_path, "Print Job", options)
         # Delete the file after printing
         os.remove(file_path)
         return jsonify({'message': f'Print job submitted. Job ID: {job_id}'}), 200
