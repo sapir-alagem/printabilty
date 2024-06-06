@@ -14,6 +14,7 @@ const createPrintJob = async (req, res, next) => {
     try {
         const result = await printJobsService.createPrintJob(req.body);
         res.json({ message: 'Print job created successfully', jobId: result });
+        console.log("In createPrintJob %s", result)
     } catch (error) {
         console.error('Error creating print job:', error);
         res.status(500).json({ message: 'Could not create print job', error: error.message });
@@ -32,6 +33,7 @@ const getPrintJobs = async (req, res, next) => {
     }
 }
 
+  
 
 const sendPrintJob = (req, res, next) => {
     // Assuming the file URL is in the request body
@@ -43,7 +45,7 @@ const sendPrintJob = (req, res, next) => {
     let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'http://127.0.0.1:12345/print',
+        url: 'http://127.0.0.1:12345/print', //the agent url
         headers: { 
             'Content-Type': 'application/json'
         }, 

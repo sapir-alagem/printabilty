@@ -1,37 +1,36 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
+import { CheckoutProvider, useCheckout } from './CheckoutContext'; // Ensure useCheckout is imported
+import CheckoutButton from './CheckoutButton';
 
 const PrintSummary = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const [printDetails, setPrintDetails] = useState({
-    fileUrl: queryParams.get("file_url"),
-    numPages: queryParams.get("numPages"),
-    colorMode: queryParams.get("color_mode"),
+  const initialPrintDetails = {
+    fileUrl: queryParams.get("file_url") || '',
+    numPages: parseInt(queryParams.get("numPages")) || 0,
+    colorMode: queryParams.get("color_mode") || 'black-and-white',
     printBothSides: queryParams.get("print_both_sides") === 'true',
-    layoutMode: queryParams.get("layout_mode"),
+    layoutMode: queryParams.get("layout_mode") || 'portrait',
     printAllPages: queryParams.get("print_all_pages") === 'true',
     pageRange: {
-      start: parseInt(queryParams.get("start_page")),
-      end: parseInt(queryParams.get("end_page")),
+      start: parseInt(queryParams.get("start_page")) || 1,
+      end: parseInt(queryParams.get("end_page")) || 1,
     },
-    copies: parseInt(queryParams.get("copies")),
-  });
+    copies: parseInt(queryParams.get("copies")) || 1,
+  };
 
-  const [price, setPrice] = useState(0);
+  return (
+    <CheckoutProvider initialPrintDetails={initialPrintDetails}>
+      <PrintSummaryContent />
+      <CheckoutButton />
+    </CheckoutProvider>
+  );
+};
 
-  useEffect(() => {
-    const basePrice = 10; // Example base price
-    let finalPrice = basePrice;
-
-    if (printDetails.printBothSides) finalPrice += 2; // Add cost for duplex printing
-    if (printDetails.colorMode === 'color') finalPrice += 5; // Add cost for color printing
-
-    finalPrice *= printDetails.copies; // Multiply by number of copies
-
-    setPrice(finalPrice);
-  }, [printDetails.printBothSides, printDetails.colorMode, printDetails.copies]);
+const PrintSummaryContent = () => {
+  const { printDetails, price } = useCheckout();
 
   return (
     <div className="mt-4">
@@ -47,7 +46,7 @@ const PrintSummary = () => {
           <li className="list-group-item">Page Range: {printDetails.pageRange.start} - {printDetails.pageRange.end}</li>
         )}
         <li className="list-group-item">Total Copies: {printDetails.copies}</li>
-        <li className="list-group-item">Total Price: ${price}</li>
+        <li className="list-group-item">Total Price: ₪{price}</li>
       </ul>
     </div>
   );

@@ -1,6 +1,5 @@
 import React from 'react';
 import { CheckoutProvider } from './CheckoutContext';
-import CheckoutForm from './CheckoutButton';
 import PrintSummary from './PrintSummary';
 
 const CheckoutPage = () => {
@@ -12,9 +11,7 @@ const CheckoutPage = () => {
           <div className="col-md-6">
             <PrintSummary />
           </div>
-          <div className="col-md-6">
-            <CheckoutForm />
-          </div>
+
         </div>
       </div>
     </CheckoutProvider>
