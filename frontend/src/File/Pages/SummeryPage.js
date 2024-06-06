@@ -89,7 +89,7 @@ function SummaryPage() {
               Color Mode:
               <select className="form-select mt-1" value={colorMode} onChange={handleColorModeChange}>
                 <option value="color">Color</option>
-                <option value="black_white">Black & White</option>
+                <option value="monochrome">Black & White</option>
               </select>
             </label>
           </div>

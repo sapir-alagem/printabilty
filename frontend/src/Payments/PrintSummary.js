@@ -10,7 +10,7 @@ const PrintSummary = () => {
   const initialPrintDetails = {
     fileUrl: queryParams.get("file_url") || '',
     numPages: parseInt(queryParams.get("numPages")) || 0,
-    colorMode: queryParams.get("color_mode") || 'black-and-white',
+    colorMode: queryParams.get("color_mode") || 'monochrome',
     printBothSides: queryParams.get("print_both_sides") === 'true',
     layoutMode: queryParams.get("layout_mode") || 'portrait',
     printAllPages: queryParams.get("print_all_pages") === 'true',
