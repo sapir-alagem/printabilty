@@ -43,14 +43,28 @@ def print_file():
 
     # Print the downloaded file
     try:
+        # Extract values
+        color_mode = data['color_mode']
+        print_both_sides = data['print_both_sides']
+        layout_mode = data['layout_mode']
+        print_all_pages = data['print_all_pages']
+        page_range_start = data['page_range_start']
+        page_range_end = data['page_range_end']
+
+        # Convert layout mode to the appropriate CUPS option
+        orientation_requested = "3" if layout_mode == "portrait" else "4"  # 3 for portrait, 4 for landscape
+
+        # Prepare options for print job
         options = {
-    "media": "A4",
-    "copies": data["copies"],
-    "sides": "two-sided-long-edge",
-    "page-ranges": "1-3,5",
-    "print-color-mode": "monochrome",
-    "orientation-requested": "3", #e.g., 3 for portrait, 4 for landscape
-}
+            "print-color-mode": color_mode,
+            "sides": "one-sided" if not print_both_sides else "two-sided-long-edge",
+            "orientation-requested": orientation_requested
+        }
+
+        # Add page ranges if not printing all pages
+        if not print_all_pages:
+            options["page-ranges"] = f"{page_range_start}-{page_range_end}"
+
         job_id = conn.printFile(printer_name, file_path, "Print Job", options)
         # Delete the file after printing
         os.remove(file_path)
