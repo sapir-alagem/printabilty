@@ -50,6 +50,7 @@ def print_file():
         print_all_pages = data['print_all_pages']
         page_range_start = data['page_range_start']
         page_range_end = data['page_range_end']
+        copies = data['copies']
 
         # Convert layout mode to the appropriate CUPS option
         orientation_requested = "3" if layout_mode == "portrait" else "4"  # 3 for portrait, 4 for landscape
@@ -58,12 +59,15 @@ def print_file():
         options = {
             "print-color-mode": color_mode,
             "sides": "one-sided" if not print_both_sides else "two-sided-long-edge",
-            "orientation-requested": orientation_requested
+            "orientation-requested": orientation_requested,
+            "copies" : str(copies)
         }
 
         # Add page ranges if not printing all pages
         if not print_all_pages:
             options["page-ranges"] = f"{page_range_start}-{page_range_end}"
+
+        print(jsonify(options))
 
         job_id = conn.printFile(printer_name, file_path, "Print Job", options)
         # Delete the file after printing

@@ -4,12 +4,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import './App.css';
 
-// import Home from './components/Home';
-// import Layout from '../containers/Layout'
-// import Home from '../pages/Home'
-// import Login from '../containers/Login'
-// import RecoveryPassword from '../containers/RecoveryPassword'
-
 import LandingPage from './pages/LandingPage';
 import Companies from './Company/pages/Companies';
 import NewCompany from './Company/pages/NewCompany';
