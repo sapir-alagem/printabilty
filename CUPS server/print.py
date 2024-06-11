@@ -14,7 +14,7 @@ def get_print_job_status(conn, job_id):
 
 def get_printer_name(conn):
     printers = conn.getPrinters()
-    printer_name = list(printers.keys())[0]  # Convert dict_keys object to a list and choose the first printer
+    printer_name = conn.getDefault()  # Convert dict_keys object to a list and choose the first printer
     return printer_name
 
 if __name__ == "__main__":

@@ -88,8 +88,8 @@ function SummaryPage() {
             <label className="d-block">
               Color Mode:
               <select className="form-select mt-1" value={colorMode} onChange={handleColorModeChange}>
-                <option value="color">Color</option>
-                <option value="monochrome">Black & White</option>
+                <option value="RGB">Color</option>
+                <option value="Gray">Black & White</option>
               </select>
             </label>
           </div>

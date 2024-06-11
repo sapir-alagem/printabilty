@@ -57,7 +57,7 @@ def print_file():
 
         # Prepare options for print job
         options = {
-            "print-color-mode": color_mode,
+            "ColorModel": color_mode,
             "sides": "one-sided" if not print_both_sides else "two-sided-long-edge",
             "orientation-requested": orientation_requested,
             "copies" : str(copies)
@@ -67,7 +67,7 @@ def print_file():
         if not print_all_pages:
             options["page-ranges"] = f"{page_range_start}-{page_range_end}"
 
-        print(jsonify(options))
+        print(options)
 
         job_id = conn.printFile(printer_name, file_path, "Print Job", options)
         # Delete the file after printing
@@ -82,4 +82,4 @@ def check_alive():
     return jsonify({'message': 'it is alive'}), 200
 
 if __name__ == '__main__':
-    app.run(debug=True, port=12345)
+    app.run( port=12345)
