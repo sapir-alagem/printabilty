@@ -3,6 +3,9 @@ import os
 import requests
 import cups
 from print import get_printer_name
+import websocket
+from websocketHandler import start_websocket_client
+
 
 app = Flask(__name__)
 conn = cups.Connection()
@@ -81,5 +84,10 @@ def print_file():
 def check_alive():
     return jsonify({'message': 'it is alive'}), 200
 
+
+
 if __name__ == '__main__':
-    app.run( port=12345)
+    # Connect to the WebSocket server
+    start_websocket_client()
+    # Start the Flask app
+    app.run(port=12345)

@@ -1,6 +1,7 @@
 const { getClient } = require('../utils/mongo');
 const {ObjectId} = require('mongodb');
 const axios = require('axios');
+const { sendMessageToClient } = require('./web_socket_service'); // Ensure the correct path
 
 // this is exemple for storing data into the db
 async function createPrintJob(printJobData) {
@@ -53,12 +54,14 @@ async function sendPrintJobToPrinter(printJob) {
     let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://bf2b-77-125-77-63.ngrok-free.app/print', //the agent url
+        url: 'https://5163-212-199-228-102.ngrok-free.app/print', //the agent url
         headers: { 
             'Content-Type': 'application/json'
         }, 
         data: data
     };
+
+    sendMessageToClient("example_site", "12345", printJob)
     
     axios.request(config)
     .then((response) => {
