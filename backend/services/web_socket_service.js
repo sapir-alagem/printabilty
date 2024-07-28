@@ -17,26 +17,31 @@ async function setupWebSocketServer(server) {
                 console.log('received: %s', message);
                 const data = JSON.parse(message);
                 const { site, printerId } = data;
+                // Track the client with site and printerId as key
+                const clientKey = `${site}_${printerId}`;
+                clients.set(clientKey, ws);
 
-                // Check if a document with the same printerId already exists
-                const existingClient = await collection.findOne({ printerId: printerId });
+                //console.log(`A document was inserted with the _id: ${result.insertedId}`);
 
-                if (existingClient) {
-                    console.log(`Client with printerId ${printerId} already exists. Skipping insertion.`);
-                } else {
-                    // Save the data to MongoDB
-                    const result = await collection.insertOne({
-                        site: site,
-                        printerId: printerId,
-                        socket: ws._socket.remoteAddress,
-                    });
+                // // Check if a document with the same printerId already exists
+                // const existingClient = await collection.findOne({ printerId: printerId });
 
-                    // Track the client with site and printerId as key
-                    const clientKey = `${site}_${printerId}`;
-                    clients.set(clientKey, ws);
+                // if (existingClient) {
+                //     console.log(`Client with printerId ${printerId} already exists. Skipping insertion.`);
+                // } else {
+                //     // Save the data to MongoDB
+                //     const result = await collection.insertOne({
+                //         site: site,
+                //         printerId: printerId,
+                //         socket: ws._socket.remoteAddress,
+                //     });
 
-                    console.log(`A document was inserted with the _id: ${result.insertedId}`);
-                }
+                //     // Track the client with site and printerId as key
+                //     const clientKey = `${site}_${printerId}`;
+                //     clients.set(clientKey, ws);
+
+                //     console.log(`A document was inserted with the _id: ${result.insertedId}`);
+                // }
             });
 
             ws.on('close', () => {
@@ -61,7 +66,9 @@ async function setupWebSocketServer(server) {
 function sendMessageToClient(site, printerId, message) {
     const clientKey = `${site}_${printerId}`;
     const clientSocket = clients.get(clientKey);
-
+    //add type:'print_request' to the message
+    message.type = 'print_request';
+    
     if (clientSocket && clientSocket.readyState === WebSocket.OPEN) {
         clientSocket.send(JSON.stringify(message));
     } else {

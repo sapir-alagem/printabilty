@@ -22,12 +22,16 @@ def on_open(ws):
     ws.send(json.dumps(data))
     print(f"Sent data: {data}")
 
-if __name__ == "__main__":
+    
+def start_websocket_client():
     websocket.enableTrace(True)
+    # Include an ID or data in the URL as a query parameter
     ws = websocket.WebSocketApp("ws://localhost:5000",
-                                on_open=on_open,
                                 on_message=on_message,
                                 on_error=on_error,
-                                on_close=on_close)
-    
-    ws.run_forever()
+                                on_close=on_close,
+                                on_open = on_open)
+    ws.run_forever(reconnect=5)
+
+if __name__ == "__main__":
+    start_websocket_client()
