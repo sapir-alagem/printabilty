@@ -40,7 +40,7 @@ async function getPrintJobs(jobId) {
 }
 
 async function sendPrintJobToPrinter(printJob) {
-    let data = JSON.stringify({
+    let data = ({
         "file_url": printJob.fileUrl,
         "color_mode": printJob.colorMode,
         "print_both_sides": printJob.printBothSides,
@@ -49,27 +49,28 @@ async function sendPrintJobToPrinter(printJob) {
         "page_range_start": printJob.pageRange.start,
         "page_range_end": printJob.pageRange.end,
         "copies": printJob.copies,
+        "type": "print_request"
     });
     
-    let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: 'https://5163-212-199-228-102.ngrok-free.app/print', //the agent url
-        headers: { 
-            'Content-Type': 'application/json'
-        }, 
-        data: data
-    };
+    // let config = {
+    //     method: 'post',
+    //     maxBodyLength: Infinity,
+    //     url: 'https://5163-212-199-228-102.ngrok-free.app/print', //the agent url
+    //     headers: { 
+    //         'Content-Type': 'application/json'
+    //     }, 
+    //     data: data
+    // };
 
-    sendMessageToClient("example_site", "12345", printJob)
+    sendMessageToClient("example_site", "12345", data)
     
-    axios.request(config)
-    .then((response) => {
-        console.log(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-        console.log(error);
-    });
+    // axios.request(config)
+    // .then((response) => {
+    //     console.log(JSON.stringify(response.data));
+    // })
+    // .catch((error) => {
+    //     console.log(error);
+    // });
 }
 
 async function processPrintJob(jobId) {

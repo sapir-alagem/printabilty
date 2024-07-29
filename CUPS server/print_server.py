@@ -1,13 +1,11 @@
-from flask import Flask, request, jsonify
 import os
 import requests
 import cups
 from print import get_printer_name
 import websocket
-from websocketHandler import start_websocket_client
+import json
 
 
-app = Flask(__name__)
 conn = cups.Connection()
 
 # Function to download file from URL to local folder
@@ -20,13 +18,38 @@ def download_file(url, local_folder):
                 f.write(chunk)
     return filename
 
-@app.route('/print', methods=['POST'])
-def print_file():
-    data = request.get_json()
+def on_message(ws, message):
+    print(f"Received message from server: {message}")
+    if 'print_request' in message:
+        response = on_print_request(message)
+        ws.send(f"Print request received, response: {response}")
+
+def on_error(ws, error):
+    print(f"Error: {error}")
+
+def on_close(ws, close_status_code, close_msg):
+    print(f"Connection closed: {close_msg}")
+
+def on_open(ws):
+    print("Connection opened")
+    site = "example_site"
+    printer_id = "12345"
+    data = {
+        "site": site,
+        "printerId": printer_id
+    }
+    ws.send(json.dumps(data))
+    print(f"Sent data: {data}")
+
+def on_print_request(data):
+    print("Received print request on WebSocket")
+
 
     # Check if JSON data contains the required fields
     if not data or 'file_url' not in data:
-        return jsonify({'error': 'Invalid JSON data. Required fields: file_url'}), 400
+        return {'error': 'Invalid JSON data. Required fields: file_url'}
+
+    data = json.loads(data)
 
     file_url = data['file_url']
     #printer_name = data['printer_name']
@@ -42,7 +65,7 @@ def print_file():
     try:
         file_path = download_file(file_url, local_folder)
     except Exception as e:
-        return jsonify({'error': f'Failed to download file: {e}'}), 500
+        return {'error': f'Failed to download file: {e}'}
 
     # Print the downloaded file
     try:
@@ -75,19 +98,24 @@ def print_file():
         job_id = conn.printFile(printer_name, file_path, "Print Job", options)
         # Delete the file after printing
         os.remove(file_path)
-        return jsonify({'message': f'Print job submitted. Job ID: {job_id}'}), 200
+        return {'message': f'Print job submitted. Job ID: {job_id}'}
     except cups.IPPError as e:
-        return jsonify({'error': f'Failed to print: {e}'}), 500
+        return {'error': f'Failed to print: {e}'}
 
 
-@app.route('/', methods=['GET'])
-def check_alive():
-    return jsonify({'message': 'it is alive'}), 200
+    
+def start_websocket_client():
+    websocket.enableTrace(True)
+    # Include an ID or data in the URL as a query parameter
+    ws = websocket.WebSocketApp("ws://localhost:5000",
+                                on_message=on_message,
+                                on_error=on_error,
+                                on_close=on_close,
+                                on_open = on_open)
+    ws.run_forever(reconnect=5)
 
 
 
 if __name__ == '__main__':
     # Connect to the WebSocket server
     start_websocket_client()
-    # Start the Flask app
-    app.run(port=12345)

@@ -66,8 +66,6 @@ async function setupWebSocketServer(server) {
 function sendMessageToClient(site, printerId, message) {
     const clientKey = `${site}_${printerId}`;
     const clientSocket = clients.get(clientKey);
-    //add type:'print_request' to the message
-    message.type = 'print_request';
     
     if (clientSocket && clientSocket.readyState === WebSocket.OPEN) {
         clientSocket.send(JSON.stringify(message));
