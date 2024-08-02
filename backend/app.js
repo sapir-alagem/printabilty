@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-require('dotenv').config();
+require('dotenv').config({path: '../.env'});
 const cors = require('cors');
 const http = require('http');
 const paymentRoutes = require('./routes/payment_routes.js');
@@ -10,6 +10,7 @@ const UploadRoutes = require("./routes/uploads_routes.js");
 const errorHandler = require("./controllers/errorHandler_controller.js");
 const webhookRouter = require('./routes/webhookRouter.js');
 const { setupWebSocketServer } = require('./services/web_socket_service.js');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
