@@ -1,4 +1,6 @@
+const { ObjectId } = require('mongodb');
 const { getClient } = require('../utils/mongo');
+
 
 async function createPrinter(printerData) {
     const client = getClient();
@@ -12,8 +14,6 @@ async function createPrinter(printerData) {
     } catch (error) {
         console.error('Error creating printer:', error);
         throw error;
-    } finally {
-        await client.close();
     }
 }
 
@@ -29,8 +29,6 @@ async function getAllPrinters(companyId) {
     } catch (error) {
         console.error('Error retrieving printers:', error);
         throw error;
-    } finally {
-        await client.close();
     }
 }
 
@@ -46,10 +44,22 @@ async function getPrinter(printerId) {
     } catch (error) {
         console.error('Error retrieving printer:', error);
         throw error;
-    } finally {
-        await client.close();
     }
 }
+
+const findPrinterByName = async (companyId, name) => {
+    const client = await getClient();
+    const db = client.db();
+    const printersCollection = db.collection('printers');
+  
+    // const companyIdObjectId =  new ObjectId(companyId);
+
+    const printer = await printersCollection.findOne({ 
+        name: name,
+        company_id: companyId, 
+    });
+    return printer;
+};
 
 async function deletePrinter(printerId) {
     const client = getClient();
@@ -63,8 +73,6 @@ async function deletePrinter(printerId) {
     } catch (error) {
         console.error('Error deleting printer:', error);
         throw error;
-    } finally {
-        await client.close();
     }
 }
 
@@ -72,5 +80,6 @@ module.exports = {
     createPrinter,
     getAllPrinters,
     getPrinter,
-    deletePrinter
+    findPrinterByName,
+    deletePrinter,
 };

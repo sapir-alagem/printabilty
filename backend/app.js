@@ -31,8 +31,10 @@ app.use('/companies', companyRoutes);
 app.use("/uploads", UploadRoutes);
 app.use('/payment', paymentRoutes);
 app.use('/webhook', webhookRouter);
-app.use('/companies/:companyId', qrCodesRouter);
+// app.use('/companies/:companyId', qrCodesRouter);
+app.use('/companies/:companyId/qrcodes', qrCodesRouter);
 app.use('', printerRouter);
+
 
 // Error handler middleware
 app.use(errorHandler);

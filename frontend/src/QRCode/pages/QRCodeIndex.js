@@ -16,9 +16,15 @@ const QRCodeIndex = () => {
 
     const fetchQRCodes = async () => {
         try {
-            const response = await axios.get(`/companies/${companyId}/qrcodes`);
-            // const response = await axios.get('/qrcodes');
-            setQrCodes(response.data);
+            const response = await axios.get(`http://localhost:5000/companies/${companyId}/qrcodes`);
+            console.log('Response data:', response.data); 
+            // setQrCodes(response.data);
+            if (Array.isArray(response.data)) {
+                setQrCodes(response.data);
+            } else {
+                setError('Expected an array but received something else');
+                setQrCodes([]);
+            }
         } catch (error) {
             setError('Error fetching QR codes');
             setQrCodes([]);
@@ -29,8 +35,7 @@ const QRCodeIndex = () => {
 
     const handleObsolete = async (id) => {
         try {
-            await axios.post(`/companies/${companyId}/qrcodes/obsolete/${id}`);
-            // await axios.post(`/qrcodes/obsolete/${id}`);
+            await axios.post(`http://localhost:5000/companies/${companyId}/qrcodes/obsolete/${id}`);
             fetchQRCodes();
         } catch (error) {
             setError('Error obsoleting QR code');
@@ -38,10 +43,10 @@ const QRCodeIndex = () => {
     };
 
     const handleGenerate = async () => {
-        const printer_id = prompt("Enter printer ID:");
+        const printer_name = prompt("Enter printer name:");
 
         try {
-            await axios.post(`/companies/${companyId}/qrcodes/generate`, { printer_id });
+            await axios.post(`http://localhost:5000/companies/${companyId}/qrcodes/generate`, { printer_name });
             fetchQRCodes();
         } catch (error) {
             setError('Error generating QR code');

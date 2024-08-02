@@ -53,7 +53,7 @@ async function sendPrintJobToPrinter(printJob) {
     let config = {
         method: 'post',
         maxBodyLength: Infinity,
-        url: 'https://bf2b-77-125-77-63.ngrok-free.app/print', //the agent url
+        url: 'http://localhost:12345/print', //the agent url
         headers: { 
             'Content-Type': 'application/json'
         }, 
