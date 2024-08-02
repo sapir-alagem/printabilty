@@ -1,9 +1,10 @@
 const { processPrintJob } = require('../services/print_jobs_service');
-const stripe = require('stripe')('sk_test_51OlWKuEfxT2rIn1yF8mAlqUB3hAP0CEgpALNKRokudYWVGTMJD7h9Ll6NvAFaPnBXVzTAsDRZDsG5cVKkLNj6KGr00iBvedkPk');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const express = require('express');
 
 const router = express.Router();
-const endpointSecret = 'whsec_73d33e8b1ade01fa4b28839d1cf3068efeec38b37738dcbf21bba206d0afa505';
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+
 
 
 // POST /webhook route handler
