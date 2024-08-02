@@ -1,11 +1,13 @@
 const QRCode = require('qrcode');
-const QrCode = require('../models/QrCode');
 const qrCodeService = require('../services/qrCodeService');
 
 const generateQrCode = async (req, res) => {
   try {
-    const { value, printer_id, company_id, obsolete, createdAt } = req.body;
-    const data = { value, printer_id, company_id, obsolete, createdAt };
+    const company_id = req.params.companyId; // Get company ID from URL params
+    const { printer_id } = req.body;
+    const value = `UploadFile/${companyId}/${printerId}`;
+    
+    const data = { value, printer_id, company_id, obsolete: false, createdAt: new Date() };
     const qrCodeDataUrl = await QRCode.toDataURL(value);
     const qrCode = { ...data, code: qrCodeDataUrl };
     const qrCodeId = await qrCodeService.createQrCode(qrCode);
@@ -17,7 +19,8 @@ const generateQrCode = async (req, res) => {
 
 const getAllActiveQrCodes = async (req, res) => {
   try {
-    const qrCodes = await qrCodeService.getAllActiveQrCodes();
+    const company_id = req.params.companyId; // Get company ID from URL params
+    const qrCodes = await qrCodeService.getAllActiveQrCodes(company_id);
     if (qrCodes.length === 0) {
       res.status(200).json({ message: 'No active QR codes found' });
     } else {
@@ -31,7 +34,8 @@ const getAllActiveQrCodes = async (req, res) => {
 const obsoleteQrCode = async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await qrCodeService.obsoleteQrCode(id);
+    const company_id = req.params.companyId; // Get company ID from URL params
+    const result = await qrCodeService.obsoleteQrCode(id, company_id);
     if (result.modifiedCount === 0) {
       res.status(404).json({ message: 'QR code not found' });
     } else {

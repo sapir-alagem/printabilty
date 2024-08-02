@@ -6,9 +6,10 @@ const paymentRoutes = require('./routes/payment_routes.js');
 const PrintJobsRoutes = require('./routes/print_jobs_routes.js');
 const companyRoutes = require('./routes/company_routes');
 const UploadRoutes = require("./routes/uploads_routes.js");
-const errorHandler = require("./controllers/errorHandler_controller.js"); // Importing error handler
+const errorHandler = require("./controllers/errorHandler_controller.js");
 const webhookRouter = require('./routes/webhookRouter.js');
 const qrCodesRouter = require('./routes/qrCodesRouter.js');
+const printerRouter = require('./routes/printerRouter.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -30,7 +31,8 @@ app.use('/companies', companyRoutes);
 app.use("/uploads", UploadRoutes);
 app.use('/payment', paymentRoutes);
 app.use('/webhook', webhookRouter);
-app.use('/qrcodes', qrCodesRouter);
+app.use('/companies/:companyId', qrCodesRouter);
+app.use('', printerRouter);
 
 // Error handler middleware
 app.use(errorHandler);
