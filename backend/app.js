@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-require('dotenv').config({path: '../.env'});
+require('dotenv').config({ path: '../.env' });
 const cors = require('cors');
 const http = require('http');
 const paymentRoutes = require('./routes/payment_routes.js');
@@ -10,31 +10,32 @@ const UploadRoutes = require("./routes/uploads_routes.js");
 const errorHandler = require("./controllers/errorHandler_controller.js");
 const webhookRouter = require('./routes/webhookRouter.js');
 const { setupWebSocketServer } = require('./services/web_socket_service.js');
-const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-
-// Use body-parser middleware
-app.use(bodyParser.json());
 
 // CORS middleware
 app.use(cors());
 
 // Custom CORS headers
 app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-    next();
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+  next();
 });
 
-// Routes
+// Routes (ensure /webhook route comes before express.json())
+app.use('/webhook', webhookRouter);
+
+// Use body-parser middleware for other routes
+app.use(express.json());
+
+// Define other routes
 app.use('/print_jobs', PrintJobsRoutes);
 app.use('/companies', companyRoutes);
 app.use("/uploads", UploadRoutes);
 app.use('/payment', paymentRoutes);
-app.use('/webhook', webhookRouter);
 
 // Error handler middleware
 app.use(errorHandler);
