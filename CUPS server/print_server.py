@@ -4,7 +4,11 @@ import cups
 from print import get_printer_name
 import websocket
 import json
+import threading
 
+from flask import Flask
+
+app = Flask(__name__)
 
 conn = cups.Connection()
 
@@ -22,10 +26,10 @@ def on_message(ws, message):
     print(f"Received message from server: {message}")
     if 'print_request' in message:
         response = on_print_request(message)
-        ws.send(f"Print request received, response: {response}")
+        #ws.send(response)
 
 def on_error(ws, error):
-    print(f"Error: {error}")
+    print(error)
 
 def on_close(ws, close_status_code, close_msg):
     print(f"Connection closed: {close_msg}")
@@ -83,8 +87,8 @@ def on_print_request(data):
 
         # Prepare options for print job
         options = {
-            "ColorModel": color_mode,
-            "sides": "one-sided" if not print_both_sides else "two-sided-long-edge",
+            "ColorModel": "RGB" if color_mode == 'color' else 'Gray',
+            "sides": "two-sided-long-edge" if print_both_sides else "None",
             "orientation-requested": orientation_requested,
             "copies" : str(copies)
         }
@@ -107,15 +111,19 @@ def on_print_request(data):
 def start_websocket_client():
     websocket.enableTrace(True)
     # Include an ID or data in the URL as a query parameter
-    ws = websocket.WebSocketApp("ws://localhost:5000",
+    ws = websocket.WebSocketApp("ws://192.168.252.2:5000",
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close,
                                 on_open = on_open)
     ws.run_forever(reconnect=5)
 
-
+@app.route('/')
+def home():
+    return "Hello, this is a response from the Flask server!"
 
 if __name__ == '__main__':
-    # Connect to the WebSocket server
-    start_websocket_client()
+    websocketThread = threading.Thread(target=start_websocket_client).start()
+
+    app.run(host='0.0.0.0', port=12345)
+

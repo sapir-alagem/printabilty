@@ -8,16 +8,14 @@ async function createPrintJob(printJobData) {
     const client = getClient();
 
     try {
-        const db = client.db('printablity');
+        const db = client.db('printability');
         const col = db.collection('print_jobs');
         const result = await col.insertOne(printJobData);
         return result.insertedId;
     } catch (error) {
         console.error('Error creating print job:', error);
         throw error;
-    } finally {
-        client.close();
-    }
+    } 
 }
 
 // this is exemple for importing data from the db
@@ -26,7 +24,7 @@ async function getPrintJobs(jobId) {
 
     try {
         await client.connect();
-        const db = client.db('printablity');
+        const db = client.db('printability');
         const col = db.collection('print_jobs');
         //const print_jobs = await col.find(jobId).toArray();
         const print_job = await col.findOne({ _id: new ObjectId(jobId) }); // this returns null
@@ -34,9 +32,7 @@ async function getPrintJobs(jobId) {
     } catch (error) {
         console.error('Error retrieving print jobs:', error);
         throw error;
-    } finally {
-        client.close();
-    }
+    } 
 }
 
 async function sendPrintJobToPrinter(printJob) {
@@ -51,26 +47,10 @@ async function sendPrintJobToPrinter(printJob) {
         "copies": printJob.copies,
         "type": "print_request"
     });
-    
-    // let config = {
-    //     method: 'post',
-    //     maxBodyLength: Infinity,
-    //     url: 'https://5163-212-199-228-102.ngrok-free.app/print', //the agent url
-    //     headers: { 
-    //         'Content-Type': 'application/json'
-    //     }, 
-    //     data: data
-    // };
 
-    sendMessageToClient("example_site", "12345", data)
+
+    sendMessageToClient(printJob.company_id, printJob.printer_name, data)
     
-    // axios.request(config)
-    // .then((response) => {
-    //     console.log(JSON.stringify(response.data));
-    // })
-    // .catch((error) => {
-    //     console.log(error);
-    // });
 }
 
 async function processPrintJob(jobId) {

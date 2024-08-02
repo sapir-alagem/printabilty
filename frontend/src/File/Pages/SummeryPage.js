@@ -11,6 +11,8 @@ function SummaryPage() {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(window.location.search);
   const fileUrl = queryParams.get("file_url");
+  const company_id = queryParams.get("company_id");
+  const printer_name = queryParams.get("printer_name");
   const [colorMode, setColorMode] = useState('color');
   const [printBothSides, setPrintBothSides] = useState(false);
   const [layoutMode, setLayoutMode] = useState('portrait');
@@ -75,6 +77,8 @@ function SummaryPage() {
     params.append('end_page', pageRange.end);
     params.append('copies', copies);
     params.append('numPages', numPages);
+    params.append('company_id', company_id);
+    params.append('printer_name', printer_name);
 
     navigate(`/checkout?${params.toString()}`);
   };
