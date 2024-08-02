@@ -6,7 +6,6 @@ const router = express.Router();
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 
-
 // POST /webhook route handler
 const checkHook = async (req, res, next) => {
     console.log('GET Request in webhook');
@@ -14,8 +13,20 @@ const checkHook = async (req, res, next) => {
 }
 
 function handleWebhook(request, response) {
-  if (request.body['type'] === 'checkout.session.completed') {
-    const session = request.body.data.object;
+  const sig = request.headers['stripe-signature'];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(request.rawBody, sig, endpointSecret);
+  } catch (err) {
+    console.error(`Webhook signature verification failed.`, err.message);
+    return response.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the event
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
     const jobId = session.metadata.jobId;
 
     processPrintJob(jobId)
@@ -27,7 +38,8 @@ function handleWebhook(request, response) {
       });
   }
 
+  // Return a response to acknowledge receipt of the event
   response.status(200).json({ received: true });
 }
 
-module.exports = { handleWebhook , checkHook};
+module.exports = { handleWebhook, checkHook };
