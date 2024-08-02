@@ -9,7 +9,7 @@ const companyRoutes = require('./routes/company_routes');
 const UploadRoutes = require("./routes/uploads_routes.js");
 const errorHandler = require("./controllers/errorHandler_controller.js");
 const webhookRouter = require('./routes/webhookRouter.js');
-const { setupWebSocketServer, sendMessageToClient } = require('./services/web_socket_service.js'); // Ensure the correct path
+const { setupWebSocketServer } = require('./services/web_socket_service.js');
 
 const app = express();
 const server = http.createServer(app);
@@ -43,7 +43,3 @@ setupWebSocketServer(server);
 
 // Start the server
 server.listen(5000, () => console.log("Listening on port 5000"));
-
-// Example usage: send a message to a specific client
-// Replace 'example_site' and '12345' with actual site and printerId values
-sendMessageToClient('example_site', '12345', 'Hello, specific client!');
