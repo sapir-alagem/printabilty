@@ -1,5 +1,5 @@
 const { getClient } = require('../utils/mongo');
-const {ObjectId} = require('mongodb');
+const {ObjectId, Timestamp} = require('mongodb');
 const axios = require('axios');
 const { sendMessageToClient } = require('./web_socket_service'); // Ensure the correct path
 
@@ -10,6 +10,8 @@ async function createPrintJob(printJobData) {
     try {
         const db = client.db('printability');
         const col = db.collection('print_jobs');
+        //add timsstamp to the printJobData that human can read
+        printJobData.created_at = new Date();
         const result = await col.insertOne(printJobData);
         return result.insertedId;
     } catch (error) {

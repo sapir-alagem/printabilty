@@ -7,6 +7,8 @@ async function createCompany(companyData) {
         await client.connect();
         const db = client.db('printability');
         const col = db.collection('companies');
+        // Add timestamp to the companyData that humans can read
+        companyData.created_at = new Date();
         const result = await col.insertOne(companyData);
         return result.insertedId;
     } catch (error) {
