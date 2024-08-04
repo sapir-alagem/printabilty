@@ -12,9 +12,10 @@ const createPrinter = async (req, res) => {
 };
 
 const getAllPrinters = async (req, res) => {
+    
     try {
-        const { companyId } = req.params;
-        const printers = await printerService.getAllPrinters(companyId);
+        const company_id = req.params.companyId;
+        const printers = await printerService.getAllPrinters(company_id);
         res.status(200).json(printers);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching printers', error });
