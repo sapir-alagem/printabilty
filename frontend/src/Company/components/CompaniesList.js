@@ -19,6 +19,7 @@ const CompaniesList = (props) => {
               <th>ID</th>
               <th>Name</th>
               <th>Printers Count</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
