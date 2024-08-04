@@ -24,3 +24,4 @@ yarn-debug.log*
 yarn-error.log*
 backend/key
 backend/.env
+.env

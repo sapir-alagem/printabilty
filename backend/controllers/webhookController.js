@@ -1,9 +1,9 @@
 const { processPrintJob } = require('../services/print_jobs_service');
-const stripe = require('stripe')('sk_test_51OlWKuEfxT2rIn1yF8mAlqUB3hAP0CEgpALNKRokudYWVGTMJD7h9Ll6NvAFaPnBXVzTAsDRZDsG5cVKkLNj6KGr00iBvedkPk');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const express = require('express');
 
 const router = express.Router();
-const endpointSecret = 'whsec_73d33e8b1ade01fa4b28839d1cf3068efeec38b37738dcbf21bba206d0afa505';
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 
 // POST /webhook route handler
@@ -13,8 +13,20 @@ const checkHook = async (req, res, next) => {
 }
 
 function handleWebhook(request, response) {
-  if (request.body['type'] === 'checkout.session.completed') {
-    const session = request.body.data.object;
+  const sig = request.headers['stripe-signature'];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(request.rawBody, sig, endpointSecret);
+  } catch (err) {
+    console.error(`Webhook signature verification failed.`, err.message);
+    return response.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Handle the event
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
     const jobId = session.metadata.jobId;
 
     processPrintJob(jobId)
@@ -26,7 +38,8 @@ function handleWebhook(request, response) {
       });
   }
 
+  // Return a response to acknowledge receipt of the event
   response.status(200).json({ received: true });
 }
 
-module.exports = { handleWebhook , checkHook};
+module.exports = { handleWebhook, checkHook };
