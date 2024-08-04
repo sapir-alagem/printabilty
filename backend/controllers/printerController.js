@@ -37,8 +37,8 @@ const getPrinter = async (req, res) => {
 
 const deletePrinter = async (req, res) => {
     try {
-        const { id } = req.params;
-        const result = await printerService.deletePrinter(id);
+        const { companyId, id } = req.params;
+        const result = await printerService.deletePrinter(id, companyId);
         if (result === 0) {
             res.status(404).json({ message: 'Printer not found' });
         } else {
@@ -48,6 +48,7 @@ const deletePrinter = async (req, res) => {
         res.status(500).json({ message: 'Error deleting printer', error });
     }
 };
+
 
 module.exports = {
     createPrinter,
