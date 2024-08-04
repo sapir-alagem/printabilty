@@ -1,13 +1,14 @@
 const { getClient } = require('../utils/mongo');
 const {ObjectId} = require('mongodb');
 const axios = require('axios');
+const CompanyService = require('../services/company_service');
 
 // this is exemple for storing data into the db
 async function createPrintJob(printJobData) {
     const client = getClient();
 
     try {
-        const db = client.db('printablity');
+        const db = client.db('printability');
         const col = db.collection('print_jobs');
         const result = await col.insertOne(printJobData);
         return result.insertedId;
@@ -28,7 +29,7 @@ async function getPrintJobs(jobId) {
         const db = client.db('printablity');
         const col = db.collection('print_jobs');
         //const print_jobs = await col.find(jobId).toArray();
-        const print_job = await col.findOne({ _id: new ObjectId(jobId) }); // this returns null
+        const print_job = await col.findOne({ _id: jobId });
         return print_job;
     } catch (error) {
         console.error('Error retrieving print jobs:', error);
@@ -88,5 +89,32 @@ async function processPrintJob(jobId) {
       console.error('Failed to process print job:', error);
     }
   }
+
   
-module.exports = { createPrintJob, getPrintJobs, processPrintJob };
+  async function printJobCalculator(printJob) {
+    try {
+        const company = await CompanyService.getCompany(printJob.companyId);
+
+        if (!company || !printJob) {
+            throw new Error('Company or Print Job not found');
+        }
+
+        let singlePagePrice = 0;
+        const numOfPages = printJob.pageRange.end - printJob.pageRange.start + 1;
+        const numOfCopies = printJob.copies;
+
+        if (printJob.colorMode === "color") {
+            singlePagePrice = company.coloredPageCost;
+        } else {
+            singlePagePrice = company.blackAndWhitePageCost;
+        }
+
+        return singlePagePrice * numOfPages * numOfCopies;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error calculating print job cost');
+    }
+}
+
+  
+module.exports = { createPrintJob, getPrintJobs, processPrintJob, printJobCalculator};

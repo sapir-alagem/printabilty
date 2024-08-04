@@ -2,16 +2,24 @@ const CompanyService = require('../services/company_service');
 
 const createCompany = async (req, res, next) => {
     try {
-        const { name } = req.body;
-        const companyData = { name };
+        const companyData = req.body;
         const companyId = await CompanyService.createCompany(companyData);
+        
         res.status(201).json({ 
             message: 'Company created successfully',
-            companyId,
+            companyId
         });
+
+        // console.log(response.data); // Incorrect, should be `console.log(res.data);` but `res` does not have `data`
     } catch (error) {
         console.error('Error creating company:', error);
-        res.status(500).json({ message: 'Could not create company', error: error.message });
+        
+        // Handle errors
+        if (!res.headersSent) {
+            res.status(500).json({ message: 'Could not create company', error: error.message });
+        } else {
+            next(error); // If headers are already sent, pass the error to the default error handler
+        }
     }
 };
 
@@ -26,4 +34,4 @@ const getCompany = async (req, res, next) => {
     }
 };
 
-module.exports = { createCompany, getCompany };
+module.exports = { createCompany, getCompany};

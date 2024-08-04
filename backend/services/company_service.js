@@ -12,8 +12,6 @@ async function createCompany(companyData) {
     } catch (error) {
         console.error('Error creating company:', error);
         throw error;
-    } finally {
-        await client.close();
     }
 }
 
@@ -28,8 +26,6 @@ async function getCompany(companyId) {
     } catch (error) {
         console.error('Error retrieving company:', error);
         throw error;
-    } finally {
-        client.close();
     }
 }
 

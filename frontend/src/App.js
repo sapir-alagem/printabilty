@@ -7,6 +7,8 @@ import './App.css';
 import LandingPage from './pages/LandingPage';
 import Companies from './Company/pages/Companies';
 import NewCompany from './Company/pages/NewCompany';
+import SignupForm from './Company/pages/CompanySignupForm';
+import SuccessSingup from './Company/pages/succesfulSingup';
 import UploadFile from './File/Pages/UploadFilePage';
 import NotFound from './pages/NotFound';
 import SummaryPage from './File/Pages/SummeryPage'
@@ -26,6 +28,8 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/new" element={<NewCompany />} />
+            <Route path="/companies/new/form" element={<SignupForm />} />
+            <Route path="/companies/new/success" element={<SuccessSingup />} />
             <Route path="/UploadFile" element={<UploadFile />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/summary" element={<SummaryPage />} />

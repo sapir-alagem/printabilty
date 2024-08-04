@@ -1,36 +1,28 @@
 import React from "react";
-// import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import './NewComp.css';
 
 const NewCompany = () => {
-    const createCompany = async event => {
-        // event.prevntDefault();
+  const navigate = useNavigate();
 
-        try {
-            const response = await fetch('http://localhost:5000/companies', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'appliction/json',
-                },
-                body: JSON.stringify({
-                    name: 'YAY!',
-                })
-            });
+  const handleSignUp = () => {
+    navigate('/companies/new/form');
+  };
 
-            const resposeData = await response.json();
-            console.log(resposeData);
-
-        } catch (error) {
-            console.log(error);
-        };
-
-    }
-
-    return (
-        <div>
-            <h2>New Company Signup</h2>
-            <button onClick={createCompany}>Create Company</button>
-        </div>
-    );
+  return (
+    <div className="container">
+      <h1>Join Our Service Today!</h1>
+      <h2>Streamline Your Printing Services</h2>
+      <p>Give your clients the ultimate convenience of printing documents directly from their personal devices.</p>
+  
+      <div className="section-divider"></div>
+  
+      <p>Our solution simplifies your workflow with an intuitive user interface, secure payment methods, and a comprehensive operational system.</p>
+  
+      <p>Say goodbye to hassle and hello to effortless income from printing services.</p>
+      <button className="button" onClick={handleSignUp}>Sign Up Now</button>
+    </div>
+  );
 };
 
 export default NewCompany;
