@@ -7,6 +7,16 @@
 
 
         {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch backend",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "C:\\Users\\User\\Documents\\GitHub\\printabilty\\backend\\app.js"
+        },
+
+        {
             "type": "chrome",
             "request": "launch",
             "name": "Launch Chrome against localhost",

@@ -1,4 +1,4 @@
-import cups
+#import cups
 
 def get_printer_status(conn, printer_name):
     printer_state = conn.getPrinterAttributes(printer_name, requested_attributes=["printer-state-reasons"])

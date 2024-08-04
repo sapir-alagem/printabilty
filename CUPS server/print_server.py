@@ -1,10 +1,15 @@
-from flask import Flask, request, jsonify
 import os
 import requests
 import cups
 from print import get_printer_name
+import websocket
+import json
+import threading
+
+from flask import Flask
 
 app = Flask(__name__)
+
 conn = cups.Connection()
 
 # Function to download file from URL to local folder
@@ -17,13 +22,38 @@ def download_file(url, local_folder):
                 f.write(chunk)
     return filename
 
-@app.route('/print', methods=['POST'])
-def print_file():
-    data = request.get_json()
+def on_message(ws, message):
+    print(f"Received message from server: {message}")
+    if 'print_request' in message:
+        response = on_print_request(message)
+        #ws.send(response)
+
+def on_error(ws, error):
+    print(error)
+
+def on_close(ws, close_status_code, close_msg):
+    print(f"Connection closed: {close_msg}")
+
+def on_open(ws):
+    print("Connection opened")
+    site = "example_site"
+    printer_id = "12345"
+    data = {
+        "site": site,
+        "printerId": printer_id
+    }
+    ws.send(json.dumps(data))
+    print(f"Sent data: {data}")
+
+def on_print_request(data):
+    print("Received print request on WebSocket")
+
 
     # Check if JSON data contains the required fields
     if not data or 'file_url' not in data:
-        return jsonify({'error': 'Invalid JSON data. Required fields: file_url'}), 400
+        return {'error': 'Invalid JSON data. Required fields: file_url'}
+
+    data = json.loads(data)
 
     file_url = data['file_url']
     #printer_name = data['printer_name']
@@ -39,7 +69,7 @@ def print_file():
     try:
         file_path = download_file(file_url, local_folder)
     except Exception as e:
-        return jsonify({'error': f'Failed to download file: {e}'}), 500
+        return {'error': f'Failed to download file: {e}'}
 
     # Print the downloaded file
     try:
@@ -57,8 +87,8 @@ def print_file():
 
         # Prepare options for print job
         options = {
-            "ColorModel": color_mode,
-            "sides": "one-sided" if not print_both_sides else "two-sided-long-edge",
+            "ColorModel": "RGB" if color_mode == 'color' else 'Gray',
+            "sides": "two-sided-long-edge" if print_both_sides else "None",
             "orientation-requested": orientation_requested,
             "copies" : str(copies)
         }
@@ -72,14 +102,28 @@ def print_file():
         job_id = conn.printFile(printer_name, file_path, "Print Job", options)
         # Delete the file after printing
         os.remove(file_path)
-        return jsonify({'message': f'Print job submitted. Job ID: {job_id}'}), 200
+        return {'message': f'Print job submitted. Job ID: {job_id}'}
     except cups.IPPError as e:
-        return jsonify({'error': f'Failed to print: {e}'}), 500
+        return {'error': f'Failed to print: {e}'}
 
 
-@app.route('/', methods=['GET'])
-def check_alive():
-    return jsonify({'message': 'it is alive'}), 200
+    
+def start_websocket_client():
+    websocket.enableTrace(True)
+    # Include an ID or data in the URL as a query parameter
+    ws = websocket.WebSocketApp("ws://192.168.252.2:5000",
+                                on_message=on_message,
+                                on_error=on_error,
+                                on_close=on_close,
+                                on_open = on_open)
+    ws.run_forever(reconnect=5)
+
+@app.route('/')
+def home():
+    return "Hello, this is a response from the Flask server!"
 
 if __name__ == '__main__':
-    app.run( port=12345)
+    websocketThread = threading.Thread(target=start_websocket_client).start()
+
+    app.run(host='0.0.0.0', port=12345)
+

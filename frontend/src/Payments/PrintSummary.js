@@ -19,6 +19,8 @@ const PrintSummary = () => {
       end: parseInt(queryParams.get("end_page")) || 1,
     },
     copies: parseInt(queryParams.get("copies")) || 1,
+    company_id: queryParams.get("company_id") || '',
+    printer_name: queryParams.get("printer_name") || '',
   };
 
   return (
@@ -36,7 +38,6 @@ const PrintSummaryContent = () => {
     <div className="mt-4">
       <h2 className="mb-3">Print Summary</h2>
       <ul className="list-group">
-        <li className="list-group-item">File URL: {printDetails.fileUrl}</li>
         <li className="list-group-item">Number of pages: {printDetails.numPages}</li>
         <li className="list-group-item">Color Mode: {printDetails.colorMode}</li>
         <li className="list-group-item">Print on Both Sides: {printDetails.printBothSides ? 'Yes' : 'No'}</li>

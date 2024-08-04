@@ -1,5 +1,5 @@
 const Stripe = require('stripe');
-const stripe = Stripe('sk_test_51OlWKuEfxT2rIn1yF8mAlqUB3hAP0CEgpALNKRokudYWVGTMJD7h9Ll6NvAFaPnBXVzTAsDRZDsG5cVKkLNj6KGr00iBvedkPk'); // Replace with your Stripe secret key
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY); // Replace with your Stripe secret key
 
 const createCheckoutSession = async (req, res) => {
    
