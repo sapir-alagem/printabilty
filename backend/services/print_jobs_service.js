@@ -52,7 +52,6 @@ async function sendPrintJobToPrinter(printJob) {
 
 
     sendMessageToClient(printJob.company_id, printJob.printer_name, data)
-    
 }
 
 async function processPrintJob(jobId) {

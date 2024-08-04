@@ -9,6 +9,8 @@ const companyRoutes = require('./routes/company_routes');
 const UploadRoutes = require("./routes/uploads_routes.js");
 const errorHandler = require("./controllers/errorHandler_controller.js");
 const webhookRouter = require('./routes/webhookRouter.js');
+const qrCodesRouter = require('./routes/qrCodesRouter.js');
+const printerRouter = require('./routes/printerRouter.js');
 const { setupWebSocketServer } = require('./services/web_socket_service.js');
 
 const app = express();
@@ -36,6 +38,10 @@ app.use('/print_jobs', PrintJobsRoutes);
 app.use('/companies', companyRoutes);
 app.use("/uploads", UploadRoutes);
 app.use('/payment', paymentRoutes);
+// app.use('/companies/:companyId', qrCodesRouter);
+app.use('/companies/:companyId/qrcodes', qrCodesRouter);
+app.use('', printerRouter);
+
 
 // Error handler middleware
 app.use(errorHandler);
