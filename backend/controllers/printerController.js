@@ -12,9 +12,10 @@ const createPrinter = async (req, res) => {
 };
 
 const getAllPrinters = async (req, res) => {
+    
     try {
-        const { companyId } = req.params;
-        const printers = await printerService.getAllPrinters(companyId);
+        const company_id = req.params.companyId;
+        const printers = await printerService.getAllPrinters(company_id);
         res.status(200).json(printers);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching printers', error });
@@ -37,8 +38,8 @@ const getPrinter = async (req, res) => {
 
 const deletePrinter = async (req, res) => {
     try {
-        const { id } = req.params;
-        const result = await printerService.deletePrinter(id);
+        const { companyId, id } = req.params;
+        const result = await printerService.deletePrinter(id, companyId);
         if (result === 0) {
             res.status(404).json({ message: 'Printer not found' });
         } else {
@@ -48,6 +49,7 @@ const deletePrinter = async (req, res) => {
         res.status(500).json({ message: 'Error deleting printer', error });
     }
 };
+
 
 module.exports = {
     createPrinter,

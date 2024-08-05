@@ -26,4 +26,14 @@ const getCompany = async (req, res, next) => {
     }
 };
 
-module.exports = { createCompany, getCompany };
+const getAllCompanies = async (req, res, next) => {
+    try {
+        const companies = await CompanyService.getAllCompanies();
+        res.status(200).json({ companies });
+    } catch (error) {
+        console.error('Error retrieving companies:', error);
+        res.status(500).json({ message: 'Could not retrieve companies', error: error.message });
+    }
+}
+
+module.exports = { createCompany, getCompany, getAllCompanies };

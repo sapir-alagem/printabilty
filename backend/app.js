@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 const cors = require('cors');
 const http = require('http');
 const paymentRoutes = require('./routes/payment_routes.js');
@@ -38,10 +39,8 @@ app.use('/print_jobs', PrintJobsRoutes);
 app.use('/companies', companyRoutes);
 app.use("/uploads", UploadRoutes);
 app.use('/payment', paymentRoutes);
-// app.use('/companies/:companyId', qrCodesRouter);
 app.use('/companies/:companyId/qrcodes', qrCodesRouter);
-app.use('', printerRouter);
-
+app.use('/companies/:companyId', printerRouter);
 
 // Error handler middleware
 app.use(errorHandler);

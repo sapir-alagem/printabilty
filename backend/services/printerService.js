@@ -48,33 +48,35 @@ async function getPrinter(printerId) {
 }
 
 const findPrinterByName = async (companyId, name) => {
-    const client = await getClient();
-    const db = client.db();
-    const printersCollection = db.collection('printers');
-  
-    // const companyIdObjectId =  new ObjectId(companyId);
-
-    const printer = await printersCollection.findOne({ 
+    const client = getClient();
+    try {
+    const db = client.db('printability');
+    const col = db.collection('printers');
+    const printer = await col.findOne({ 
         name: name,
         company_id: companyId, 
     });
     return printer;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
 };
 
-async function deletePrinter(printerId) {
+async function deletePrinter(printerId, companyId) {
     const client = getClient();
-
     try {
         await client.connect();
         const db = client.db('printability');
         const col = db.collection('printers');
-        const result = await col.deleteOne({ _id: printerId });
+        const result = await col.deleteOne({ _id: new ObjectId(printerId), company_id: companyId });
         return result.deletedCount;
     } catch (error) {
         console.error('Error deleting printer:', error);
         throw error;
     }
 }
+
 
 module.exports = {
     createPrinter,

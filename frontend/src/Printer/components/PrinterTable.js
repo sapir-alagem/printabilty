@@ -11,6 +11,7 @@ const PrinterTable = ({ printers, onDelete }) => {
             <Table striped bordered hover>
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Printer Name</th>
                         <th>Company ID</th>
                         <th>Actions</th>
@@ -19,10 +20,11 @@ const PrinterTable = ({ printers, onDelete }) => {
                 <tbody>
                     {printers.map(printer => (
                         <tr key={printer._id}>
+                            <td>{printer._id}</td>
                             <td>{printer.name}</td>
                             <td>{printer.company_id}</td>
                             <td>
-                                <button onClick={() => onDelete(printer._id)}>Delete</button>
+                                <button className='btn btn-sm btn-primary' onClick={() => onDelete(printer._id)}>Delete</button>
                             </td>
                         </tr>
                     ))}
