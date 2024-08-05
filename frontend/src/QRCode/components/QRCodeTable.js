@@ -1,8 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Table from 'react-bootstrap/Table';
 import QRCode from 'qrcode.react';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
+import './QRCodeTable.css';
 
-const QRCodeTable = ({ qrCodes, onObsolete }) => {
+const QRCodeTable = ({ qrCodes, onObsolete, onDownload }) => {
+    const [copiedText, setCopiedText] = useState('');
+    const [loading, setLoading] = useState(null); // Add loading state
+
+
+    const handleCopy = (text) => {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                setCopiedText(text);
+                setTimeout(() => {
+                    setCopiedText('');
+                }, 2000); // Hide the tooltip after 2 seconds
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+    };
+
+    const renderTooltip = (props) => (
+        <Tooltip id="button-tooltip" {...props}>
+            Copied to clipboard!
+        </Tooltip>
+    );
+
+    const handleDownload = async (id, printerName) => {
+        setLoading(id); // Set loading state to the current QR code ID
+        try {
+            await onDownload(id, printerName);
+        } catch (error) {
+            console.error('Download failed:', error);
+        } finally {
+            setLoading(null); // Reset loading state after download completes
+        }
+    };
+
     if (qrCodes.length === 0) {
         return <div>No QR codes found.</div>;
     }
@@ -15,6 +51,7 @@ const QRCodeTable = ({ qrCodes, onObsolete }) => {
                         <th>QR Code</th>
                         <th>Company ID</th>
                         <th>Printer ID</th>
+                        <th>Printer Name</th>
                         <th>Obsolete</th>
                         <th>Created At</th>
                         <th>Actions</th>
@@ -23,15 +60,72 @@ const QRCodeTable = ({ qrCodes, onObsolete }) => {
                 <tbody>
                     {qrCodes.map(qrCode => (
                         <tr key={qrCode._id}>
-                            <td>
-                                <QRCode value={qrCode.value} size={64} />
+                            <td className="qr-code-cell">
+                                <div id={`qr-${qrCode._id}`} className="qr-code-container">
+                                    <QRCode value={qrCode.value} size={1024} />
+                                </div>
                             </td>
-                            <td>{qrCode.company_id}</td>
-                            <td>{qrCode.printer_id}</td>
+                            <td>
+                                <OverlayTrigger
+                                    placement="top"
+                                    show={copiedText === qrCode.company_id}
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={renderTooltip}
+                                >
+                                    <span
+                                        onClick={() => handleCopy(qrCode.company_id)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        {qrCode.company_id}
+                                    </span>
+                                </OverlayTrigger>
+                            </td>
+                            <td>
+                                <OverlayTrigger
+                                    placement="top"
+                                    show={copiedText === qrCode.printer_id}
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={renderTooltip}
+                                >
+                                    <span
+                                        onClick={() => handleCopy(qrCode.printer_id)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        {qrCode.printer_id}
+                                    </span>
+                                </OverlayTrigger>
+                            </td>
+                            <td>
+                                <OverlayTrigger
+                                    placement="top"
+                                    show={copiedText === qrCode.printer_name}
+                                    delay={{ show: 250, hide: 400 }}
+                                    overlay={renderTooltip}
+                                >
+                                    <span
+                                        onClick={() => handleCopy(qrCode.printer_name)}
+                                        style={{ cursor: 'pointer' }}
+                                    >
+                                        {qrCode.printer_name}
+                                    </span>
+                                </OverlayTrigger>
+                            </td>
                             <td>{qrCode.obsolete ? 'Yes' : 'No'}</td>
                             <td>{new Date(qrCode.createdAt).toLocaleDateString()}</td>
                             <td>
                                 <button className='btn btn-sm btn-primary' onClick={() => onObsolete(qrCode._id)}>Obsolete</button>
+                                <button 
+                                    className='btn-icon' 
+                                    style={{ marginLeft: '8px' }} 
+                                    onClick={() => handleDownload(qrCode._id, qrCode.printer_name)}
+                                    disabled={loading === qrCode._id} // Disable button while loading
+                                >
+                                    {loading === qrCode._id ? (
+                                        <i className="bi bi-arrow-repeat spinner"></i> // Add a spinner icon or component
+                                    ) : (
+                                        <i className="bi bi-download"></i>
+                                    )}
+                                </button>
                             </td>
                         </tr>
                     ))}

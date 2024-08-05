@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 require('dotenv').config({ path: '../.env' });
+require('dotenv').config();
 const cors = require('cors');
 const http = require('http');
 const paymentRoutes = require('./routes/payment_routes.js');

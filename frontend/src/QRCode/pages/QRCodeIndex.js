@@ -3,6 +3,7 @@ import axios from 'axios';
 import QRCodeTable from '../components/QRCodeTable';
 import QRCodeGenerateButton from '../components/QRCodeGenerateButton';
 import { useParams } from 'react-router-dom';
+import html2canvas from 'html2canvas';
 
 const QRCodeIndex = () => {
     const { companyId } = useParams();
@@ -52,8 +53,33 @@ const QRCodeIndex = () => {
         }
     };
 
+    const onDownload = async (qrCodeId,printer_name) => {
+        const qrElement = document.getElementById(`qr-${qrCodeId}`);
+        
+        if (!qrElement) {
+            console.error(`Element with ID qr-${qrCodeId} not found.`);
+            return;
+        }
+
+        try {
+            const canvas = await html2canvas(qrElement);
+            const link = document.createElement('a');
+            link.href = canvas.toDataURL('image/png');
+            link.download = `${printer_name}.png`;
+            link.click();
+        } catch (error) {
+            console.error('Failed to capture QR code:', error);
+        }
+    };
+
     if (loading) {
-        return <div>Loading...</div>;
+        return (
+            <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+                <div className="spinner-grow text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+        );
     }
 
     return (
@@ -63,7 +89,7 @@ const QRCodeIndex = () => {
                 <QRCodeGenerateButton onGenerate={handleGenerate} />
             </div>
             {error && <div>{error}</div>}
-            <QRCodeTable qrCodes={qrCodes} onObsolete={handleObsolete} />
+            <QRCodeTable qrCodes={qrCodes} onObsolete={handleObsolete} onDownload={onDownload} />
         </div>
     );
 };

@@ -30,9 +30,21 @@ async function getCompany(companyId) {
     } catch (error) {
         console.error('Error retrieving company:', error);
         throw error;
-    } finally {
-        client.close();
     }
 }
 
-module.exports = { createCompany, getCompany };
+async function getAllCompanies() {
+    const client = getClient();
+
+    try {
+        const db = client.db('printability');
+        const col = db.collection('companies');
+        const companies = await col.find().toArray();
+        return companies;
+    } catch (error) {
+        console.error('Error retrieving companies:', error);
+        throw error;
+    }
+}
+
+module.exports = { createCompany, getCompany , getAllCompanies};
