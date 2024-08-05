@@ -121,7 +121,9 @@ const QRCodeTable = ({ qrCodes, onObsolete, onDownload }) => {
                                     disabled={loading === qrCode._id} // Disable button while loading
                                 >
                                     {loading === qrCode._id ? (
-                                        <i className="bi bi-arrow-repeat spinner"></i> // Add a spinner icon or component
+                                        <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                      </div> // Add a spinner icon or component
                                     ) : (
                                         <i className="bi bi-download"></i>
                                     )}
