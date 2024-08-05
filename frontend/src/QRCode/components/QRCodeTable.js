@@ -29,9 +29,9 @@ const QRCodeTable = ({ qrCodes, onObsolete }) => {
                             <td>{qrCode.company_id}</td>
                             <td>{qrCode.printer_id}</td>
                             <td>{qrCode.obsolete ? 'Yes' : 'No'}</td>
-                            <td>{new Date(qrCode.createdAt).toLocaleString()}</td>
+                            <td>{new Date(qrCode.createdAt).toLocaleDateString()}</td>
                             <td>
-                                <button onClick={() => onObsolete(qrCode._id)}>Obsolete</button>
+                                <button className='btn btn-sm btn-primary' onClick={() => onObsolete(qrCode._id)}>Obsolete</button>
                             </td>
                         </tr>
                     ))}

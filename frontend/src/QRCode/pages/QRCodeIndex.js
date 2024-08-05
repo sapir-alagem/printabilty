@@ -18,7 +18,6 @@ const QRCodeIndex = () => {
         try {
             const response = await axios.get(`http://localhost:5000/companies/${companyId}/qrcodes`);
             console.log('Response data:', response.data); 
-            // setQrCodes(response.data);
             if (Array.isArray(response.data)) {
                 setQrCodes(response.data);
             } else {
@@ -52,31 +51,17 @@ const QRCodeIndex = () => {
             setError('Error generating QR code');
         }
     };
-    // const handleGenerate = async () => {
-    //     const value = prompt("Enter QR code value:");
-    //     const printer_id = prompt("Enter printer ID:");
-    //     const company_id = prompt("Enter company ID:");
-
-    //     try {
-    //         await axios.post('/qrcodes/generate', { value, printer_id, company_id });
-    //         fetchQRCodes();
-    //     } catch (error) {
-    //         setError('Error generating QR code');
-    //     }
-    // };
 
     if (loading) {
         return <div>Loading...</div>;
     }
 
-    // if (error) {
-    //     return <div>{error}</div>;
-    // }
-
     return (
         <div>
-            <h1>QR Code Management</h1>
-            <QRCodeGenerateButton onGenerate={handleGenerate} />
+            <div className="d-flex justify-content-between align-items-center">
+                <h1>QR Code Management</h1>
+                <QRCodeGenerateButton onGenerate={handleGenerate} />
+            </div>
             {error && <div>{error}</div>}
             <QRCodeTable qrCodes={qrCodes} onObsolete={handleObsolete} />
         </div>
