@@ -9,10 +9,10 @@ async function createPrinter(printerData) {
         await client.connect();
         const db = client.db('printability');
         const col = db.collection('printers');
-        const printers = await col.find({ company_id: companyId }).toArray();
-        return printers;
+        const result = await col.insertOne(printerData);
+        return result.insertedId;
     } catch (error) {
-        console.error('Error retrieving printers:', error);
+        console.error('Error creating printer:', error);
         throw error;
     }
 }
