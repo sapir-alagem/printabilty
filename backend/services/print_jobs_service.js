@@ -79,15 +79,15 @@ async function processPrintJob(jobId) {
   
   async function printJobCalculator(printJob) {
     try {
-        const company = await CompanyService.getCompany(printJob.companyId);
+        const company = await CompanyService.getCompany(printJob.body.company_id);
 
         if (!company || !printJob) {
             throw new Error('Company or Print Job not found');
         }
 
         let singlePagePrice = 0;
-        const numOfPages = printJob.pageRange.end - printJob.pageRange.start + 1;
-        const numOfCopies = printJob.copies;
+        const numOfPages = printJob.body.pageRange.end - printJob.body.pageRange.start + 1;
+        const numOfCopies = printJob.body.copies;
 
         if (printJob.colorMode === "color") {
             singlePagePrice = company.coloredPageCost;

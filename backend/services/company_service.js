@@ -19,8 +19,9 @@ async function createCompany(companyData) {
 
 async function getCompany(companyId) {
     const client = getClient();
-
+    
     try {
+        await client.connect();
         const db = client.db('printability');
         const col = db.collection('companies');
         const company = await col.findOne({ _id: companyId });
