@@ -16,6 +16,8 @@ import Layout from './shared/components/Layout';
 import Checkout from './Payments/CheckoutPage'
 import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
+import QRCodeIndex from './QRCode/pages/QRCodeIndex';
+import PrinterIndex from './Printer/pages/PrinterIndex';
 
 const stripePromise = loadStripe('pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQWuoSDk2bKOhk5WpezGx1xKKsCfu1kdkmBruvVW5UGzQ1ejQGvQm00d3c0qhxQ');
 
@@ -36,6 +38,9 @@ function App() {
             <Route path="*" element={<NotFound />} />
             <Route path="/success" element={<SuccessPage />} />
             <Route path="/cancel" element={<CancelPage />} />
+            <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
+            <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
+
           </Routes>
         </Layout>
       </Router>
@@ -44,3 +49,5 @@ function App() {
 }
 
 export default App;
+
+

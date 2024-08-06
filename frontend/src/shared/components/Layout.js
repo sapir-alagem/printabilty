@@ -1,10 +1,10 @@
 import React from 'react';
-import Navbar from './Navbar.js';
+import NavigationBar from './NavigationBar.js';
 
 function Layout({ children }) {
   return (
     <div className="app-layout">
-      <Navbar />
+      <NavigationBar />
         <div className='app-content m-3 mt-5'>
             {children}
         </div>

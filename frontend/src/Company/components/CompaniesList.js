@@ -3,7 +3,10 @@ import Table from 'react-bootstrap/Table';
 import CompanyItem from "./CompanyItem";
 
 const CompaniesList = (props) => {
-  if (props.items.length === 0) {
+  // Ensure props.items is an array
+  const items = Array.isArray(props.items.companies) ? props.items.companies : [];
+
+  if (items.length === 0) {
     return (
       <div className="text-center mt-5">
         <h2>No companies found.</h2>
@@ -19,15 +22,16 @@ const CompaniesList = (props) => {
               <th>ID</th>
               <th>Name</th>
               <th>Printers Count</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {props.items.map((company) => (
+            {items.map((company) => (
               <CompanyItem
-                key={company.id}
-                id={company.id}
-                name={company.name}
-                printersCount={company.printersCount}
+                key={company._id}
+                id={company._id}
+                name={company.companyName}
+                printersCount={company.numOfPrinters}
               />
             ))}
           </tbody>

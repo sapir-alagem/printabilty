@@ -3,6 +3,7 @@
 # dependencies
 /backend/node_modules
 /frontend/node_modules
+/node_modules
 /.pnp
 .pnp.js
 
@@ -25,3 +26,4 @@ yarn-error.log*
 backend/key
 backend/.env
 .env
+env
