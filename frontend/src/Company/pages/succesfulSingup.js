@@ -18,7 +18,7 @@ const RegistrationSuccess = () => {
     <div className="container">
       <h1>Congratulations {companyName}!</h1>
       <h2>You have successfully registered.</h2>
-      <p>A download link has been sent to the following email- {companyEmail}.</p>
+      <p>A download link has been sent to the following email: {companyEmail}.</p>
       <button className="button" onClick={handleBackToHome}>Back to Home</button>
     </div>
   );
