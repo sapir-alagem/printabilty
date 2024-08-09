@@ -2,19 +2,17 @@ import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import AuthContext from '../../auth/components/authProvider'; // Assuming you have an AuthContext
-import axios from '../../api/axios';
 import Logo from './Logo';
+import useLogout from '../../hooks/useLogout';
 
 function NavigationBar() {
   const { auth, setAuth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const logout = useLogout();
 
-  const handleLogout = () => {
-    // Clear authentication data here
-    axios.get('/logout'); // Call the logout route
-    
-    setAuth({});
-    navigate('/'); // Redirect to login page
+  const sighOut = async () => {
+    await logout();
+    navigate('/');
   };
 
   const isSuperAdmin = auth?.role?.includes('super admin');
@@ -38,7 +36,7 @@ function NavigationBar() {
         </Nav>
         <Nav>
           {auth?.user ? (
-            <Button variant="outline-dark" onClick={handleLogout}>Logout</Button>
+            <Button variant="outline-dark" onClick={sighOut}>SignOut</Button>
           ) : (
             <Button variant="outline-dark" as={Link} to="/login">Login</Button>
           )}

@@ -19,12 +19,15 @@ const handleRefreshToken = async (req, res) => {
         if (err || user.email !== decoded.email) {
             return res.status(403).json({'message': 'Forbidden'}); //invalid token
         }
+        const role = user.role
         const accessToken = jwt.sign(
-            { "email" : decoded.email },
-             process.env.ACCESS_TOKEN_SECRET,
-              { expiresIn: '1h' }
+            {
+                "UserInfo" : { "email" : decoded.email, "role": role },
+            },
+            process.env.ACCESS_TOKEN_SECRET,
+            { expiresIn: '1h' }
         );
-        res.status(200).json({ accessToken });
+        res.status(200).json({ role, accessToken });
     });
 }
 

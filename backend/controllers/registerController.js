@@ -1,4 +1,5 @@
 const userService = require('../services/users_service');
+const emailService = require('../services/email_service');
 
 
 const bcrypt = require('bcrypt');
@@ -24,7 +25,7 @@ const handleNewUser = async (req, res) => {
         console.error('Error creating user:', error);
         return res.status(500).json({'message': error.message});
     }
-
+    emailService.sendEmail(email, '123456');
     res.status(201).send('User created');
 }
 

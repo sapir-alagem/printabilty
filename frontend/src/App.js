@@ -18,6 +18,7 @@ import CancelPage from './pages/CancelPage';
 import QRCodeIndex from './QRCode/pages/QRCodeIndex';
 import PrinterIndex from './Printer/pages/PrinterIndex';
 import RequireAuth from './auth/components/RequireAuth';
+import PersistLogin from './auth/components/PersistLogin';
 
 const stripePromise = loadStripe('pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQWuoSDk2bKOhk5WpezGx1xKKsCfu1kdkmBruvVW5UGzQ1ejQGvQm00d3c0qhxQ');
 
@@ -39,16 +40,18 @@ function App() {
           <Route path="/companies/new" element={<NewCompany />} />
 
           {/* protected routes*/}
+          <Route element={<PersistLogin />}>
+            <Route element={<RequireAuth allowedRoles={["super admin"]} />}>
+              <Route path="/companies" element={<Companies />} />
+            </Route>
 
-          <Route element = {<RequireAuth allowedRoles={["super admin"]} />}>
-          <Route path="/companies" element={<Companies />} />
+            <Route element={<RequireAuth allowedRoles={["company admin", "super admin"]} />}>
+              <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
+              <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
+            </Route>
           </Route>
 
-          <Route element = {<RequireAuth allowedRoles={["company admin", "super admin"]} />}>
-          <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
-          <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
-          </Route>
-
+          {/* 404 route */}
           <Route path="*" element={<NotFound />} />
 
 
