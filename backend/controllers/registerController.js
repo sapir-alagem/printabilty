@@ -6,20 +6,20 @@ const bcrypt = require('bcrypt');
 
 
 const handleNewUser = async (req, res) => {
-    const { username, password, role } = req.body;
-    if (!username || !password) {
-        return res.status(400).json({'message': 'Username and password are required'});
+    const { email, password, role } = req.body;
+    if (!email || !password) {
+        return res.status(400).json({'message': 'email and password are required'});
     }
 
-    //check for duplicate username in the database
-    const duplicateUser = await userService.isUserExist(username);
+    //check for duplicate email in the database
+    const duplicateUser = await userService.isUserExist(email);
     if (duplicateUser) {
-        return res.status(409).json({'message': 'Username already exists'});
+        return res.status(409).json({'message': 'email already exists'});
     }
 
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
-        await userService.createUser({username, hashedPassword, role});
+        await userService.createUser({email, hashedPassword, role});
     } catch (error) {
         console.error('Error creating user:', error);
         return res.status(500).json({'message': error.message});

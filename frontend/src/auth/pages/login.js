@@ -1,20 +1,25 @@
-import { useRef, useState, useEffect , useContext} from "react"
+import { useRef, useState, useEffect} from "react"
+import {Link, useNavigate, useLocation} from "react-router-dom"
 import './login.css';
-import { AuthContext } from "../components/authProvider";
 import axios from "axios";
-import { json } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const LOGIN_URL = 'http://localhost:5000/auth'
 
 const Login = () => {
-    const {setAuth} = useContext(AuthContext)
+    const {setAuth} = useAuth()
+
+    const navigate = useNavigate()
+    const location = useLocation()
+    const from = location.state?.from.pathname || '/'
+
+
     const userRef = useRef()
     const errRef = useRef()
 
     const [user, setUser] = useState("")
     const [pwd , setPwd] = useState("")
     const [errMsg, setErrMsg] = useState("")
-    const [success, setSuccess] = useState(false)
 
     useEffect(() => {
         userRef.current.focus()
@@ -29,15 +34,16 @@ const Login = () => {
         try {
             const response = await axios.post(
                 LOGIN_URL, JSON.stringify({email: user, password: pwd}), 
-                {headers: {'Content-Type': 'application/json'}, withCredentials: true})
+                {headers: {'Content-Type': 'application/json'}, withCredentials: true}
+            )
 
-            const accessToken = response?.data?.token
+            const accessToken = response?.data?.accessToken
             const role = response?.data?.role
 
             setAuth({user, pwd, role, accessToken})
             setUser("")
             setPwd("")
-            setSuccess(true)
+            navigate(from, {replace: true})
             
 
         } catch (error) {
@@ -67,16 +73,6 @@ const Login = () => {
                 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
                 <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
                 {/* Include the above in your HEAD tag */}
-                {success ? (
-                <div>
-                    <h1>Success</h1>
-                    <p>You have successfully logged in</p>
-                    <p>
-                        <a href="/companies">Go to companies</a>
-                    </p>
-                </div>
-
-            ) : (
                 <div class="wrapper fadeInDown">
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
                   <div id="formContent">
@@ -121,7 +117,6 @@ const Login = () => {
     
                   </div>
                 </div> 
-            )}
             </>
         )
 }

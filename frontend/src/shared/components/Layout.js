@@ -6,7 +6,7 @@ function Layout({ children }) {
   const location = useLocation();
 
   // Check if the current route is the login page
-  const isLoginPage = location.pathname === '/Login';
+  const isLoginPage = location.pathname === '/Login' || location.pathname === '/login';
   return (
     <div className="app-layout">
       {!isLoginPage && <NavigationBar />}
