@@ -4,7 +4,7 @@ import { AuthContext } from "../components/authProvider";
 import axios from "axios";
 import { json } from "react-router-dom";
 
-const LOGIN_URL = 'http://localhost:5000/login'
+const LOGIN_URL = 'http://localhost:5000/auth'
 
 const Login = () => {
     const {setAuth} = useContext(AuthContext)
