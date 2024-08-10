@@ -8,6 +8,8 @@ import Login from './auth/pages/login';
 import LandingPage from './pages/LandingPage';
 import Companies from './Company/pages/Companies';
 import NewCompany from './Company/pages/NewCompany';
+import SignupForm from './Company/pages/CompanySignupForm';
+import SuccessSingup from './Company/pages/succesfulSingup';
 import UploadFile from './File/Pages/UploadFilePage';
 import NotFound from './pages/NotFound';
 import SummaryPage from './File/Pages/SummeryPage'
@@ -25,11 +27,11 @@ const stripePromise = loadStripe('pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQ
 function App() {
   return (
     <Elements stripe={stripePromise}>
+      <Router>
+        <Layout>
+          <Routes>
 
-      <Layout>
-        <Routes>
-          {/* public routes*/}
-          
+          {/* public routes*/}          
           <Route path="/Login" element={<Login />} />
           <Route path="/UploadFile" element={<UploadFile />} />
           <Route path="/" element={<LandingPage />} />
@@ -38,6 +40,8 @@ function App() {
           <Route path="/success" element={<SuccessPage />} />
           <Route path="/cancel" element={<CancelPage />} />
           <Route path="/companies/new" element={<NewCompany />} />
+          <Route path="/companies/new/form" element={<SignupForm />} />
+          <Route path="/companies/new/success" element={<SuccessSingup />} />
 
           {/* protected routes*/}
           <Route element={<PersistLogin />}>
@@ -58,7 +62,7 @@ function App() {
 
         </Routes>
       </Layout>
-
+      </Router>
     </Elements>
   );
 }

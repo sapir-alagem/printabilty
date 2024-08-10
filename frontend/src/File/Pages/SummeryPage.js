@@ -11,6 +11,7 @@ function SummaryPage() {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(window.location.search);
   const fileUrl = queryParams.get("file_url");
+  const companyId = '66ad323d13b81d984b059e88'; // temp just for checks
   const company_id = queryParams.get("company_id");
   const printer_name = queryParams.get("printer_name");
   const [colorMode, setColorMode] = useState('color');
@@ -69,6 +70,7 @@ function SummaryPage() {
   const handleSubmit = async () => {
     const params = new URLSearchParams();
     params.append('file_url', fileUrl);
+    params.append('companyId', companyId);
     params.append('color_mode', colorMode);
     params.append('layout_mode', layoutMode);
     params.append('print_both_sides', printBothSides);
