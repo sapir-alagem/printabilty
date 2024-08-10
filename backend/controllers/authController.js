@@ -35,7 +35,7 @@ const handleLogin = async (req, res) => {
     await userService.saveRefreshToken(user.email, refreshToken);
 
     res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', maxAge: 24*60*60*1000, secure: true }); //1 day
-    res.status(200).json({ accessToken: accessToken, role: user.role });
+    res.status(200).json({ accessToken: accessToken, role: user.role, companyId: user.companyId });
 }
 
 module.exports = { handleLogin };

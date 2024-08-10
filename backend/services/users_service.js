@@ -4,7 +4,7 @@ let User = require('../models/user');
 
 async function createUser(user) {
     const client = getClient();
-    User = {email: user.email, password: user.hashedPassword, role: user.role};
+    User = {email: user.email, password: user.hashedPassword, role: user.role, companyId: user.companyId};
     try {
         const db = client.db('printability');
         const col = db.collection('users');
@@ -44,6 +44,7 @@ async function isUserExist(email) {
         throw error;
     }
 }
+
 
 async function saveRefreshToken(email, refreshToken) {
     const client = getClient();

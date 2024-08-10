@@ -1,9 +1,8 @@
 import { useRef, useState, useEffect } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import './login.css';
 import axios from "axios";
 import useAuth from "../../hooks/useAuth";
-import { prependListener } from "process";
 
 const LOGIN_URL = 'http://localhost:5000/auth';
 
@@ -40,8 +39,9 @@ const Login = () => {
 
             const accessToken = response?.data?.accessToken;
             const role = response?.data?.role;
+            const companyId = response?.data?.companyId;
 
-            setAuth({ user, pwd, role, accessToken });
+            setAuth({ user, role, accessToken , companyId });
             setUser("");
             setPwd("");
             navigate(from, { replace: true });
