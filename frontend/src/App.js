@@ -27,7 +27,6 @@ const stripePromise = loadStripe('pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQ
 function App() {
   return (
     <Elements stripe={stripePromise}>
-      <Router>
         <Layout>
           <Routes>
 
@@ -62,7 +61,6 @@ function App() {
 
         </Routes>
       </Layout>
-      </Router>
     </Elements>
   );
 }
