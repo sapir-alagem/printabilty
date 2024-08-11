@@ -68,5 +68,6 @@ app.use(errorHandler);
 // Setup WebSocket server
 setupWebSocketServer(server);
 
-// Start the server
+// Start the server only if mongoDB is connected
+
 server.listen(5000, () => console.log("Listening on port 5000"));

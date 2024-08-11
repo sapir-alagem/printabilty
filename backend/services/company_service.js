@@ -1,10 +1,10 @@
 const { getClient } = require('../utils/mongo');
+const {ObjectId} = require('mongodb');
 
 async function createCompany(companyData) {
-    const client = getClient();
+    const client = await getClient();
 
     try {
-        await client.connect();
         const db = client.db('printability');
         const col = db.collection('companies');
         // Add timestamp to the companyData that humans can read
@@ -18,13 +18,12 @@ async function createCompany(companyData) {
 }
 
 async function getCompany(companyId) {
-    const client = getClient();
+    const client = await getClient();
     
     try {
-        await client.connect();
         const db = client.db('printability');
         const col = db.collection('companies');
-        const company = await col.findOne({ _id: companyId });
+        const company = await col.findOne({_id: new ObjectId(companyId)});
         return company;
     } catch (error) {
         console.error('Error retrieving company:', error);
@@ -33,7 +32,7 @@ async function getCompany(companyId) {
 }
 
 async function getAllCompanies() {
-    const client = getClient();
+    const client = await getClient();
 
     try {
         const db = client.db('printability');

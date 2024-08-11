@@ -3,7 +3,7 @@ const { getClient } = require('../utils/mongo');
 let User = require('../models/user');
 
 async function createUser(user) {
-    const client = getClient();
+    const client = await getClient();
     User = {email: user.email, password: user.hashedPassword, role: user.role, companyId: user.companyId};
     try {
         const db = client.db('printability');
@@ -19,7 +19,7 @@ async function createUser(user) {
 }
 
 async function getUser(email) {
-    const client = getClient();
+    const client = await getClient();
     try {
         const db = client.db('printability');
         const col = db.collection('users');
@@ -32,7 +32,7 @@ async function getUser(email) {
 }
 
 async function isUserExist(email) {
-    const client = getClient();
+    const client = await getClient();
     try {
         const db = client.db('printability');
         const col = db.collection('users');
@@ -47,7 +47,7 @@ async function isUserExist(email) {
 
 
 async function saveRefreshToken(email, refreshToken) {
-    const client = getClient();
+    const client = await getClient();
     try {
         const db = client.db('printability');
         const col = db.collection('users');
@@ -59,7 +59,7 @@ async function saveRefreshToken(email, refreshToken) {
 }
 
 async function getUserByRefreshToken(refreshToken) {
-    const client = getClient();
+    const client = await getClient();
     try {
         const db = client.db('printability');
         const col = db.collection('users');

@@ -1,11 +1,11 @@
 const { getClient } = require('../utils/mongo');
-const {ObjectId, Timestamp} = require('mongodb');
+const {ObjectId} = require('mongodb');
 const axios = require('axios');
 const { sendMessageToClient } = require('./web_socket_service'); // Ensure the correct path
 
 // this is exemple for storing data into the db
 async function createPrintJob(printJobData) {
-    const client = getClient();
+    const client = await getClient();
 
     try {
         const db = client.db('printability');
@@ -22,10 +22,9 @@ async function createPrintJob(printJobData) {
 
 // this is exemple for importing data from the db
 async function getPrintJobs(jobId) {
-    const client = getClient();
+    const client = await getClient();
 
     try {
-        await client.connect();
         const db = client.db('printability');
         const col = db.collection('print_jobs');
         //const print_jobs = await col.find(jobId).toArray();

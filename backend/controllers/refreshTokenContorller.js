@@ -11,13 +11,13 @@ const handleRefreshToken = async (req, res) => {
 
     const user = await userService.getUserByRefreshToken(refreshToken);
     if (!user) {
-        return res.status(403).json({'message': 'Forbidden'}); //invalid token
+        return res.status(403).json({'message': 'Invalid Token'}); //invalid token
     }
 
     //evaluate jwt
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
         if (err || user.email !== decoded.email) {
-            return res.status(403).json({'message': 'Forbidden'}); //invalid token
+            return res.status(403).json({'message': 'Unable to verify token'}); //invalid token
         }
         const role = user.role
         const accessToken = jwt.sign(
