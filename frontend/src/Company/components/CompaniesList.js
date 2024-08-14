@@ -1,10 +1,12 @@
 import React from "react";
-import Table from 'react-bootstrap/Table';
+import Table from "react-bootstrap/Table";
 import CompanyItem from "./CompanyItem";
 
 const CompaniesList = (props) => {
   // Ensure props.items is an array
-  const items = Array.isArray(props.items.companies) ? props.items.companies : [];
+  const items = Array.isArray(props.items.companies)
+    ? props.items.companies
+    : [];
 
   if (items.length === 0) {
     return (

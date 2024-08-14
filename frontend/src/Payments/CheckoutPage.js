@@ -1,6 +1,6 @@
-import React from 'react';
-import { CheckoutProvider } from './CheckoutContext';
-import PrintSummary from './PrintSummary';
+import React from "react";
+import { CheckoutProvider } from "./CheckoutContext";
+import PrintSummary from "./PrintSummary";
 
 const CheckoutPage = () => {
   return (
@@ -11,7 +11,6 @@ const CheckoutPage = () => {
           <div className="col-md-6">
             <PrintSummary />
           </div>
-
         </div>
       </div>
     </CheckoutProvider>

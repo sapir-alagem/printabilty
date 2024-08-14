@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import PdfPreview from '../components/pdfPreviewer';
-import * as pdfjsLib from 'pdfjs-dist/build/pdf';
-import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import PdfPreview from "../components/pdfPreviewer";
+import * as pdfjsLib from "pdfjs-dist/build/pdf";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 
 // Initialize pdfjsLib worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
@@ -11,12 +11,12 @@ function SummaryPage() {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(window.location.search);
   const fileUrl = queryParams.get("file_url");
-  const companyId = '66ad323d13b81d984b059e88'; // temp just for checks
+  const companyId = "66ad323d13b81d984b059e88"; // temp just for checks
   const company_id = queryParams.get("company_id");
   const printer_name = queryParams.get("printer_name");
-  const [colorMode, setColorMode] = useState('color');
+  const [colorMode, setColorMode] = useState("color");
   const [printBothSides, setPrintBothSides] = useState(false);
-  const [layoutMode, setLayoutMode] = useState('portrait');
+  const [layoutMode, setLayoutMode] = useState("portrait");
   const [printAllPages, setPrintAllPages] = useState(true);
   const [pageRange, setPageRange] = useState({ start: 1, end: 1 });
   const [copies, setCopies] = useState(1);
@@ -30,7 +30,7 @@ function SummaryPage() {
         setNumPages(pdf.numPages);
         setPageRange({ start: 1, end: pdf.numPages });
       } catch (error) {
-        console.error('Error loading PDF:', error);
+        console.error("Error loading PDF:", error);
       }
     };
 
@@ -69,18 +69,18 @@ function SummaryPage() {
 
   const handleSubmit = async () => {
     const params = new URLSearchParams();
-    params.append('file_url', fileUrl);
-    params.append('companyId', companyId);
-    params.append('color_mode', colorMode);
-    params.append('layout_mode', layoutMode);
-    params.append('print_both_sides', printBothSides);
-    params.append('print_all_pages', printAllPages);
-    params.append('start_page', pageRange.start);
-    params.append('end_page', pageRange.end);
-    params.append('copies', copies);
-    params.append('numPages', numPages);
-    params.append('company_id', company_id);
-    params.append('printer_name', printer_name);
+    params.append("file_url", fileUrl);
+    params.append("companyId", companyId);
+    params.append("color_mode", colorMode);
+    params.append("layout_mode", layoutMode);
+    params.append("print_both_sides", printBothSides);
+    params.append("print_all_pages", printAllPages);
+    params.append("start_page", pageRange.start);
+    params.append("end_page", pageRange.end);
+    params.append("copies", copies);
+    params.append("numPages", numPages);
+    params.append("company_id", company_id);
+    params.append("printer_name", printer_name);
 
     navigate(`/checkout?${params.toString()}`);
   };
@@ -93,7 +93,11 @@ function SummaryPage() {
           <div className="mt-3">
             <label className="d-block">
               Color Mode:
-              <select className="form-select mt-1" value={colorMode} onChange={handleColorModeChange}>
+              <select
+                className="form-select mt-1"
+                value={colorMode}
+                onChange={handleColorModeChange}
+              >
                 <option value="RGB">Color</option>
                 <option value="Gray">Black & White</option>
               </select>
@@ -102,7 +106,11 @@ function SummaryPage() {
           <div className="mt-3">
             <label className="d-block">
               Layout:
-              <select className="form-select mt-1" value={layoutMode} onChange={handleLayoutModeChange}>
+              <select
+                className="form-select mt-1"
+                value={layoutMode}
+                onChange={handleLayoutModeChange}
+              >
                 <option value="portrait">Portrait</option>
                 <option value="landscape">Landscape</option>
               </select>
@@ -148,7 +156,7 @@ function SummaryPage() {
                   onChange={handlePageRangeChange}
                   min={1}
                   max={numPages}
-                  style={{ width: '100px' }}
+                  style={{ width: "100px" }}
                 />
                 to
                 <input
@@ -159,7 +167,7 @@ function SummaryPage() {
                   onChange={handlePageRangeChange}
                   min={1}
                   max={numPages}
-                  style={{ width: '100px' }}
+                  style={{ width: "100px" }}
                 />
               </label>
             </div>
@@ -172,19 +180,21 @@ function SummaryPage() {
                 className="form-control mt-1"
                 value={copies}
                 onChange={handleCopiesChange}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
             </label>
           </div>
         </div>
         <div className="col-md-8">
           <h1>PDF Preview</h1>
-          <PdfPreview pdfUrl={fileUrl} />            
+          <PdfPreview pdfUrl={fileUrl} />
         </div>
       </div>
       <div className="row mt-3">
         <div className="col text-left ">
-          <button className="btn btn-success" onClick={handleSubmit}>Proceed to Checkout</button>
+          <button className="btn btn-success" onClick={handleSubmit}>
+            Proceed to Checkout
+          </button>
         </div>
       </div>
     </div>
