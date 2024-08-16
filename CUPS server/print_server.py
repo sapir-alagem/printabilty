@@ -12,6 +12,8 @@ app = Flask(__name__)
 
 conn = cups.Connection()
 
+websocketThreadEvent = threading.Event()
+
 def get_company_id_from_user():
     company_id = None
     if not os.path.exists('company_id.txt'):
@@ -56,6 +58,7 @@ def on_open(ws):
     }
     ws.send(json.dumps(data))
     print(f"Sent data: {data}")
+    websocketThreadEvent.set()
 
 def on_print_request(data):
     print("Received print request on WebSocket")
@@ -123,7 +126,7 @@ def on_print_request(data):
 def start_websocket_client():
     websocket.enableTrace(True)
     # Include an ID or data in the URL as a query parameter
-    ws = websocket.WebSocketApp("ws://192.168.252.2:5000",
+    ws = websocket.WebSocketApp("ws://localhost:5000",
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close,
@@ -137,5 +140,6 @@ def home():
 if __name__ == '__main__':
     websocketThread = threading.Thread(target=start_websocket_client).start()
     #wait for websocket to connect
-    # app.run(host='0.0.0.0', port=12345)
+    websocketThreadEvent.wait()
+    app.run(host='0.0.0.0', port=12345)
 
