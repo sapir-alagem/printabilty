@@ -72,7 +72,7 @@ def on_print_request(data):
 
     file_url = data['file_url']
     #printer_name = data['printer_name']
-    printer_name = get_printer_name(conn)
+    printer_name = data['printer_name']
     # Define local folder to save the downloaded file
     local_folder = 'downloads'
 

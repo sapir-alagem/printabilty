@@ -40,7 +40,7 @@ const sendPrintJob = (req, res, next) => {
   // Assuming the file URL is in the request body
   let data = JSON.stringify({
     file_url: req.body.file_url,
-    printer_name: "HP_ColorLaserJet_M253-M254	",
+    printer_name: req.body.printer_name,
   });
 
   let config = {
