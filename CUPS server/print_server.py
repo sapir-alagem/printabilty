@@ -12,6 +12,20 @@ app = Flask(__name__)
 
 conn = cups.Connection()
 
+def get_company_id_from_user():
+    company_id = None
+    if not os.path.exists('company_id.txt'):
+        company_id = input("Enter your company ID: ")
+        with open('company_id.txt', 'w') as f:
+            f.write(company_id)
+    else:
+        company_id = read_company_id()
+    return company_id
+
+def read_company_id():
+    with open('company_id.txt', 'r') as f:
+        return f.read().strip()
+
 # Function to download file from URL to local folder
 def download_file(url, local_folder):
     filename = os.path.join(local_folder, os.path.basename(url))
@@ -36,11 +50,9 @@ def on_close(ws, close_status_code, close_msg):
 
 def on_open(ws):
     print("Connection opened")
-    site = "example_site"
-    printer_id = "12345"
+    company_id = get_company_id_from_user()
     data = {
-        "site": site,
-        "printerId": printer_id
+        "company_id": company_id,
     }
     ws.send(json.dumps(data))
     print(f"Sent data: {data}")
