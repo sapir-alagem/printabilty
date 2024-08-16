@@ -10,12 +10,12 @@ async function setupWebSocketServer(server) {
       ws.on("message", async (message) => {
         console.log("received: %s", message);
         const data = JSON.parse(message);
-        const { site, printerId } = data;
-        // Track the client with site and printerId as key
-        const clientKey = `${site}_${printerId}`;
+        const { companyId } = data;
+        // Track the client with companyId and printer_name as key
+        const clientKey = `${companyId}`;
         clients.set(clientKey, ws);
 
-        sendMessageToClient(site, printerId, "Hello, client!");
+        sendMessageToClient(companyId, "Hello, client!");
       });
 
       ws.on("close", () => {
@@ -36,8 +36,8 @@ async function setupWebSocketServer(server) {
   }
 }
 
-function sendMessageToClient(site, printerId, message) {
-  const clientKey = `${site}_${printerId}`;
+function sendMessageToClient(companyId, message) {
+  const clientKey = `${companyId}`;
   const clientSocket = clients.get(clientKey);
 
   if (clientSocket && clientSocket.readyState === WebSocket.OPEN) {

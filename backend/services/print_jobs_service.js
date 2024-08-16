@@ -46,10 +46,11 @@ async function sendPrintJobToPrinter(printJob) {
     page_range_start: printJob.pageRange.start,
     page_range_end: printJob.pageRange.end,
     copies: printJob.copies,
+    printer_name: printJob.printerName,
     type: "print_request",
   };
 
-  sendMessageToClient(printJob.company_id, printJob.printer_name, data);
+  sendMessageToClient(printJob.company_id, data);
 }
 
 async function processPrintJob(jobId) {
