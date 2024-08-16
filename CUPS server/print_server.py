@@ -136,6 +136,6 @@ def home():
 
 if __name__ == '__main__':
     websocketThread = threading.Thread(target=start_websocket_client).start()
-
-    app.run(host='0.0.0.0', port=12345)
+    #wait for websocket to connect
+    # app.run(host='0.0.0.0', port=12345)
 
