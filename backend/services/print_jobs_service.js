@@ -46,7 +46,7 @@ async function sendPrintJobToPrinter(printJob) {
     page_range_start: printJob.pageRange.start,
     page_range_end: printJob.pageRange.end,
     copies: printJob.copies,
-    printer_name: printJob.printerName,
+    printer_name: printJob.printer_name,
     type: "print_request",
   };
 

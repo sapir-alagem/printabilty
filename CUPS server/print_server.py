@@ -1,7 +1,6 @@
 import os
 import requests
 import cups
-from print import get_printer_name
 import websocket
 import json
 import threading
@@ -71,8 +70,8 @@ def on_print_request(data):
     data = json.loads(data)
 
     file_url = data['file_url']
-    #printer_name = data['printer_name']
     printer_name = data['printer_name']
+    #printer_name = get_printer_name(conn)
     # Define local folder to save the downloaded file
     local_folder = 'downloads'
 
@@ -126,7 +125,7 @@ def on_print_request(data):
 def start_websocket_client():
     websocket.enableTrace(True)
     # Include an ID or data in the URL as a query parameter
-    ws = websocket.WebSocketApp("ws://localhost:5000",
+    ws = websocket.WebSocketApp("ws://192.168.0.199:5000",
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close,
