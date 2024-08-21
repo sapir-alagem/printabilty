@@ -35,6 +35,8 @@ const getPrintJobs = async (req, res, next) => {
     }
 }
 
+  
+
 const sendPrintJob = (req, res, next) => {
     // Assuming the file URL is in the request body
     let data = JSON.stringify({
@@ -62,24 +64,10 @@ const sendPrintJob = (req, res, next) => {
         res.json({error: error});
     });
 };
-
-const cacualtePrintJob = async (req, res) => {
-    console.log('POST Request in PrintRequests');
-
-    try {
-        const result = await printJobsService.printJobCalculator(req);
-        res.json({ message: 'print Job cost caculation done successfully', finalPrice: result });
-        console.log("In cacualtePrintJob %s", result)
-    } catch (error) {
-        console.error('Error caculating print job cost:', error);
-        res.status(500).json({ message: 'Could not caculate costs for print job', error: error.message });
-    }
-};
  
 module.exports = {
     newPrintJob,
     createPrintJob,
     getPrintJobs,
-    sendPrintJob,
-    cacualtePrintJob
+    sendPrintJob
 };

@@ -2,7 +2,6 @@ const { getClient } = require('../utils/mongo');
 const {ObjectId} = require('mongodb');
 const axios = require('axios');
 const { sendMessageToClient } = require('./web_socket_service'); // Ensure the correct path
-const CompanyService = require('../services/company_service');
 
 // this is exemple for storing data into the db
 async function createPrintJob(printJobData) {
@@ -29,7 +28,7 @@ async function getPrintJobs(jobId) {
         const db = client.db('printability');
         const col = db.collection('print_jobs');
         //const print_jobs = await col.find(jobId).toArray();
-        const print_job = await col.findOne({ _id: jobId });
+        const print_job = await col.findOne({ _id: new ObjectId(jobId) }); // this returns null
         return print_job;
     } catch (error) {
         console.error('Error retrieving print jobs:', error);

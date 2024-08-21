@@ -15,7 +15,7 @@ module.exports = router;
 // ***********************************************************************
 // exemple for router:
     // router.get('/new', printJobsController.getNewPrintJob); // => http://localhost:5000/print_jobs/new
-    
+
 // exemple for matching controller fucntion :
     // const getNewPrintJob = (req, res, next) => {
     //     console.log('GET Request in PrintRequests');

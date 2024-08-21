@@ -1,6 +1,5 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
-import './NewComp.css';
+import { useNavigate } from "react-router-dom";
 
 const NewCompany = () => {
   const navigate = useNavigate();

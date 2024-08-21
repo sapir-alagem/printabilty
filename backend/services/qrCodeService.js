@@ -1,9 +1,8 @@
 const { getClient } = require('../utils/mongo');
 
 async function createQrCode(qrCodeData) {
-  const client = getClient();
+  const client = await getClient();
   try {
-    await client.connect();
     const db = client.db('printability');
     const col = db.collection('qrcodes');
     const result = await col.insertOne(qrCodeData);
@@ -15,9 +14,8 @@ async function createQrCode(qrCodeData) {
 }
 
 async function getAllActiveQrCodes(company_id) {
-  const client = getClient();
+  const client = await getClient();
   try {
-    await client.connect();
     const db = client.db('printability');
     const col = db.collection('qrcodes');
     const qrCodes = await col.find({ company_id, obsolete: false }).toArray();
@@ -29,9 +27,8 @@ async function getAllActiveQrCodes(company_id) {
 }
 
 async function obsoleteQrCode(qrCodeId, company_id) {
-  const client = getClient();
+  const client = await getClient();
   try {
-    await client.connect();
     const db = client.db('printability');
     const col = db.collection('qrcodes');
     const result = await col.updateOne(
@@ -46,9 +43,8 @@ async function obsoleteQrCode(qrCodeId, company_id) {
 }
 
 async function scanQrCode(qrCodeId, user) {
-  const client = getClient();
+  const client = await getClient();
   try {
-    await client.connect();
     const db = client.db('printability');
     const col = db.collection('qrcodes');
     const result = await col.updateOne(

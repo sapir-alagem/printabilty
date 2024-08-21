@@ -1,11 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Navbar, Nav, NavDropdown, Button } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
+import AuthContext from '../../auth/components/authProvider'; // Assuming you have an AuthContext
 import Logo from './Logo';
-import Dropdown from 'react-bootstrap/Dropdown';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import './NavigationBar.css';
+import useLogout from '../../hooks/useLogout';
 
 function NavigationBar() {
+  const { auth, setAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const logout = useLogout();
+
+  const sighOut = async () => {
+    await logout();
+    navigate('/');
+  };
+
+  const isSuperAdmin = auth?.role?.includes('super admin');
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light" className="px-3">
       <Logo />
@@ -14,17 +25,27 @@ function NavigationBar() {
       <Navbar.Collapse id="responsive-navbar-nav">
         <Nav className="mr-auto">
           <Nav.Link as={Link} to="/UploadFile">Upload File</Nav.Link>
-          <NavDropdown title="Companies" id="collasible-nav-dropdown">
-            <NavDropdown.Item as={Link} to="/companies">Companies</NavDropdown.Item>
-            <NavDropdown.Item as={Link} to="/companies/new">New Company</NavDropdown.Item>
-            <NavDropdown.Divider />
-            <NavDropdown.Item as={Link} to="/something-else">Something else here</NavDropdown.Item>
-          </NavDropdown>
+          {isSuperAdmin && (
+            <NavDropdown title="Companies" id="collasible-nav-dropdown">
+              <NavDropdown.Item as={Link} to="/companies">Companies</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/companies/new">New Company</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item as={Link} to="/something-else">Something else here</NavDropdown.Item>
+            </NavDropdown>
+          )}
+        </Nav>
+        <Nav>
+          {auth?.user ? (
+            <Button variant="outline-dark" onClick={sighOut}>SignOut</Button>
+          ) : (
+            <Button variant="outline-dark" as={Link} to="/login">Login</Button>
+          )}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
   );
 }
+
 
 export default NavigationBar;
 

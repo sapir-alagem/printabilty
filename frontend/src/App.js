@@ -4,8 +4,6 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import './App.css';
 
-
-
 import LandingPage from './pages/LandingPage';
 import Companies from './Company/pages/Companies';
 import NewCompany from './Company/pages/NewCompany';
@@ -20,6 +18,8 @@ import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
 import QRCodeIndex from './QRCode/pages/QRCodeIndex';
 import PrinterIndex from './Printer/pages/PrinterIndex';
+import RequireAuth from './auth/components/RequireAuth';
+import PersistLogin from './auth/components/PersistLogin';
 import OnboardingForm from './Onboarding/pages/OnboardingForm';
 import SingUp from './Onboarding/pages/SingUp';
 import Login from './Onboarding/pages/Login';
@@ -30,29 +30,43 @@ const stripePromise = loadStripe('pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQ
 function App() {
   return (
     <Elements stripe={stripePromise}>
-      <Router>
         <Layout>
           <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/companies" element={<Companies />} />
-            <Route path="/companies/new" element={<NewCompany />} />
+
+          {/* public routes*/}          
+          <Route path="/Login" element={<Login />} />
+          <Route path="/UploadFile" element={<UploadFile />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/summary" element={<SummaryPage />} />
+          <Route path="/success" element={<SuccessPage />} />
+          <Route path="/cancel" element={<CancelPage />} />
+          <Route path="/companies/new" element={<NewCompany />} />
             <Route path="/onboarding" element={<OnboardingForm />} />
             <Route path="/SingUp" element={<SingUp />} />
             <Route path="/Login" element={<Login />} />
-            <Route path="/companies/new/form" element={<SignupForm />} /> {/* TO DELETE */}
-            <Route path="/companies/new/success" element={<SuccessSingup />} />
-            <Route path="/UploadFile" element={<UploadFile />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/summary" element={<SummaryPage />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/success" element={<SuccessPage />} />
-            <Route path="/cancel" element={<CancelPage />} />
-            <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
-            <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
+          <Route path="/companies/new/form" element={<SignupForm />} /> {/* TO DELETE */}
+          <Route path="/companies/new/success" element={<SuccessSingup />} />
 
-          </Routes>
-        </Layout>
-      </Router>
+          {/* protected routes*/}
+          <Route element={<PersistLogin />}>
+            <Route element={<RequireAuth allowedRoles={["super admin"]} />}>
+              <Route path="/companies" element={<Companies />} />
+            </Route>
+
+            <Route element={<RequireAuth allowedRoles={["company admin", "super admin"]} />}>
+              <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
+              <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
+            </Route>
+          </Route>
+
+          {/* 404 route */}
+          <Route path="*" element={<NotFound />} />
+
+
+
+        </Routes>
+      </Layout>
     </Elements>
   );
 }

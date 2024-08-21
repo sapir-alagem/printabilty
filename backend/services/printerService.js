@@ -45,7 +45,7 @@ async function getPrinter(printerId) {
 }
 
 const findPrinterByName = async (companyId, name) => {
-    const client = getClient();
+    const client = await getClient();
     try {
     const db = client.db('printability');
     const col = db.collection('printers');
@@ -61,9 +61,8 @@ const findPrinterByName = async (companyId, name) => {
 };
 
 async function deletePrinter(printerId, companyId) {
-    const client = getClient();
+    const client = await getClient();
     try {
-        await client.connect();
         const db = client.db('printability');
         const col = db.collection('printers');
         const result = await col.deleteOne({ _id: new ObjectId(printerId), company_id: companyId });
