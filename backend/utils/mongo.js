@@ -3,6 +3,7 @@ const { MongoClient } = require('mongodb');
 const url = process.env.MONGO_URI;
 
 const client = new MongoClient(url);
+connect();
 
 async function connect() {
     try {
@@ -13,7 +14,10 @@ async function connect() {
     }
 }
 
-function getClient() {
+async function getClient() {
+    if (!client) {
+        client.connect();
+    }
     return client;
 }
 

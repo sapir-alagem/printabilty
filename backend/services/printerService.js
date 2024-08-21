@@ -3,10 +3,9 @@ const { getClient } = require('../utils/mongo');
 
 
 async function createPrinter(printerData) {
-    const client = getClient();
+    const client = await getClient();
 
     try {
-        await client.connect();
         const db = client.db('printability');
         const col = db.collection('printers');
         const result = await col.insertOne(printerData);
@@ -18,10 +17,9 @@ async function createPrinter(printerData) {
 }
 
 async function getAllPrinters(companyId) {
-    const client = getClient();
+    const client = await getClient();
 
     try {
-        await client.connect();
         const db = client.db('printability');
         const col = db.collection('printers');
         const printers = await col.find({ company_id: companyId }).toArray();
@@ -33,10 +31,9 @@ async function getAllPrinters(companyId) {
 }
 
 async function getPrinter(printerId) {
-    const client = getClient();
+    const client = await getClient();
 
     try {
-        await client.connect();
         const db = client.db('printability');
         const col = db.collection('printers');
         const printer = await col.findOne({ _id: printerId });

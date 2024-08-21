@@ -1,12 +1,12 @@
 const { getClient } = require('../utils/mongo');
-const {ObjectId, Timestamp} = require('mongodb');
+const {ObjectId} = require('mongodb');
 const axios = require('axios');
 const { sendMessageToClient } = require('./web_socket_service'); // Ensure the correct path
 const CompanyService = require('../services/company_service');
 
 // this is exemple for storing data into the db
 async function createPrintJob(printJobData) {
-    const client = getClient();
+    const client = await getClient();
 
     try {
         const db = client.db('printability');
@@ -23,10 +23,9 @@ async function createPrintJob(printJobData) {
 
 // this is exemple for importing data from the db
 async function getPrintJobs(jobId) {
-    const client = getClient();
+    const client = await getClient();
 
     try {
-        await client.connect();
         const db = client.db('printability');
         const col = db.collection('print_jobs');
         //const print_jobs = await col.find(jobId).toArray();
@@ -85,16 +84,23 @@ async function processPrintJob(jobId) {
         }
 
         let singlePagePrice = 0;
-        const numOfPages = printJob.body.pageRange.end - printJob.body.pageRange.start + 1;
+        let numOfPages;
+        if (!printJob.body.printAllPages) {
+            numOfPages  = printJob.body.endPage - printJob.body.startPage + 1; 
+        } else {
+            numOfPages = printJob.body.numPages;
+        }
         const numOfCopies = printJob.body.copies;
 
-        if (printJob.colorMode === "color") {
+        if (printJob.colorMode === "color" && company.enableColorPrinting) {
             singlePagePrice = company.coloredPageCost;
         } else {
             singlePagePrice = company.blackAndWhitePageCost;
         }
+        let  price = singlePagePrice * numOfPages * numOfCopies;
+        price = parseFloat(price.toFixed(2));
 
-        return singlePagePrice * numOfPages * numOfCopies;
+        return price;
     } catch (error) {
         console.error(error);
         throw new Error('Error calculating print job cost');

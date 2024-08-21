@@ -4,6 +4,8 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import './App.css';
 
+
+
 import LandingPage from './pages/LandingPage';
 import Companies from './Company/pages/Companies';
 import NewCompany from './Company/pages/NewCompany';
@@ -18,6 +20,10 @@ import SuccessPage from './pages/SuccessPage';
 import CancelPage from './pages/CancelPage';
 import QRCodeIndex from './QRCode/pages/QRCodeIndex';
 import PrinterIndex from './Printer/pages/PrinterIndex';
+import OnboardingForm from './Onboarding/pages/OnboardingForm';
+import SingUp from './Onboarding/pages/SingUp';
+import Login from './Onboarding/pages/Login';
+
 
 const stripePromise = loadStripe('pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQWuoSDk2bKOhk5WpezGx1xKKsCfu1kdkmBruvVW5UGzQ1ejQGvQm00d3c0qhxQ');
 
@@ -30,7 +36,10 @@ function App() {
             <Route path="/" element={<LandingPage />} />
             <Route path="/companies" element={<Companies />} />
             <Route path="/companies/new" element={<NewCompany />} />
-            <Route path="/companies/new/form" element={<SignupForm />} />
+            <Route path="/onboarding" element={<OnboardingForm />} />
+            <Route path="/SingUp" element={<SingUp />} />
+            <Route path="/Login" element={<Login />} />
+            <Route path="/companies/new/form" element={<SignupForm />} /> {/* TO DELETE */}
             <Route path="/companies/new/success" element={<SuccessSingup />} />
             <Route path="/UploadFile" element={<UploadFile />} />
             <Route path="/checkout" element={<Checkout />} />

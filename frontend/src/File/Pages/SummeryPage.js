@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import PdfPreview from '../components/pdfPreviewer';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import pdfjsWorker from 'pdfjs-dist/build/pdf.worker.entry';
+import axios from 'axios';
 
 // Initialize pdfjsLib worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
@@ -11,7 +12,6 @@ function SummaryPage() {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(window.location.search);
   const fileUrl = queryParams.get("file_url");
-  const companyId = '66ad323d13b81d984b059e88'; // temp just for checks
   const company_id = queryParams.get("company_id");
   const printer_name = queryParams.get("printer_name");
   const [colorMode, setColorMode] = useState('color');
@@ -21,6 +21,7 @@ function SummaryPage() {
   const [pageRange, setPageRange] = useState({ start: 1, end: 1 });
   const [copies, setCopies] = useState(1);
   const [numPages, setNumPages] = useState(0);
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     const fetchPdfData = async () => {
@@ -38,6 +39,36 @@ function SummaryPage() {
       fetchPdfData();
     }
   }, [fileUrl]);
+
+  useEffect(() => {
+    const fetchPricing = async () => {
+      try {
+        const response = await axios.post('http://localhost:5000/print_jobs/calculate', {
+          fileUrl,
+          colorMode,
+          layoutMode,
+          printBothSides,
+          printAllPages,
+          startPage: pageRange.start,
+          endPage: pageRange.end,
+          copies,
+          numPages,
+          company_id,
+          printer_name,
+        });
+  
+        setPrice(response.data.price);
+      } catch (error) {
+        console.error('Error fetching price:', error);
+      }
+    };
+  
+    if (fileUrl) {
+      fetchPricing();
+    }
+  }, [colorMode, printBothSides, layoutMode, printAllPages, pageRange, copies, numPages, fileUrl, company_id, printer_name]);
+  
+
 
   const handleColorModeChange = (e) => {
     setColorMode(e.target.value);
@@ -70,7 +101,6 @@ function SummaryPage() {
   const handleSubmit = async () => {
     const params = new URLSearchParams();
     params.append('file_url', fileUrl);
-    params.append('companyId', companyId);
     params.append('color_mode', colorMode);
     params.append('layout_mode', layoutMode);
     params.append('print_both_sides', printBothSides);
@@ -176,7 +206,11 @@ function SummaryPage() {
               />
             </label>
           </div>
+          <div className="mt-3">
+          <h5>Total Price: <span className="text-success">₪{price}</span></h5>
         </div>
+        </div>
+        
         <div className="col-md-8">
           <h1>PDF Preview</h1>
           <PdfPreview pdfUrl={fileUrl} />            
