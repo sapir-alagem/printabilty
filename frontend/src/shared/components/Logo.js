@@ -3,10 +3,10 @@ import React from "react";
 function Logo() {
   return (
     <img
-      src={`${process.env.PUBLIC_URL}/app_logo.png`}
+      src={`${process.env.PUBLIC_URL}/assets/logo.svg`}
       alt="Logo"
-      width="30"
-      height="30"
+      width="100"
+      height="50"
       className="d-inline-block align-top"
     />
   );
