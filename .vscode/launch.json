@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
     
 
         {
@@ -21,7 +22,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "C:\\Users\\Owner\\OneDrive\\מסמכים\\Github\\printabilty\\backend\\app.js"
+            "program": "C:\\Users\\safirma\\Documents\\GitHub\\printabilty\\backend\\app.js"
         },
 
         {
