@@ -185,10 +185,10 @@ function SummaryPage() {
             </label>
           </div>
         </div>
-        <div className="col-md-8">
+        {/* <div className="col-md-8">
           <h1>PDF Preview</h1>
           <PdfPreview pdfUrl={fileUrl} />
-        </div>
+        </div> */}
       </div>
       <div className="row mt-3">
         <div className="col text-left ">

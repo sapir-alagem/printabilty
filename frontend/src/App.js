@@ -11,6 +11,7 @@ import NewCompany from "./Company/pages/NewCompany";
 import SignupForm from "./Company/pages/CompanySignupForm";
 import SuccessSingup from "./Company/pages/succesfulSingup";
 import UploadFile from "./File/Pages/UploadFilePage";
+import FileUploadComponent from "./File/components/FileUploader";
 import NotFound from "./pages/NotFound";
 import SummaryPage from "./File/Pages/SummeryPage";
 import Layout from "./shared/components/Layout";

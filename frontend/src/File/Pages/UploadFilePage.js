@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import FileUploadComponent from "../components/FileUploader";
+import Header from "../components/Header";
 function FileUploader() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
   const [isDisabled, setIsDisabled] = useState(false);
@@ -62,47 +63,64 @@ function FileUploader() {
   function handleFileChange(event) {
     setSelectedFile(event.target.files[0]); // Update selected file when the input changes
   }
-
   return (
-    <div className="container text-center mt-5">
-      <h1>Upload a file to print</h1>
-      <form id="uploadForm" encType="multipart/form-data">
-        <div className="custom-file mb-3">
-          <input
-            type="file"
-            className="custom-file-input"
-            id="file"
-            name="file"
-            onChange={handleFileChange}
-            style={{ width: "100px" }}
-          />
-          <label className="custom-file-label" htmlFor="file">
-            {selectedFile ? selectedFile.name : "Choose file"}{" "}
-          </label>
-        </div>
-        {/* <button type="button" className="btn btn-primary" onClick={uploadFile}>Upload</button> */}
-        <button
-          onClick={uploadFile}
-          className="btn btn-primary"
-          type="button"
-          disabled={isDisabled}
-        >
-          {isDisabled ? (
-            <>
-              <span
-                class="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              Loading...
-            </>
-          ) : (
-            "Upload"
-          )}
-        </button>
-      </form>
+    <div>
+      <div
+        style={{
+          backgroundColor: "#3799FA",
+          height: "30%",
+          width: "100%",
+        }}
+      >
+        <Header />
+        {/* You can add more content here, like part of the FileUploadComponent */}
+      </div>
+      <div>
+        <FileUploadComponent />
+      </div>
     </div>
   );
+
+  // return (
+  //   <div className="container text-center mt-5">
+  //     <h1>Upload a file to print</h1>
+  //     <form id="uploadForm" encType="multipart/form-data">
+  //       <div className="custom-file mb-3">
+  //         <input
+  //           type="file"
+  //           className="custom-file-input"
+  //           id="file"
+  //           name="file"
+  //           onChange={handleFileChange}
+  //           style={{ width: "100px" }}
+  //         />
+  //         <label className="custom-file-label" htmlFor="file">
+  //           {selectedFile ? selectedFile.name : "Choose file"}{" "}
+  //         </label>
+  //       </div>
+  //       {/* <button type="button" className="btn btn-primary" onClick={uploadFile}>Upload</button> */}
+  //       <button
+  //         onClick={uploadFile}
+  //         className="btn btn-primary"
+  //         type="button"
+  //         disabled={isDisabled}
+  //       >
+  //         {isDisabled ? (
+  //           <>
+  //             <span
+  //               class="spinner-border spinner-border-sm"
+  //               role="status"
+  //               aria-hidden="true"
+  //             ></span>
+  //             Loading...
+  //           </>
+  //         ) : (
+  //           "Upload"
+  //         )}
+  //       </button>
+  //     </form>
+  //   </div>
+  // );
 }
 
 export default FileUploader;
