@@ -1,200 +1,189 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import PdfPreview from "../components/pdfPreviewer";
-import * as pdfjsLib from "pdfjs-dist/build/pdf";
+import { useCheckout } from "../../Payments/CheckoutContext"; // Adjust the path as necessary
+import CheckoutButton from "../../Payments/CheckoutButton";
+import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
+import RangeSlider from "../components/RangeSlider";
 
-// Initialize pdfjsLib worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 function SummaryPage() {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(window.location.search);
   const fileUrl = queryParams.get("file_url");
-  const companyId = "66ad323d13b81d984b059e88"; // temp just for checks
-  const company_id = queryParams.get("company_id");
-  const printer_name = queryParams.get("printer_name");
-  const [colorMode, setColorMode] = useState("color");
-  const [printBothSides, setPrintBothSides] = useState(false);
-  const [layoutMode, setLayoutMode] = useState("portrait");
+  const { printDetails, setPrintDetails, price } = useCheckout();
+  const [documentName, setDocumentName] = useState("Document Name");
+  const [colorMode, setColorMode] = useState("Black/White");
+  const [printBothSides, setPrintBothSides] = useState("No");
   const [printAllPages, setPrintAllPages] = useState(true);
   const [pageRange, setPageRange] = useState({ start: 1, end: 1 });
   const [copies, setCopies] = useState(1);
   const [numPages, setNumPages] = useState(0);
+  const [maxPages, setMaxPages] = useState(0);
 
   useEffect(() => {
-    const fetchPdfData = async () => {
+    setPrintDetails({
+      colorMode,
+      printBothSides,
+      printAllPages,
+      pageRange,
+      copies,
+    });
+  }, [colorMode, printBothSides, printAllPages, pageRange, copies]);
+
+  useEffect(() => {
+    const fetchFileData = async () => {
       try {
-        const loadingTask = pdfjsLib.getDocument(fileUrl);
-        const pdf = await loadingTask.promise;
-        setNumPages(pdf.numPages);
-        setPageRange({ start: 1, end: pdf.numPages });
+        const response = await fetch(fileUrl);
+        const blob = await response.blob();
+        const file = new File([blob], fileUrl.split("/").pop());
+
+        // Check the file type and extract page count accordingly
+        if (file.name.endsWith(".pdf")) {
+          const loadingTask = pdfjsLib.getDocument(fileUrl);
+          const pdf = await loadingTask.promise;
+          setNumPages(pdf.numPages);
+          setMaxPages(pdf.numPages);
+        }
+        setDocumentName(file.name);
+        setPageRange({ start: 1, end: maxPages });
       } catch (error) {
-        console.error("Error loading PDF:", error);
+        console.error("Error loading file:", error);
       }
     };
 
     if (fileUrl) {
-      fetchPdfData();
+      fetchFileData();
     }
   }, [fileUrl]);
 
-  const handleColorModeChange = (e) => {
-    setColorMode(e.target.value);
+  const handleCopiesChange = (value) => {
+    setCopies(Math.max(1, copies + value));
   };
 
-  const handlePrintBothSidesChange = (e) => {
-    setPrintBothSides(e.target.checked);
-  };
-
-  const handleLayoutModeChange = (e) => {
-    setLayoutMode(e.target.value);
-  };
-
-  const handlePrintAllPagesChange = (e) => {
-    setPrintAllPages(e.target.checked);
-  };
-
-  const handleCopiesChange = (e) => {
-    setCopies(e.target.value);
-  };
-
-  const handlePageRangeChange = (e) => {
-    const { name, value } = e.target;
-    setPageRange((prevRange) => ({
-      ...prevRange,
-      [name]: parseInt(value),
-    }));
-  };
-
-  const handleSubmit = async () => {
-    const params = new URLSearchParams();
-    params.append("file_url", fileUrl);
-    params.append("companyId", companyId);
-    params.append("color_mode", colorMode);
-    params.append("layout_mode", layoutMode);
-    params.append("print_both_sides", printBothSides);
-    params.append("print_all_pages", printAllPages);
-    params.append("start_page", pageRange.start);
-    params.append("end_page", pageRange.end);
-    params.append("copies", copies);
-    params.append("numPages", numPages);
-    params.append("company_id", company_id);
-    params.append("printer_name", printer_name);
-
-    navigate(`/checkout?${params.toString()}`);
+  const handlePreview = () => {
+    window.open(fileUrl, "_blank");
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-md-4">
-          <h1>Print Options</h1>
-          <div className="mt-3">
-            <label className="d-block">
-              Color Mode:
-              <select
-                className="form-select mt-1"
-                value={colorMode}
-                onChange={handleColorModeChange}
+    <div className="container mt-5" style={{ maxWidth: "600px" }}>
+      <div className="card shadow-sm">
+        <div className="card-header d-flex justify-content-between align-items-center">
+          <span>
+            <strong>Document name:</strong> {documentName}
+          </span>
+        </div>
+        <div className="card-body">
+          <div className="mb-3 d-flex justify-content-between align-items-center">
+            <div>
+              <i className="bi bi-palette"></i>
+              <span> Color</span>
+            </div>
+            <select
+              className="form-select"
+              value={colorMode}
+              onChange={(e) => setColorMode(e.target.value)}
+              style={{ width: "150px" }}
+            >
+              <option value="Black/White">Black/White</option>
+              <option value="Color">Color</option>
+            </select>
+          </div>
+          <div className="mb-3 d-flex justify-content-between align-items-center">
+            <div>
+              <i className="bi bi-hash"></i>
+              <span> Number of copies</span>
+            </div>
+            <div className="d-flex align-items-center">
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => handleCopiesChange(-1)}
               >
-                <option value="RGB">Color</option>
-                <option value="Gray">Black & White</option>
-              </select>
-            </label>
-          </div>
-          <div className="mt-3">
-            <label className="d-block">
-              Layout:
-              <select
-                className="form-select mt-1"
-                value={layoutMode}
-                onChange={handleLayoutModeChange}
-              >
-                <option value="portrait">Portrait</option>
-                <option value="landscape">Landscape</option>
-              </select>
-            </label>
-          </div>
-          <div className="mt-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                checked={printBothSides}
-                onChange={handlePrintBothSidesChange}
-                id="printBothSides"
-              />
-              <label className="form-check-label" htmlFor="printBothSides">
-                Print on Both Sides
-              </label>
-            </div>
-          </div>
-          <div className="mt-3">
-            <div className="form-check">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                checked={printAllPages}
-                onChange={handlePrintAllPagesChange}
-                id="printAllPages"
-              />
-              <label className="form-check-label" htmlFor="printAllPages">
-                Print All Pages
-              </label>
-            </div>
-          </div>
-          {!printAllPages && (
-            <div className="mt-3">
-              <label className="d-block">
-                Page Range:
-                <input
-                  type="number"
-                  className="form-control mt-1 d-inline-block"
-                  name="start"
-                  value={pageRange.start}
-                  onChange={handlePageRangeChange}
-                  min={1}
-                  max={numPages}
-                  style={{ width: "100px" }}
-                />
-                to
-                <input
-                  type="number"
-                  className="form-control mt-1 d-inline-block"
-                  name="end"
-                  value={pageRange.end}
-                  onChange={handlePageRangeChange}
-                  min={1}
-                  max={numPages}
-                  style={{ width: "100px" }}
-                />
-              </label>
-            </div>
-          )}
-          <div className="mt-3">
-            <label className="d-block">
-              Number of Copies:
+                -
+              </button>
               <input
                 type="number"
-                className="form-control mt-1"
+                className="form-control text-center"
                 value={copies}
-                onChange={handleCopiesChange}
-                style={{ width: "100px" }}
+                readOnly
+                style={{ width: "80px", margin: "0 10px" }}
               />
-            </label>
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => handleCopiesChange(1)}
+              >
+                +
+              </button>
+            </div>
+          </div>
+          <div className="mb-3 d-flex justify-content-between align-items-center">
+            <div>
+              <i className="bi bi-check2-all"></i>
+              <span> Print all pages</span>
+            </div>
+            <select
+              className="form-select"
+              value={printAllPages ? "Yes" : "No"}
+              onChange={(e) => setPrintAllPages(e.target.value === "Yes")}
+              style={{ width: "150px" }}
+            >
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          {!printAllPages && (
+            <div className="mb-3 d-flex justify-content-between align-items-center">
+              <div>
+                <i className="bi bi-file-code"></i>
+                <span> Page range</span>
+              </div>
+              <RangeSlider
+                min={1}
+                max={maxPages}
+                start={1}
+                end={maxPages}
+                //on range change set the page range and the number of pages
+                onRangeChange={(range) => {
+                  setPageRange(range);
+                  setNumPages(range.end - range.start + 1);
+                }}
+              />
+            </div>
+          )}
+          <div className="mb-3 d-flex justify-content-between align-items-center">
+            <div>
+              <i className="bi bi-file-earmark-text"></i>
+              <span> Print on both sides</span>
+            </div>
+            <select
+              className="form-select"
+              value={printBothSides}
+              onChange={(e) => setPrintBothSides(e.target.value)}
+              style={{ width: "150px" }}
+            >
+              <option value="No">No</option>
+              <option value="Yes">Yes</option>
+            </select>
           </div>
         </div>
-        {/* <div className="col-md-8">
-          <h1>PDF Preview</h1>
-          <PdfPreview pdfUrl={fileUrl} />
-        </div> */}
-      </div>
-      <div className="row mt-3">
-        <div className="col text-left ">
-          <button className="btn btn-success" onClick={handleSubmit}>
-            Proceed to Checkout
+        <div className="card-footer d-flex justify-content-between align-items-center">
+          <div>
+            <span className="text-muted">NUMBER OF PAGES:</span>{" "}
+            <strong>{numPages * copies}</strong>
+          </div>
+          <div>
+            <span className="text-muted">PRICE:</span> <strong>{price}</strong>
+          </div>
+        </div>
+        <div className="d-flex justify-content-between p-3">
+          <button className="btn btn-danger" onClick={() => navigate(-1)}>
+            REMOVE
           </button>
+          <button className="btn btn-primary" onClick={handlePreview}>
+            PREVIEW
+          </button>
+          <CheckoutButton /> {/* Use CheckoutButton here */}
         </div>
       </div>
     </div>

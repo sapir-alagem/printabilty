@@ -11,7 +11,7 @@ function Layout({ children }) {
   return (
     <div className="app-layout">
       {!isLoginPage && <NavigationBar />}
-      <div className="app-content m-3 mt-5">{children}</div>
+      <div className="">{children}</div>
     </div>
   );
 }

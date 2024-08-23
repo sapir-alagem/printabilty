@@ -15,7 +15,6 @@ import FileUploadComponent from "./File/components/FileUploader";
 import NotFound from "./pages/NotFound";
 import SummaryPage from "./File/Pages/SummeryPage";
 import Layout from "./shared/components/Layout";
-import Checkout from "./Payments/CheckoutPage";
 import SuccessPage from "./pages/SuccessPage";
 import CancelPage from "./pages/CancelPage";
 import QRCodeIndex from "./QRCode/pages/QRCodeIndex";
@@ -30,46 +29,43 @@ const stripePromise = loadStripe(
 function App() {
   return (
     <Elements stripe={stripePromise}>
-      <Layout>
-        <Routes>
-          {/* public routes*/}
-          <Route path="/Login" element={<Login />} />
-          <Route path="/UploadFile" element={<UploadFile />} />
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/summary" element={<SummaryPage />} />
-          <Route path="/success" element={<SuccessPage />} />
-          <Route path="/cancel" element={<CancelPage />} />
-          <Route path="/companies/new" element={<NewCompany />} />
-          <Route path="/companies/new/form" element={<SignupForm />} />
-          <Route path="/companies/new/success" element={<SuccessSingup />} />
+      <Routes>
+        {/* public routes*/}
+        <Route path="/Login" element={<Login />} />
+        <Route path="/UploadFile" element={<UploadFile />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/summary" element={<SummaryPage />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/cancel" element={<CancelPage />} />
+        <Route path="/companies/new" element={<NewCompany />} />
+        <Route path="/companies/new/form" element={<SignupForm />} />
+        <Route path="/companies/new/success" element={<SuccessSingup />} />
 
-          {/* protected routes*/}
-          <Route element={<PersistLogin />}>
-            <Route element={<RequireAuth allowedRoles={["super admin"]} />}>
-              <Route path="/companies" element={<Companies />} />
-            </Route>
-
-            <Route
-              element={
-                <RequireAuth allowedRoles={["company admin", "super admin"]} />
-              }
-            >
-              <Route
-                path="/companies/:companyId/qrcodes"
-                element={<QRCodeIndex />}
-              />
-              <Route
-                path="/companies/:companyId/printers"
-                element={<PrinterIndex />}
-              />
-            </Route>
+        {/* protected routes*/}
+        <Route element={<PersistLogin />}>
+          <Route element={<RequireAuth allowedRoles={["super admin"]} />}>
+            <Route path="/companies" element={<Companies />} />
           </Route>
 
-          {/* 404 route */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Layout>
+          <Route
+            element={
+              <RequireAuth allowedRoles={["company admin", "super admin"]} />
+            }
+          >
+            <Route
+              path="/companies/:companyId/qrcodes"
+              element={<QRCodeIndex />}
+            />
+            <Route
+              path="/companies/:companyId/printers"
+              element={<PrinterIndex />}
+            />
+          </Route>
+        </Route>
+
+        {/* 404 route */}
+        <Route path="*" element={<NotFound />} />
+      </Routes>
     </Elements>
   );
 }

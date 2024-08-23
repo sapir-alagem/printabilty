@@ -49,6 +49,9 @@ export default function CustomFileUpload() {
         "http://localhost:5000/uploads",
         requestOptions
       );
+      if (!response.ok) {
+        throw new Error("Failed to upload file");
+      }
       const data = await response.json();
       navigate(
         `/summary?file_url=${encodeURIComponent(
@@ -74,8 +77,13 @@ export default function CustomFileUpload() {
           <div className="upload-prompt">
             <i className="pi pi-file" style={{ fontSize: "2rem" }}></i>
             <p>Choose a file</p>
-            <small>JPEG, PNG, PDG, and MP4 formats, up to 50MB</small>
-            <input type="file" onChange={handleFileChange} hidden />
+            <small>PDF format only, up to 50MB</small>
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              hidden
+            />
             <button
               className="browse-button"
               onClick={() =>

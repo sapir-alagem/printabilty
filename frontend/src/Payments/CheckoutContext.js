@@ -1,3 +1,4 @@
+// CheckoutContext.js
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 
@@ -8,16 +9,20 @@ export const CheckoutProvider = ({ children, initialPrintDetails }) => {
   const [price, setPrice] = useState(0);
 
   useEffect(() => {
+    const updatePrice = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/print_jobs/update_price",
+          printDetails
+        );
+        setPrice(response.data.price);
+      } catch (error) {
+        console.error("Error updating price:", error);
+      }
+    };
+
     if (printDetails) {
-      const basePrice = 10; // Example base price
-      let finalPrice = basePrice;
-
-      if (printDetails.printBothSides) finalPrice += 2; // Add cost for duplex printing
-      if (printDetails.colorMode === "color") finalPrice += 5; // Add cost for color printing
-
-      finalPrice *= printDetails.copies; // Multiply by number of copies
-
-      setPrice(finalPrice);
+      updatePrice();
     }
   }, [printDetails]);
 
@@ -27,7 +32,7 @@ export const CheckoutProvider = ({ children, initialPrintDetails }) => {
         "http://localhost:5000/print_jobs",
         details
       );
-      return response.data; // Ensure this returns the full response
+      return response.data;
     } catch (error) {
       console.error("Error saving print details:", error);
       throw error;
