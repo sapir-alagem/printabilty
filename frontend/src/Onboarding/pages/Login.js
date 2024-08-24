@@ -1,14 +1,14 @@
 import React, { useRef, useState, useEffect } from "react";
 import LogoBlackNoBackground from "../components/Logo";
-import { axiosPrivate } from "../../api/axios";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const LOGIN_URL = "/auth";
 
 const Login = () => {
   const { setAuth, persist, setPersist } = useAuth();
-
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from.pathname || "/";

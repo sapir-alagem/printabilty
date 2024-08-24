@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import PrinterTable from "../components/PrinterTable";
 import PrinterGenerateButton from "../components/PrinterGenerateButton";
 import { useParams } from "react-router-dom";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const PrinterIndex = () => {
   const { companyId } = useParams();
   const [printers, setPrinters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     fetchPrinters();
@@ -16,8 +17,8 @@ const PrinterIndex = () => {
 
   const fetchPrinters = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/companies/${companyId}/printers`
+      const response = await axiosPrivate.get(
+        `/companies/${companyId}/printers`
       );
       setPrinters(response.data);
     } catch (error) {
@@ -30,9 +31,7 @@ const PrinterIndex = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/companies/${companyId}/printers/${id}`
-      );
+      await axiosPrivate.delete(`/companies/${companyId}/printers/${id}`);
       fetchPrinters();
     } catch (error) {
       setError("Error deleting printer");
@@ -43,10 +42,10 @@ const PrinterIndex = () => {
     const name = prompt("Enter printer name:");
 
     try {
-      await axios.post(
-        `http://localhost:5000/companies/${companyId}/printers`,
-        { name, company_id: companyId }
-      );
+      await axiosPrivate.post(`/companies/${companyId}/printers`, {
+        name,
+        company_id: companyId,
+      });
       fetchPrinters();
     } catch (error) {
       setError("Error adding printer");
@@ -55,8 +54,8 @@ const PrinterIndex = () => {
 
   const handleDownloadQR = async (printerId) => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/companies/${companyId}/printers/${printerId}/qrcode`
+      const response = await axiosPrivate.get(
+        `/companies/${companyId}/printers/${printerId}/qrcode`
       );
       const url = response.data.url;
       const link = document.createElement("a");

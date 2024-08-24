@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { axiosPrivate } from "../../api/axios";
 import { useParams } from "react-router-dom";
 import PrinterIndex from "../../Printer/pages/PrinterIndex";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 const CompanyDashboard = () => {
   const { companyId } = useParams();
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     const fetchCompany = async () => {
