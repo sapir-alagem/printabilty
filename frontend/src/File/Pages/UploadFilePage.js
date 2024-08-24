@@ -60,9 +60,6 @@ function FileUploader() {
     }
   }
 
-  function handleFileChange(event) {
-    setSelectedFile(event.target.files[0]); // Update selected file when the input changes
-  }
   return (
     <div>
       <Header
@@ -75,47 +72,6 @@ function FileUploader() {
       </div>
     </div>
   );
-
-  // return (
-  //   <div className="container text-center mt-5">
-  //     <h1>Upload a file to print</h1>
-  //     <form id="uploadForm" encType="multipart/form-data">
-  //       <div className="custom-file mb-3">
-  //         <input
-  //           type="file"
-  //           className="custom-file-input"
-  //           id="file"
-  //           name="file"
-  //           onChange={handleFileChange}
-  //           style={{ width: "100px" }}
-  //         />
-  //         <label className="custom-file-label" htmlFor="file">
-  //           {selectedFile ? selectedFile.name : "Choose file"}{" "}
-  //         </label>
-  //       </div>
-  //       {/* <button type="button" className="btn btn-primary" onClick={uploadFile}>Upload</button> */}
-  //       <button
-  //         onClick={uploadFile}
-  //         className="btn btn-primary"
-  //         type="button"
-  //         disabled={isDisabled}
-  //       >
-  //         {isDisabled ? (
-  //           <>
-  //             <span
-  //               class="spinner-border spinner-border-sm"
-  //               role="status"
-  //               aria-hidden="true"
-  //             ></span>
-  //             Loading...
-  //           </>
-  //         ) : (
-  //           "Upload"
-  //         )}
-  //       </button>
-  //     </form>
-  //   </div>
-  // );
 }
 
 export default FileUploader;

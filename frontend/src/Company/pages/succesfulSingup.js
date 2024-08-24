@@ -11,7 +11,7 @@ const RegistrationSuccess = () => {
   const companyName = params.get("companyName");
 
   const handleBackToHome = () => {
-    navigate("/");
+    navigate("/login");
   };
 
   return (
