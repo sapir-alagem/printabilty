@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import PrinterTable from '../components/PrinterTable';
-import PrinterGenerateButton from '../components/PrinterGenerateButton';
-import { useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import PrinterTable from "../components/PrinterTable";
+import PrinterGenerateButton from "../components/PrinterGenerateButton";
+import { useParams } from "react-router-dom";
 
 const PrinterIndex = () => {
     const { companyId } = useParams();
@@ -64,6 +64,25 @@ const PrinterIndex = () => {
     if (loading) {
         return <div>Loading...</div>;
     }
+  };
+
+  const handleGenerate = async () => {
+    const name = prompt("Enter printer name:");
+
+    try {
+      await axios.post(
+        `http://localhost:5000/companies/${companyId}/printers`,
+        { name, company_id: companyId }
+      );
+      fetchPrinters();
+    } catch (error) {
+      setError("Error adding printer");
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
     return (
         <div>
@@ -79,6 +98,7 @@ const PrinterIndex = () => {
                 companyId={companyId} />
         </div>
     );
+
 };
 
 export default PrinterIndex;

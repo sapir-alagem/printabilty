@@ -1,6 +1,5 @@
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 
-
 exports.s3Uploadv3 = async (files) => {
   const s3client = new S3Client();
   const uploadedFiles = [];
@@ -10,7 +9,7 @@ exports.s3Uploadv3 = async (files) => {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: `uploads/${file.originalname}`,
       Body: file.buffer,
-      ACL: 'public-read'
+      ACL: "public-read",
     };
 
     try {

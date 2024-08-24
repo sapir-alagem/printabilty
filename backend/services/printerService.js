@@ -1,32 +1,33 @@
-const { ObjectId } = require('mongodb');
-const { getClient } = require('../utils/mongo');
+
+const { ObjectId } = require("mongodb");
+const { getClient } = require("../utils/mongo");
 
 async function createPrinter(printerData) {
-    const client = await getClient();
+  const client = await getClient();
 
-    try {
-        const db = client.db('printability');
-        const col = db.collection('printers');
-        const result = await col.insertOne(printerData);
-        return result.insertedId;
-    } catch (error) {
-        console.error('Error creating printer:', error);
-        throw error;
-    }
+  try {
+    const db = client.db("printability");
+    const col = db.collection("printers");
+    const result = await col.insertOne(printerData);
+    return result.insertedId;
+  } catch (error) {
+    console.error("Error creating printer:", error);
+    throw error;
+  }
 }
 
 async function getAllPrinters(companyId) {
-    const client = await getClient();
+  const client = await getClient();
 
-    try {
-        const db = client.db('printability');
-        const col = db.collection('printers');
-        const printers = await col.find({ company_id: companyId }).toArray();
-        return printers;
-    } catch (error) {
-        console.error('Error retrieving printers:', error);
-        throw error;
-    }
+  try {
+    const db = client.db("printability");
+    const col = db.collection("printers");
+    const printers = await col.find({ company_id: companyId }).toArray();
+    return printers;
+  } catch (error) {
+    console.error("Error retrieving printers:", error);
+    throw error;
+  }
 }
 
 async function getPrinter(companyId, printerId) {
@@ -59,19 +60,23 @@ async function findPrinterByName(companyId, name) {
         console.error('Error:', error);
         throw error;
     }
+
 };
 
 async function deletePrinter(printerId, companyId) {
-    const client = await getClient();
-    try {
-        const db = client.db('printability');
-        const col = db.collection('printers');
-        const result = await col.deleteOne({ _id: new ObjectId(printerId), company_id: companyId });
-        return result.deletedCount;
-    } catch (error) {
-        console.error('Error deleting printer:', error);
-        throw error;
-    }
+  const client = await getClient();
+  try {
+    const db = client.db("printability");
+    const col = db.collection("printers");
+    const result = await col.deleteOne({
+      _id: new ObjectId(printerId),
+      company_id: companyId,
+    });
+    return result.deletedCount;
+  } catch (error) {
+    console.error("Error deleting printer:", error);
+    throw error;
+  }
 }
 
 async function updatePrinter(id, updates) {

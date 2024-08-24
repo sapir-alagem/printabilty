@@ -1,4 +1,4 @@
-const { getClient } = require('../utils/mongo'); 
+const { getClient } = require("../utils/mongo");
 
 class Printer {
     constructor(name, company_id, status = 'active') {

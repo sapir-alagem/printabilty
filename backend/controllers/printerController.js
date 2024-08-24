@@ -1,4 +1,4 @@
-const printerService = require('../services/printerService');
+const printerService = require("../services/printerService");
 
 const createPrinter = async (req, res) => {
     try {
@@ -12,14 +12,13 @@ const createPrinter = async (req, res) => {
 };
 
 const getAllPrinters = async (req, res) => {
-    
-    try {
-        const company_id = req.params.companyId;
-        const printers = await printerService.getAllPrinters(company_id);
-        res.status(200).json(printers);
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching printers', error });
-    }
+  try {
+    const company_id = req.params.companyId;
+    const printers = await printerService.getAllPrinters(company_id);
+    res.status(200).json(printers);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching printers", error });
+  }
 };
 
 const getPrinter = async (req, res) => {
@@ -34,20 +33,23 @@ const getPrinter = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving printer', error });
     }
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving printer", error });
+  }
 };
 
 const deletePrinter = async (req, res) => {
-    try {
-        const { companyId, id } = req.params;
-        const result = await printerService.deletePrinter(id, companyId);
-        if (result === 0) {
-            res.status(404).json({ message: 'Printer not found' });
-        } else {
-            res.status(200).json({ message: 'Printer deleted' });
-        }
-    } catch (error) {
-        res.status(500).json({ message: 'Error deleting printer', error });
+  try {
+    const { companyId, id } = req.params;
+    const result = await printerService.deletePrinter(id, companyId);
+    if (result === 0) {
+      res.status(404).json({ message: "Printer not found" });
+    } else {
+      res.status(200).json({ message: "Printer deleted" });
     }
+  } catch (error) {
+    res.status(500).json({ message: "Error deleting printer", error });
+  }
 };
 
 

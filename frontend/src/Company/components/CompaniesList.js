@@ -1,5 +1,5 @@
 import React from "react";
-import Table from 'react-bootstrap/Table';
+import Table from "react-bootstrap/Table";
 import CompanyItem from "./CompanyItem";
 
 const CompaniesList = (props) => {
