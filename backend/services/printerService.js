@@ -30,13 +30,23 @@ async function getAllPrinters(companyId) {
     }
 }
 
-async function getPrinter(printerId) {
+async function getPrinter(companyId, printerId) {
     const client = await getClient();
-
+    if (!ObjectId.isValid(printerId)) {
+        throw new Error('Invalid printer ID format');
+    }    
+    if (!ObjectId.isValid(companyId)) {
+        throw new Error('Invalid printer ID format');
+    }
     try {
         const db = client.db('printability');
         const col = db.collection('printers');
-        const printer = await col.findOne({ _id: printerId });
+
+        const printer = await col.findOne({ 
+            company_id: companyId,
+            _id: new ObjectId(printerId)
+         });
+         console.log(printer);
         return printer;
     } catch (error) {
         console.error('Error retrieving printer:', error);
@@ -44,16 +54,16 @@ async function getPrinter(printerId) {
     }
 }
 
-const findPrinterByName = async (companyId, name) => {
+async function findPrinterByName(companyId, name) {
     const client = await getClient();
     try {
-    const db = client.db('printability');
-    const col = db.collection('printers');
-    const printer = await col.findOne({ 
-        name: name,
-        company_id: companyId, 
-    });
-    return printer;
+        const db = client.db('printability');
+        const col = db.collection('printers');
+        const printer = await col.findOne({ 
+            name: name,
+            company_id: companyId, 
+        });
+        return printer;
     } catch (error) {
         console.error('Error:', error);
         throw error;
@@ -73,6 +83,21 @@ async function deletePrinter(printerId, companyId) {
     }
 }
 
+async function updatePrinterStatus(id, status) {
+    // can remove????
+    await Printer.findByIdAndUpdate(id, { status });
+};
+
+async function updatePrinter(id, updates) {
+    const client = await getClient();
+    const db = client.db();
+    const result = await db.collection('printers').updateOne(
+        { _id: id },
+        { $set: updates }
+    );
+    return result.modifiedCount > 0;
+}
+
 
 module.exports = {
     createPrinter,
@@ -80,4 +105,6 @@ module.exports = {
     getPrinter,
     findPrinterByName,
     deletePrinter,
+    updatePrinterStatus,
+    updatePrinter,
 };

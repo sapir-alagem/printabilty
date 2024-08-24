@@ -46,16 +46,47 @@ const PrinterIndex = () => {
         }
     };
 
+    const updatePrinterStatus = async (printerId, newStatus) => {
+        try {
+            await axios.put(`http://localhost:5000/printers/${printerId}`, { status: newStatus });
+            const response = await axios.get('http://localhost:5000/printers');
+            setPrinters(response.data);
+        } catch (error) {
+            console.error('Error updating printer status', error);
+        }
+    };
+
+    const handleDownloadQR = async (printerId) => {
+        try {
+          const response = await axios.get(`http://localhost:5000/companies/${companyId}/printers/${printerId}/qrcode`);
+          const url = response.data.url;
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${printerId}-qr.png`;
+          link.click();
+        } catch (error) {
+          setError('Error downloading QR code');
+        }
+      };
+   
+
     if (loading) {
         return <div>Loading...</div>;
     }
 
     return (
         <div>
-            <h1>Printer Management</h1>
-            <PrinterGenerateButton onGenerate={handleGenerate} />
+            <div className="d-flex mb-4">
+                <h5 className='mr-auto'>Printer Management</h5>
+                <PrinterGenerateButton onGenerate={handleGenerate} />
+            </div>
             {error && <div>{error}</div>}
-            <PrinterTable printers={printers} onDelete={handleDelete} />
+            <PrinterTable 
+                printers={printers} 
+                onDelete={handleDelete} 
+                onDownloadQR={handleDownloadQR} 
+                updatePrinterStatus={updatePrinterStatus} 
+                companyId={companyId} />
         </div>
     );
 };

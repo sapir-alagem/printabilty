@@ -21,6 +21,8 @@ import QRCodeIndex from './QRCode/pages/QRCodeIndex';
 import PrinterIndex from './Printer/pages/PrinterIndex';
 import RequireAuth from './auth/components/RequireAuth';
 import PersistLogin from './auth/components/PersistLogin';
+import CompanyDashboard from './Company/pages/CompanyDashboard'; 
+import PrinterForm from './Printer/pages/PrinterForm';
 
 const stripePromise = loadStripe('pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQWuoSDk2bKOhk5WpezGx1xKKsCfu1kdkmBruvVW5UGzQ1ejQGvQm00d3c0qhxQ');
 
@@ -29,7 +31,6 @@ function App() {
     <Elements stripe={stripePromise}>
         <Layout>
           <Routes>
-
           {/* public routes*/}          
           <Route path="/Login" element={<Login />} />
           <Route path="/UploadFile" element={<UploadFile />} />
@@ -51,14 +52,13 @@ function App() {
             <Route element={<RequireAuth allowedRoles={["company admin", "super admin"]} />}>
               <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
               <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
+              <Route path="/companies/:companyId/dashboard" element={<CompanyDashboard />} />
+              <Route path="/companies/:companyId/printers/:printerId/edit" element={<PrinterForm />} />
             </Route>
           </Route>
 
           {/* 404 route */}
           <Route path="*" element={<NotFound />} />
-
-
-
         </Routes>
       </Layout>
     </Elements>

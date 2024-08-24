@@ -112,22 +112,21 @@ const QRCodeTable = ({ qrCodes, onObsolete, onDownload }) => {
                             </td>
                             <td>{qrCode.obsolete ? 'Yes' : 'No'}</td>
                             <td>{new Date(qrCode.createdAt).toLocaleDateString()}</td>
-                            <td>
-                                <button className='btn btn-sm btn-primary' onClick={() => onObsolete(qrCode._id)}>Obsolete</button>
+                            <td className=''>
                                 <button 
                                     className='btn-icon' 
-                                    style={{ marginLeft: '8px' }} 
                                     onClick={() => handleDownload(qrCode._id, qrCode.printer_name)}
-                                    disabled={loading === qrCode._id} // Disable button while loading
+                                    disabled={loading === qrCode._id} 
                                 >
                                     {loading === qrCode._id ? (
                                         <div class="spinner-border text-primary" role="status">
                                         <span class="visually-hidden">Loading...</span>
-                                      </div> // Add a spinner icon or component
+                                      </div>
                                     ) : (
                                         <i className="bi bi-download"></i>
                                     )}
                                 </button>
+                                <button className='btn-icon' onClick={() => onObsolete(qrCode._id)} style={{ marginLeft: '8px' }} ><i class="bi bi-trash"></i></button>
                             </td>
                         </tr>
                     ))}

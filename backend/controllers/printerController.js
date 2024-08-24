@@ -24,8 +24,8 @@ const getAllPrinters = async (req, res) => {
 
 const getPrinter = async (req, res) => {
     try {
-        const { id } = req.params;
-        const printer = await printerService.getPrinter(id);
+        const { companyId, printerId } = req.params;
+        const printer = await printerService.getPrinter(companyId, printerId);
         if (!printer) {
             res.status(404).json({ message: 'Printer not found' });
         } else {
@@ -50,10 +50,39 @@ const deletePrinter = async (req, res) => {
     }
 };
 
+const updatePrinterStatus = async (req, res) => {
+    // can remove?????????????????
+    try {
+        const { id } = req.params;
+        const { status } = req.body;
+        await printerService.updatePrinterStatus(id, status);
+        res.status(200).json({ message: 'Printer status updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating printer status', error });
+    }
+};
+
+const updatePrinter = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const updates = req.body;
+        const success = await printerService.updatePrinter(id, updates);
+        if (!success) {
+            return res.status(404).json({ message: 'Printer not found' });
+        }
+        res.status(200).json({ message: 'Printer updated' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating printer', error });
+    }
+};
+
 
 module.exports = {
     createPrinter,
     getAllPrinters,
     getPrinter,
-    deletePrinter
+    deletePrinter,
+    updatePrinterStatus,
+    updatePrinter,
+
 };

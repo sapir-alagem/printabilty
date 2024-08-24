@@ -12,14 +12,19 @@ const CompanyItem = (props) => {
     navigate(`/companies/${props.id}/printers`);
   };
 
+  const viewDashboardHandler = () => {
+    navigate(`/companies/${props.id}/dashboard`);
+  };
+
   return (
     <tr>
-      <td>{props.id}</td>
       <td>{props.name}</td>
+      <td>{props.id}</td>
       <td>{props.printersCount}</td>
       <td>
-        <button className="btn btn-sm btn-primary" onClick={viewPrintersHandler}>View Printers</button>
-        <button className="btn btn-sm btn-primary ml-2" onClick={viewQrCodesHandler}>View QR Codes</button>
+        <button className="btn btn-sm btn-primary" onClick={viewDashboardHandler}>View Dashboard</button>
+        {/* <button className="btn btn-sm btn-primary ml-2" onClick={viewPrintersHandler}>View Printers</button> */}
+        {/* <button className="btn btn-sm btn-primary ml-2" onClick={viewQrCodesHandler}>Manage QR Codes</button> */}
       </td>
     </tr>
   );

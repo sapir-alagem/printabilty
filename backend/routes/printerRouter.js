@@ -4,7 +4,7 @@ const printerController = require('../controllers/printerController');
 
 router.post('/printers', printerController.createPrinter);
 router.get('/printers', printerController.getAllPrinters);
-router.get('/printers/:id', printerController.getPrinter);
+router.get('/printers/:printerId', printerController.getPrinter);
 router.delete('/printers/:id', printerController.deletePrinter);
 
 module.exports = router;
