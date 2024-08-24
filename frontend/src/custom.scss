@@ -1,0 +1,18 @@
+// Import Bootstrap's functions
+@import "~bootstrap/scss/functions";
+
+// Override primary color
+$primary: #0BAAEE;
+
+// Override theme colors
+$theme-colors: (
+  "primary": #0BAAEE,
+  "secondary": #E30284,
+);
+
+// Import Bootstrap's main SCSS file
+@import "~bootstrap/scss/bootstrap";
+
+// #0BAAEE monocrom #36BCF6
+// #E30284 monocrom #FD1B9E
+// #FDEE0B monocrom #D3C602

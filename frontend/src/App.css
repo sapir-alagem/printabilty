@@ -78,3 +78,9 @@
   width: 100% !important;
   height: 100% !important;
 }
+
+.column-background-container
+{
+  position: absolute;
+  z-index: 0;
+}
