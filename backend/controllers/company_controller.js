@@ -50,4 +50,23 @@ const getAllCompanies = async (req, res, next) => {
   }
 };
 
-module.exports = { createCompany, getCompany, getAllCompanies };
+const getCompanyCurrency = async (req, res, next) => {
+  try {
+    const companyId = req.body.companyId;
+    const currency = await CompanyService.getCompanyCurrency(companyId);
+    res.status(200).json({ currency });
+  } catch (error) {
+    console.error("Error retrieving company currency:", error);
+    res.status(500).json({
+      message: "Could not retrieve company currency",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  createCompany,
+  getCompany,
+  getAllCompanies,
+  getCompanyCurrency,
+};

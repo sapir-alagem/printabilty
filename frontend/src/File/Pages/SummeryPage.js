@@ -13,7 +13,7 @@ function SummaryPage() {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(window.location.search);
   const fileUrl = queryParams.get("file_url");
-  const { printDetails, setPrintDetails, price } = useCheckout();
+  const { printDetails, setPrintDetails, price, currency } = useCheckout();
   const [documentName, setDocumentName] = useState("Document Name");
   const [colorMode, setColorMode] = useState("Black/White");
   const [printBothSides, setPrintBothSides] = useState("No");
@@ -32,8 +32,17 @@ function SummaryPage() {
       copies,
       numPages,
       companyId: queryParams.get("company_id"),
+      price,
     });
-  }, [colorMode, printBothSides, printAllPages, pageRange, copies, numPages]);
+  }, [
+    colorMode,
+    printBothSides,
+    printAllPages,
+    pageRange,
+    copies,
+    numPages,
+    price,
+  ]);
 
   useEffect(() => {
     const fetchFileData = async () => {
@@ -190,7 +199,9 @@ function SummaryPage() {
             </div>
             <div>
               <span className="text-muted">PRICE:</span>{" "}
-              <strong>{price}</strong>
+              <strong>
+                {price} {currency}
+              </strong>
             </div>
           </div>
           <div className="d-flex justify-content-between p-3">

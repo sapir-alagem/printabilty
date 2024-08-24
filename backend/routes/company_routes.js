@@ -6,5 +6,6 @@ const verifyJWT = require("../middleWare/verifyJWT"); //adding middleware to ver
 router.post("/", companyController.createCompany);
 router.get("/:id", verifyJWT, companyController.getCompany);
 router.get("/", verifyJWT, companyController.getAllCompanies);
+router.post("/currency", companyController.getCompanyCurrency);
 
 module.exports = router;

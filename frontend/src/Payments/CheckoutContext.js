@@ -7,6 +7,9 @@ const CheckoutContext = createContext();
 export const CheckoutProvider = ({ children, initialPrintDetails }) => {
   const [printDetails, setPrintDetails] = useState(initialPrintDetails || {});
   const [price, setPrice] = useState(0);
+  const [currency, setCurrency] = useState("$");
+  const queryParams = new URLSearchParams(window.location.search);
+  const company_id = queryParams.get("company_id");
 
   useEffect(() => {
     const updatePrice = async () => {
@@ -15,7 +18,13 @@ export const CheckoutProvider = ({ children, initialPrintDetails }) => {
           "http://localhost:5000/print_jobs/calculate",
           printDetails
         );
-        setPrice(response.data.price);
+        const currency = await axios.post(
+          "http://localhost:5000/companies/currency",
+          { companyId: company_id }
+        );
+
+        //setPrice(response.data.price);
+        setCurrency(currency.data.currency);
       } catch (error) {
         console.error("Error updating price:", error);
       }
@@ -41,7 +50,13 @@ export const CheckoutProvider = ({ children, initialPrintDetails }) => {
 
   return (
     <CheckoutContext.Provider
-      value={{ printDetails, setPrintDetails, price, savePrintDetails }}
+      value={{
+        printDetails,
+        setPrintDetails,
+        price,
+        savePrintDetails,
+        currency,
+      }}
     >
       {children}
     </CheckoutContext.Provider>
