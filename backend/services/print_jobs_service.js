@@ -2,6 +2,7 @@ const { getClient } = require('../utils/mongo');
 const {ObjectId} = require('mongodb');
 const axios = require('axios');
 const { sendMessageToClient } = require('./web_socket_service'); // Ensure the correct path
+const {getCompany} = require('./company_service.js');
 
 // this is exemple for storing data into the db
 async function createPrintJob(printJobData) {
@@ -76,26 +77,22 @@ async function processPrintJob(jobId) {
   
   async function printJobCalculator(printJob) {
     try {
-        const company = await CompanyService.getCompany(printJob.body.company_id);
+        const company = await getCompany(printJob.body.companyId);
 
         if (!company || !printJob) {
             throw new Error('Company or Print Job not found');
         }
 
         let singlePagePrice = 0;
-        let numOfPages;
-        if (!printJob.body.printAllPages) {
-            numOfPages  = printJob.body.endPage - printJob.body.startPage + 1; 
-        } else {
-            numOfPages = printJob.body.numPages;
-        }
-        const numOfCopies = printJob.body.copies;
+        const numOfPages = printJob.body.numPages;
+        const numOfCopies = printJob.body.copies;        
 
-        if (printJob.colorMode === "color" && company.enableColorPrinting) {
+        if (printJob.colorMode === "Color") {
             singlePagePrice = company.coloredPageCost;
         } else {
             singlePagePrice = company.blackAndWhitePageCost;
         }
+
         let  price = singlePagePrice * numOfPages * numOfCopies;
         price = parseFloat(price.toFixed(2));
 
