@@ -2,7 +2,7 @@ const { getClient } = require("../utils/mongo");
 const { ObjectId } = require("mongodb");
 const axios = require("axios");
 const { sendMessageToClient } = require("./web_socket_service"); // Ensure the correct path
-const {getCompany} = require("./company_service.js");
+const { getCompany } = require("./company_service.js");
 
 // this is exemple for storing data into the db
 async function createPrintJob(printJobData) {
@@ -55,53 +55,65 @@ async function sendPrintJobToPrinter(printJob) {
 }
 
 async function processPrintJob(jobId) {
-    try {
-      // Retrieve print job details from the database using the provided jobId
-      const printJob = await getPrintJobs(jobId);
-  
-      // Check if print job exists
-      if (!printJob) {
-        console.error("Print job not found.");
-        return;
-      }
-  
-      // Send the print job to the printer
-      await sendPrintJobToPrinter(printJob);
-  
-      console.log("Print job sent successfully.");
-    } catch (error) {
-      console.error("Failed to process print job:", error);
+  try {
+    // Retrieve print job details from the database using the provided jobId
+    const printJob = await getPrintJobs(jobId);
+
+    // Check if print job exists
+    if (!printJob) {
+      console.error("Print job not found.");
+      return;
     }
+
+    // Send the print job to the printer
+    await sendPrintJobToPrinter(printJob);
+
+    console.log("Print job sent successfully.");
+  } catch (error) {
+    console.error("Failed to process print job:", error);
   }
-
-  
-  async function printJobCalculator(printJob) {
-    try {
-        const company = await getCompany(printJob.body.companyId);
-
-        if (!company || !printJob) {
-            throw new Error("Company or Print Job not found");
-        }
-
-        let singlePagePrice = 0;
-        const numOfPages = printJob.body.numPages;
-        const numOfCopies = printJob.body.copies;        
-
-        if (printJob.body.colorMode === "Color") {
-            singlePagePrice = company.coloredPageCost;
-        } else {
-            singlePagePrice = company.blackAndWhitePageCost;
-        }
-
-        let  price = singlePagePrice * numOfPages * numOfCopies;
-        price = parseFloat(price.toFixed(2));
-
-        return price;
-    } catch (error) {
-        console.error(error);
-        throw new Error("Error calculating print job cost");
-    }
 }
 
-  
-module.exports = { createPrintJob, getPrintJobs, processPrintJob, printJobCalculator};
+async function printJobCalculator(printJob) {
+  try {
+    const company = await getCompany(printJob.body.companyId);
+
+    if (!company || !printJob) {
+      throw new Error("Company or Print Job not found");
+    }
+
+    let singlePagePrice = 0;
+    const numOfPages = printJob.body.numPages;
+    const numOfCopies = printJob.body.copies;
+
+    if (printJob.body.colorMode === "Color") {
+      singlePagePrice = company.coloredPageCost;
+    } else {
+      singlePagePrice = company.blackAndWhitePageCost;
+    }
+
+    let price = singlePagePrice * numOfPages * numOfCopies;
+
+    currency = company.paymentsCurrency.toLowerCase();
+    //if price is less 50 cent return 50 cent
+    convetrate = await axios.get(
+      `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${currency}.json`
+    );
+    if (convetrate.data[currency].usd * price < 0.5) {
+      //return 50 cent in the currency
+      price = 0.5 / convetrate.data[currency].usd;
+    }
+
+    return parseFloat(price.toFixed(2));
+  } catch (error) {
+    console.error(error);
+    throw new Error("Error calculating print job cost");
+  }
+}
+
+module.exports = {
+  createPrintJob,
+  getPrintJobs,
+  processPrintJob,
+  printJobCalculator,
+};

@@ -23,7 +23,7 @@ export const CheckoutProvider = ({ children, initialPrintDetails }) => {
           { companyId: company_id }
         );
 
-        //setPrice(response.data.price);
+        setPrice(response.data.finalPrice);
         setCurrency(currency.data.currency);
       } catch (error) {
         console.error("Error updating price:", error);
