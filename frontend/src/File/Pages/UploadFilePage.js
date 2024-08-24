@@ -1,5 +1,5 @@
-import React, { useState,useEffect  } from 'react';
-import { useNavigate, useLocation  } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function FileUploader() {
   const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
@@ -12,16 +12,17 @@ function FileUploader() {
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    const companyId = queryParams.get('company_id');
-    const printerName = queryParams.get('printer_name');
+    const companyId = queryParams.get("company_id");
+    const printerName = queryParams.get("printer_name");
 
     if (!companyId || !printerName) {
-      alert('Required query parameters are missing. Please ensure you provide company_id and printer_name.');
+      alert(
+        "Required query parameters are missing. Please ensure you provide company_id and printer_name."
+      );
       // Redirect to an error page or another route if the parameters are missing
-      navigate('/'); // Replace '/error' with your actual error route
+      navigate("/"); // Replace '/error' with your actual error route
     }
   }, [location.search, navigate]);
-
 
   async function uploadFile() {
     if (!selectedFile) {
@@ -37,13 +38,22 @@ function FileUploader() {
     const requestOptions = {
       method: "POST",
       body: formData,
-      redirect: "follow"
+      redirect: "follow",
     };
 
     try {
-      const response = await fetch("http://localhost:5000/uploads", requestOptions);
+      const response = await fetch(
+        "http://localhost:5000/uploads",
+        requestOptions
+      );
       const data = await response.json();
-      navigate(`/summary?file_url=${encodeURIComponent(data.file_url)}&company_id=${company_id}&printer_name=${encodeURIComponent(printer_name)}`);
+      navigate(
+        `/summary?file_url=${encodeURIComponent(
+          data.file_url
+        )}&company_id=${company_id}&printer_name=${encodeURIComponent(
+          printer_name
+        )}`
+      );
     } catch (error) {
       alert(error.message);
     }
@@ -58,9 +68,17 @@ function FileUploader() {
       <h1>Upload a file to print</h1>
       <form id="uploadForm" encType="multipart/form-data">
         <div className="custom-file mb-3">
-          <input type="file" className="custom-file-input" id="file" name="file" onChange={handleFileChange} style={{ width: '100px' }} />
-          <label className="custom-file-label" htmlFor="file">{selectedFile ? selectedFile.name : "Choose file"} </label>
-          
+          <input
+            type="file"
+            className="custom-file-input"
+            id="file"
+            name="file"
+            onChange={handleFileChange}
+            style={{ width: "100px" }}
+          />
+          <label className="custom-file-label" htmlFor="file">
+            {selectedFile ? selectedFile.name : "Choose file"}{" "}
+          </label>
         </div>
         {/* <button type="button" className="btn btn-primary" onClick={uploadFile}>Upload</button> */}
         <button
@@ -71,11 +89,15 @@ function FileUploader() {
         >
           {isDisabled ? (
             <>
-              <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
               Loading...
             </>
           ) : (
-            'Upload'
+            "Upload"
           )}
         </button>
       </form>

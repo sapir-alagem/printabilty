@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const CompanyItem = (props) => {
   const navigate = useNavigate();
@@ -18,8 +18,18 @@ const CompanyItem = (props) => {
       <td>{props.name}</td>
       <td>{props.printersCount}</td>
       <td>
-        <button className="btn btn-sm btn-primary" onClick={viewPrintersHandler}>View Printers</button>
-        <button className="btn btn-sm btn-primary ml-2" onClick={viewQrCodesHandler}>View QR Codes</button>
+        <button
+          className="btn btn-sm btn-primary"
+          onClick={viewPrintersHandler}
+        >
+          View Printers
+        </button>
+        <button
+          className="btn btn-sm btn-primary ml-2"
+          onClick={viewQrCodesHandler}
+        >
+          View QR Codes
+        </button>
       </td>
     </tr>
   );
