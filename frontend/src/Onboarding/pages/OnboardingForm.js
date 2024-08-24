@@ -145,7 +145,6 @@ const Onboarding = () => {
         <Button variant="primary" onClick={handleNext} className="ml-2">
           Next
         </Button>
-        <label className="step-label">Step {activeStep} of 3</label>
       </div>
     </div>
   );
