@@ -40,7 +40,7 @@ const CompanyDashboard = () => {
     );
 
   return (
-    <div className="container mt-4">
+    <div className="p-5 w-100 m-0" style={{ backgroundColor: '#EFF7FF', minHeight: '100vh' }}>
       <h1 className="mb-4">Company Dashboard</h1>
       {company ? (
         <>
