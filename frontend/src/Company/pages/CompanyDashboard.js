@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import PrinterIndex from '../../Printer/pages/PrinterIndex';
+import EarningChart from '../components/EarningChart';
+import PrintsHistoryChart from '../components/PrintsHistoryChart';
+import NumbersDashborad from '../components/NumbersDashborad';
+import DashCard from '../components/DashCard';
 
 const CompanyDashboard = () => {
   const { companyId } = useParams();
@@ -28,75 +32,49 @@ const CompanyDashboard = () => {
   if (error) return <div className="container mt-4"><div>{error}</div></div>;
 
   return (
-    <div className="container mt-4">
-      <h1 className="mb-4">Company Dashboard</h1>
-      {company ? (
-        <>
-          <div className="row mb-4 gx-3">
-            <div className="col-md-4 d-flex">
-              <div className="card flex-fill">
-                <div className="card-body">
-                  <h5 className="card-title mb-4">Company Info</h5>
-                  <p className="card-text">Company Name: {company.name}</p>
-                  <p className="card-text">Admin User: need to add !!!</p>
-                </div>
+    <>
+      <h1> Hey, {company.companyName}</h1>
+      <br></br>
+      <div className="row mb-4 gx-3">
+        <div className="col-md-4 d-flex">
+          <DashCard>
+            <div className="row">
+              <div className="col-12">
+                <h4 className='mr-auto'>Company Info
+                <button className='btn btn-icon btn-sm'>
+                      <i className="bi bi-pencil"></i>
+                </button>
+                </h4>
+                
+                <p className='mr-auto'>Company Name: {company.companyName}</p>
+                <p className='mr-auto'>Email: {company.companyEmail}</p>
               </div>
             </div>
+            <NumbersDashborad companyId={companyId} />
+          </DashCard>
+        </div>
+        <div className="col-md-8 d-flex">
+          <DashCard>
+            <PrinterIndex companyId={companyId} />
+          </DashCard>
+        </div>
+      </div>
 
-            <div className="col-md-8 d-flex">
-              <div className="card flex-fill">
-                <div className="card-body">
-                  <PrinterIndex companyId={companyId} />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row gx-3">
-            <div className="col-md-4 d-flex">
-              <div className="card flex-fill">
-                <div className="card-body">
-                  <h5 className="card-title">KIP payments</h5>
-                </div>
-              </div>
-            </div>
-
-             <div className="col-md-8 d-flex">
-              <div className="card flex-fill">
-                <div className="card-body">
-                  <h5 className="card-title">Print History</h5>
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Printer</th>
-                        <th>Price -- render $</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Event A</td>
-                        <td>2024-08-01</td>
-                        <td>Details of Event A</td>
-                        <td>Details of Event A</td>
-                      </tr>
-                    </tbody>
-                  </table>
-   
-   
-   
-                 </div>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : (
-        <div>No company details available.</div>
-      )}
-    </div>
+      <div className="row gx-3">
+        <div className="col-md-4 d-flex">
+          <DashCard>
+            <h4 className='mr-auto'>Ernings</h4>
+            <EarningChart companyId={companyId}/>
+          </DashCard>
+        </div>
+        <div className="col-md-8 d-flex">
+        <DashCard>
+          <h4 className='mr-auto'>Prints History</h4>
+          <PrintsHistoryChart companyId={companyId}/>
+          </DashCard>
+        </div>
+      </div>
+    </>
   );
 };
 

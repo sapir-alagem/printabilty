@@ -77,7 +77,7 @@ const PrinterIndex = () => {
     return (
         <div>
             <div className="d-flex mb-4">
-                <h5 className='mr-auto'>Printer Management</h5>
+                <h4 className='mr-auto'>My Printers</h4>
                 <PrinterGenerateButton onGenerate={handleGenerate} />
             </div>
             {error && <div>{error}</div>}
