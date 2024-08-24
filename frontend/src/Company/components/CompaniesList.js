@@ -3,10 +3,7 @@ import Table from "react-bootstrap/Table";
 import CompanyItem from "./CompanyItem";
 
 const CompaniesList = (props) => {
-  // Ensure props.items is an array
-  const items = Array.isArray(props.items.companies)
-    ? props.items.companies
-    : [];
+  const items = Array.isArray(props.items.companies) ? props.items.companies : [];
 
   if (items.length === 0) {
     return (
@@ -18,12 +15,12 @@ const CompaniesList = (props) => {
     return (
       <div className="m-4">
         <h2 className="mb-4">Companies List</h2>
-        <Table striped bordered hover>
+        <table className="table table-hover">
           <thead>
             <tr>
-              <th>ID</th>
               <th>Name</th>
-              <th>Printers Count</th>
+              <th>ID</th>
+              <th>Numbers of Printers</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -37,7 +34,7 @@ const CompaniesList = (props) => {
               />
             ))}
           </tbody>
-        </Table>
+        </table>
       </div>
     );
   }

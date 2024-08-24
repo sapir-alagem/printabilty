@@ -1,3 +1,4 @@
+
 const { ObjectId } = require("mongodb");
 const { getClient } = require("../utils/mongo");
 
@@ -29,34 +30,37 @@ async function getAllPrinters(companyId) {
   }
 }
 
-async function getPrinter(printerId) {
-  const client = await getClient();
+async function getPrinter(companyId, printerId) {
+    const client = await getClient();
+    try {
+        const db = client.db('printability');
+        const col = db.collection('printers');
 
-  try {
-    const db = client.db("printability");
-    const col = db.collection("printers");
-    const printer = await col.findOne({ _id: printerId });
-    return printer;
-  } catch (error) {
-    console.error("Error retrieving printer:", error);
-    throw error;
-  }
+        let printer = await col.findOne({ "_id": new ObjectId(printerId) });
+
+         console.log(printer);
+        return printer;
+    } catch (error) {
+        console.error('Error retrieving printer:', error);
+        throw error;
+    }
 }
 
-const findPrinterByName = async (companyId, name) => {
-  const client = await getClient();
-  try {
-    const db = client.db("printability");
-    const col = db.collection("printers");
-    const printer = await col.findOne({
-      name: name,
-      company_id: companyId,
-    });
-    return printer;
-  } catch (error) {
-    console.error("Error:", error);
-    throw error;
-  }
+async function findPrinterByName(companyId, name) {
+    const client = await getClient();
+    try {
+        const db = client.db('printability');
+        const col = db.collection('printers');
+        const printer = await col.findOne({ 
+            name: name,
+            company_id: companyId, 
+        });
+        return printer;
+    } catch (error) {
+        console.error('Error:', error);
+        throw error;
+    }
+
 };
 
 async function deletePrinter(printerId, companyId) {
@@ -75,10 +79,41 @@ async function deletePrinter(printerId, companyId) {
   }
 }
 
+async function updatePrinter(id, updates) {
+    const client = await getClient();
+    
+    try {
+        const db = client.db('printability');
+        const col = db.collection('printers');
+
+        const objectId = new ObjectId(id);
+
+        let document = await col.findOne({ "_id": objectId });
+        console.log('Document before update:', document);
+
+        const result = await col.updateOne(
+            { _id: objectId },
+            { $set: updates }
+        );
+
+        if (result.modifiedCount > 0) {
+            console.log('Update successful.');
+            return true;
+        } else {
+            console.log('No documents matched the query. Update not applied.');
+            return false;
+        }
+    } catch (error) {
+        console.error('Error updating printer:', error);
+        throw error;
+    }
+}
+
 module.exports = {
-  createPrinter,
-  getAllPrinters,
-  getPrinter,
-  findPrinterByName,
-  deletePrinter,
+    createPrinter,
+    getAllPrinters,
+    getPrinter,
+    findPrinterByName,
+    deletePrinter,
+    updatePrinter,
 };

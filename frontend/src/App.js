@@ -23,6 +23,9 @@ import PersistLogin from "./auth/components/PersistLogin";
 import OnboardingForm from "./Onboarding/pages/OnboardingForm";
 import SingUp from "./Onboarding/pages/SingUp";
 import Login from "./Onboarding/pages/Login";
+import CompanyDashboard from './Company/pages/CompanyDashboard'; 
+import PrinterForm from './Printer/pages/PrinterForm';
+
 
 const stripePromise = loadStripe(
   "pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQWuoSDk2bKOhk5WpezGx1xKKsCfu1kdkmBruvVW5UGzQ1ejQGvQm00d3c0qhxQ"
@@ -66,6 +69,9 @@ function App() {
               path="/companies/:companyId/printers"
               element={<PrinterIndex />}
             />
+            <Route path="/companies/:companyId/dashboard" element={<CompanyDashboard />} />
+            <Route path="/companies/:companyId/printers/:printerId/edit" element={<PrinterForm />} />
+
           </Route>
         </Route>
 

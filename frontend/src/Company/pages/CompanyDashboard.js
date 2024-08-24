@@ -1,0 +1,103 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import PrinterIndex from '../../Printer/pages/PrinterIndex';
+
+const CompanyDashboard = () => {
+  const { companyId } = useParams();
+  const [company, setCompany] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchCompany = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/companies/${companyId}`);
+        setCompany(response.data.company);
+      } catch (error) {
+        setError('Error fetching company details');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCompany();
+  }, [companyId]);
+
+  if (loading) return <div className="container mt-4"><div>Loading...</div></div>;
+  if (error) return <div className="container mt-4"><div>{error}</div></div>;
+
+  return (
+    <div className="container mt-4">
+      <h1 className="mb-4">Company Dashboard</h1>
+      {company ? (
+        <>
+          <div className="row mb-4 gx-3">
+            <div className="col-md-4 d-flex">
+              <div className="card flex-fill">
+                <div className="card-body">
+                  <h5 className="card-title mb-4">Company Info</h5>
+                  <p className="card-text">Company Name: {company.name}</p>
+                  <p className="card-text">Admin User: need to add !!!</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="col-md-8 d-flex">
+              <div className="card flex-fill">
+                <div className="card-body">
+                  <PrinterIndex companyId={companyId} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row gx-3">
+            <div className="col-md-4 d-flex">
+              <div className="card flex-fill">
+                <div className="card-body">
+                  <h5 className="card-title">KIP payments</h5>
+                </div>
+              </div>
+            </div>
+
+             <div className="col-md-8 d-flex">
+              <div className="card flex-fill">
+                <div className="card-body">
+                  <h5 className="card-title">Print History</h5>
+                  <table className="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Printer</th>
+                        <th>Price -- render $</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>1</td>
+                        <td>Event A</td>
+                        <td>2024-08-01</td>
+                        <td>Details of Event A</td>
+                        <td>Details of Event A</td>
+                      </tr>
+                    </tbody>
+                  </table>
+   
+   
+   
+                 </div>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
+        <div>No company details available.</div>
+      )}
+    </div>
+  );
+};
+
+export default CompanyDashboard;
