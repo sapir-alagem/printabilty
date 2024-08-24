@@ -12,7 +12,7 @@ export const CheckoutProvider = ({ children, initialPrintDetails }) => {
     const updatePrice = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:5000/print_jobs/update_price",
+          "http://localhost:5000/print_jobs/calculate",
           printDetails
         );
         setPrice(response.data.price);
