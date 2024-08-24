@@ -1,38 +1,63 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+// CheckoutContext.js
+import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const CheckoutContext = createContext();
 
 export const CheckoutProvider = ({ children, initialPrintDetails }) => {
   const [printDetails, setPrintDetails] = useState(initialPrintDetails || {});
   const [price, setPrice] = useState(0);
+  const [currency, setCurrency] = useState("$");
+  const queryParams = new URLSearchParams(window.location.search);
+  const company_id = queryParams.get("company_id");
 
   useEffect(() => {
+    const updatePrice = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:5000/print_jobs/calculate",
+          printDetails
+        );
+        const currency = await axios.post(
+          "http://localhost:5000/companies/currency",
+          { companyId: company_id }
+        );
+
+        setPrice(response.data.finalPrice);
+        setCurrency(currency.data.currency);
+      } catch (error) {
+        console.error("Error updating price:", error);
+      }
+    };
+
     if (printDetails) {
-      const basePrice = 10; // Example base price
-      let finalPrice = basePrice;
-
-      if (printDetails.printBothSides) finalPrice += 2; // Add cost for duplex printing
-      if (printDetails.colorMode === 'color') finalPrice += 5; // Add cost for color printing
-
-      finalPrice *= printDetails.copies; // Multiply by number of copies
-
-      setPrice(finalPrice);
+      updatePrice();
     }
   }, [printDetails]);
 
   const savePrintDetails = async (details) => {
     try {
-      const response = await axios.post('http://localhost:5000/print_jobs', details);
-      return response.data; // Ensure this returns the full response
+      const response = await axios.post(
+        "http://localhost:5000/print_jobs",
+        details
+      );
+      return response.data;
     } catch (error) {
-      console.error('Error saving print details:', error);
+      console.error("Error saving print details:", error);
       throw error;
     }
   };
 
   return (
-    <CheckoutContext.Provider value={{ printDetails, setPrintDetails, price, savePrintDetails }}>
+    <CheckoutContext.Provider
+      value={{
+        printDetails,
+        setPrintDetails,
+        price,
+        savePrintDetails,
+        currency,
+      }}
+    >
       {children}
     </CheckoutContext.Provider>
   );

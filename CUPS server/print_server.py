@@ -1,7 +1,6 @@
 import os
 import requests
 import cups
-from print import get_printer_name
 import websocket
 import json
 import threading
@@ -11,6 +10,22 @@ from flask import Flask
 app = Flask(__name__)
 
 conn = cups.Connection()
+
+websocketThreadEvent = threading.Event()
+
+def get_company_id_from_user():
+    company_id = None
+    if not os.path.exists('company_id.txt'):
+        company_id = input("Enter your company ID: ")
+        with open('company_id.txt', 'w') as f:
+            f.write(company_id)
+    else:
+        company_id = read_company_id()
+    return company_id
+
+def read_company_id():
+    with open('company_id.txt', 'r') as f:
+        return f.read().strip()
 
 # Function to download file from URL to local folder
 def download_file(url, local_folder):
@@ -36,14 +51,13 @@ def on_close(ws, close_status_code, close_msg):
 
 def on_open(ws):
     print("Connection opened")
-    site = "example_site"
-    printer_id = "12345"
+    company_id = get_company_id_from_user()
     data = {
-        "site": site,
-        "printerId": printer_id
+        "company_id": company_id,
     }
     ws.send(json.dumps(data))
     print(f"Sent data: {data}")
+    websocketThreadEvent.set()
 
 def on_print_request(data):
     print("Received print request on WebSocket")
@@ -56,8 +70,8 @@ def on_print_request(data):
     data = json.loads(data)
 
     file_url = data['file_url']
-    #printer_name = data['printer_name']
-    printer_name = get_printer_name(conn)
+    printer_name = data['printer_name']
+    #printer_name = get_printer_name(conn)
     # Define local folder to save the downloaded file
     local_folder = 'downloads'
 
@@ -111,7 +125,7 @@ def on_print_request(data):
 def start_websocket_client():
     websocket.enableTrace(True)
     # Include an ID or data in the URL as a query parameter
-    ws = websocket.WebSocketApp("ws://192.168.252.2:5000",
+    ws = websocket.WebSocketApp("ws://192.168.0.199:5000",
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close,
@@ -124,6 +138,7 @@ def home():
 
 if __name__ == '__main__':
     websocketThread = threading.Thread(target=start_websocket_client).start()
-
+    #wait for websocket to connect
+    websocketThreadEvent.wait()
     app.run(host='0.0.0.0', port=12345)
 

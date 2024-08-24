@@ -1,47 +1,47 @@
-import React, { useState } from 'react';
-import Table from 'react-bootstrap/Table';
-import QRCode from 'qrcode.react';
-import { Tooltip, OverlayTrigger } from 'react-bootstrap';
-import './QRCodeTable.css';
+import React, { useState } from "react";
+import Table from "react-bootstrap/Table";
+import QRCode from "qrcode.react";
+import { Tooltip, OverlayTrigger } from "react-bootstrap";
+import "./QRCodeTable.css";
 
 const QRCodeTable = ({ qrCodes, onObsolete, onDownload }) => {
-    const [copiedText, setCopiedText] = useState('');
-    const [loading, setLoading] = useState(null); // Add loading state
+  const [copiedText, setCopiedText] = useState("");
+  const [loading, setLoading] = useState(null); // Add loading state
 
+  const handleCopy = (text) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setCopiedText(text);
+        setTimeout(() => {
+          setCopiedText("");
+        }, 2000); // Hide the tooltip after 2 seconds
+      })
+      .catch((err) => {
+        console.error("Failed to copy text: ", err);
+      });
+  };
 
-    const handleCopy = (text) => {
-        navigator.clipboard.writeText(text)
-            .then(() => {
-                setCopiedText(text);
-                setTimeout(() => {
-                    setCopiedText('');
-                }, 2000); // Hide the tooltip after 2 seconds
-            })
-            .catch(err => {
-                console.error('Failed to copy text: ', err);
-            });
-    };
+  const renderTooltip = (props) => (
+    <Tooltip id="button-tooltip" {...props}>
+      Copied to clipboard!
+    </Tooltip>
+  );
 
-    const renderTooltip = (props) => (
-        <Tooltip id="button-tooltip" {...props}>
-            Copied to clipboard!
-        </Tooltip>
-    );
-
-    const handleDownload = async (id, printerName) => {
-        setLoading(id); // Set loading state to the current QR code ID
-        try {
-            await onDownload(id, printerName);
-        } catch (error) {
-            console.error('Download failed:', error);
-        } finally {
-            setLoading(null); // Reset loading state after download completes
-        }
-    };
-
-    if (qrCodes.length === 0) {
-        return <div>No QR codes found.</div>;
+  const handleDownload = async (id, printerName) => {
+    setLoading(id); // Set loading state to the current QR code ID
+    try {
+      await onDownload(id, printerName);
+    } catch (error) {
+      console.error("Download failed:", error);
+    } finally {
+      setLoading(null); // Reset loading state after download completes
     }
+  };
+
+  if (qrCodes.length === 0) {
+    return <div>No QR codes found.</div>;
+  }
 
     return (
         <div className="m-4">
@@ -134,6 +134,7 @@ const QRCodeTable = ({ qrCodes, onObsolete, onDownload }) => {
             </Table>
         </div>
     );
+
 };
 
 export default QRCodeTable;
