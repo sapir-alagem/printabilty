@@ -99,7 +99,7 @@ const Login = () => {
               Welcome Back,
             </h3>
             <p>
-              Don’t have an account? <a href="/SignUp">Sign Up</a>
+              Don’t have an account? <a href="/">Sign Up</a>
             </p>
             <div className="form-floating mb-3">
               <input

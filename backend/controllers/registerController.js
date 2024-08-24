@@ -26,8 +26,12 @@ const handleNewUser = async (req, res) => {
     console.error("Error creating user:", error);
     return res.status(500).json({ message: error.message });
   }
-  emailService.sendEmail(email, password);
-  res.status(201).send("User created");
+  try {
+    await emailService.sendEmail(email, password);
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = { handleNewUser };

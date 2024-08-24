@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import PrinterIndex from '../../Printer/pages/PrinterIndex';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { axiosPrivate } from "../../api/axios";
+import { useParams } from "react-router-dom";
+import PrinterIndex from "../../Printer/pages/PrinterIndex";
 
 const CompanyDashboard = () => {
   const { companyId } = useParams();
@@ -12,10 +13,11 @@ const CompanyDashboard = () => {
   useEffect(() => {
     const fetchCompany = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/companies/${companyId}`);
+        //const response = await axios.get(`http://localhost:5000/companies/${companyId}`);
+        const response = await axiosPrivate.get(`/companies/${companyId}`);
         setCompany(response.data.company);
       } catch (error) {
-        setError('Error fetching company details');
+        setError("Error fetching company details");
       } finally {
         setLoading(false);
       }
@@ -24,8 +26,18 @@ const CompanyDashboard = () => {
     fetchCompany();
   }, [companyId]);
 
-  if (loading) return <div className="container mt-4"><div>Loading...</div></div>;
-  if (error) return <div className="container mt-4"><div>{error}</div></div>;
+  if (loading)
+    return (
+      <div className="container mt-4">
+        <div>Loading...</div>
+      </div>
+    );
+  if (error)
+    return (
+      <div className="container mt-4">
+        <div>{error}</div>
+      </div>
+    );
 
   return (
     <div className="container mt-4">
@@ -61,7 +73,7 @@ const CompanyDashboard = () => {
               </div>
             </div>
 
-             <div className="col-md-8 d-flex">
+            <div className="col-md-8 d-flex">
               <div className="card flex-fill">
                 <div className="card-body">
                   <h5 className="card-title">Print History</h5>
@@ -85,10 +97,7 @@ const CompanyDashboard = () => {
                       </tr>
                     </tbody>
                   </table>
-   
-   
-   
-                 </div>
+                </div>
               </div>
             </div>
           </div>
