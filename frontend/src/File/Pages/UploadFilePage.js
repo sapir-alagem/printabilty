@@ -65,16 +65,11 @@ function FileUploader() {
   }
   return (
     <div>
-      <div
-        style={{
-          backgroundColor: "#3799FA",
-          height: "30%",
-          width: "100%",
-        }}
-      >
-        <Header />
-        {/* You can add more content here, like part of the FileUploadComponent */}
-      </div>
+      <Header
+        title="Upload a file to print"
+        description="Easily browse and upload your file and get it printed in no time."
+      />
+
       <div>
         <FileUploadComponent />
       </div>

@@ -5,6 +5,7 @@ import CheckoutButton from "../../Payments/CheckoutButton";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
 import RangeSlider from "../components/RangeSlider";
+import Header from "../components/Header";
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
@@ -29,8 +30,9 @@ function SummaryPage() {
       printAllPages,
       pageRange,
       copies,
+      numPages,
     });
-  }, [colorMode, printBothSides, printAllPages, pageRange, copies]);
+  }, [colorMode, printBothSides, printAllPages, pageRange, copies, numPages]);
 
   useEffect(() => {
     const fetchFileData = async () => {
@@ -67,123 +69,138 @@ function SummaryPage() {
   };
 
   return (
-    <div className="container mt-5" style={{ maxWidth: "600px" }}>
-      <div className="card shadow-sm">
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <span>
-            <strong>Document name:</strong> {documentName}
-          </span>
-        </div>
-        <div className="card-body">
-          <div className="mb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <i className="bi bi-palette"></i>
-              <span> Color</span>
-            </div>
-            <select
-              className="form-select"
-              value={colorMode}
-              onChange={(e) => setColorMode(e.target.value)}
-              style={{ width: "150px" }}
-            >
-              <option value="Black/White">Black/White</option>
-              <option value="Color">Color</option>
-            </select>
+    <div>
+      <Header
+        title="Summary"
+        description="Review and adjust your print settings before checkout"
+      />
+      <div
+        className="container"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          marginTop: "10%",
+          zIndex: "100",
+        }}
+      >
+        <div className="card shadow-sm">
+          <div className="card-header d-flex justify-content-between align-items-center">
+            <span>
+              <strong>Document name:</strong> {documentName}
+            </span>
           </div>
-          <div className="mb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <i className="bi bi-hash"></i>
-              <span> Number of copies</span>
-            </div>
-            <div className="d-flex align-items-center">
-              <button
-                className="btn btn-outline-secondary btn-sm"
-                onClick={() => handleCopiesChange(-1)}
-              >
-                -
-              </button>
-              <input
-                type="number"
-                className="form-control text-center"
-                value={copies}
-                readOnly
-                style={{ width: "80px", margin: "0 10px" }}
-              />
-              <button
-                className="btn btn-outline-secondary btn-sm"
-                onClick={() => handleCopiesChange(1)}
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <div className="mb-3 d-flex justify-content-between align-items-center">
-            <div>
-              <i className="bi bi-check2-all"></i>
-              <span> Print all pages</span>
-            </div>
-            <select
-              className="form-select"
-              value={printAllPages ? "Yes" : "No"}
-              onChange={(e) => setPrintAllPages(e.target.value === "Yes")}
-              style={{ width: "150px" }}
-            >
-              <option value="Yes">Yes</option>
-              <option value="No">No</option>
-            </select>
-          </div>
-          {!printAllPages && (
+          <div className="card-body">
             <div className="mb-3 d-flex justify-content-between align-items-center">
               <div>
-                <i className="bi bi-file-code"></i>
-                <span> Page range</span>
+                <i className="bi bi-palette"></i>
+                <span> Color</span>
               </div>
-              <RangeSlider
-                min={1}
-                max={maxPages}
-                start={1}
-                end={maxPages}
-                //on range change set the page range and the number of pages
-                onRangeChange={(range) => {
-                  setPageRange(range);
-                  setNumPages(range.end - range.start + 1);
-                }}
-              />
+              <select
+                className="form-select"
+                value={colorMode}
+                onChange={(e) => setColorMode(e.target.value)}
+                style={{ width: "150px" }}
+              >
+                <option value="Black/White">Black/White</option>
+                <option value="Color">Color</option>
+              </select>
             </div>
-          )}
-          <div className="mb-3 d-flex justify-content-between align-items-center">
+            <div className="mb-3 d-flex justify-content-between align-items-center">
+              <div>
+                <i className="bi bi-hash"></i>
+                <span> Number of copies</span>
+              </div>
+              <div className="d-flex align-items-center">
+                <button
+                  className="btn btn-outline-secondary btn-sm"
+                  onClick={() => handleCopiesChange(-1)}
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  className="form-control text-center"
+                  value={copies}
+                  readOnly
+                  style={{ width: "80px", margin: "0 10px" }}
+                />
+                <button
+                  className="btn btn-outline-secondary btn-sm"
+                  onClick={() => handleCopiesChange(1)}
+                >
+                  +
+                </button>
+              </div>
+            </div>
+            <div className="mb-3 d-flex justify-content-between align-items-center">
+              <div>
+                <i className="bi bi-check2-all"></i>
+                <span> Print all pages</span>
+              </div>
+              <select
+                className="form-select"
+                value={printAllPages ? "Yes" : "No"}
+                onChange={(e) => setPrintAllPages(e.target.value === "Yes")}
+                style={{ width: "150px" }}
+              >
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+            {!printAllPages && (
+              <div className="mb-3 d-flex justify-content-between align-items-center">
+                <div>
+                  <i className="bi bi-file-code"></i>
+                  <span> Page range</span>
+                </div>
+                <RangeSlider
+                  min={1}
+                  max={maxPages}
+                  start={1}
+                  end={maxPages}
+                  //on range change set the page range and the number of pages
+                  onRangeChange={(range) => {
+                    setPageRange(range);
+                    setNumPages(range.end - range.start + 1);
+                  }}
+                />
+              </div>
+            )}
+            <div className="mb-3 d-flex justify-content-between align-items-center">
+              <div>
+                <i className="bi bi-file-earmark-text"></i>
+                <span> Print on both sides</span>
+              </div>
+              <select
+                className="form-select"
+                value={printBothSides}
+                onChange={(e) => setPrintBothSides(e.target.value)}
+                style={{ width: "150px" }}
+              >
+                <option value="No">No</option>
+                <option value="Yes">Yes</option>
+              </select>
+            </div>
+          </div>
+          <div className="card-footer d-flex justify-content-between align-items-center">
             <div>
-              <i className="bi bi-file-earmark-text"></i>
-              <span> Print on both sides</span>
+              <span className="text-muted">NUMBER OF PAGES:</span>{" "}
+              <strong>{numPages * copies}</strong>
             </div>
-            <select
-              className="form-select"
-              value={printBothSides}
-              onChange={(e) => setPrintBothSides(e.target.value)}
-              style={{ width: "150px" }}
-            >
-              <option value="No">No</option>
-              <option value="Yes">Yes</option>
-            </select>
+            <div>
+              <span className="text-muted">PRICE:</span>{" "}
+              <strong>{price}</strong>
+            </div>
           </div>
-        </div>
-        <div className="card-footer d-flex justify-content-between align-items-center">
-          <div>
-            <span className="text-muted">NUMBER OF PAGES:</span>{" "}
-            <strong>{numPages * copies}</strong>
+          <div className="d-flex justify-content-between p-3">
+            <button className="btn btn-danger" onClick={() => navigate(-1)}>
+              REMOVE
+            </button>
+            <button className="btn btn-primary" onClick={handlePreview}>
+              PREVIEW
+            </button>
+            <CheckoutButton /> {/* Use CheckoutButton here */}
           </div>
-          <div>
-            <span className="text-muted">PRICE:</span> <strong>{price}</strong>
-          </div>
-        </div>
-        <div className="d-flex justify-content-between p-3">
-          <button className="btn btn-danger" onClick={() => navigate(-1)}>
-            REMOVE
-          </button>
-          <button className="btn btn-primary" onClick={handlePreview}>
-            PREVIEW
-          </button>
-          <CheckoutButton /> {/* Use CheckoutButton here */}
         </div>
       </div>
     </div>

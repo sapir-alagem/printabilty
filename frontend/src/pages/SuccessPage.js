@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const SuccessPage = () => {
   const location = useLocation();

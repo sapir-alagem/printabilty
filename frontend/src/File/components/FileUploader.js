@@ -71,10 +71,12 @@ export default function CustomFileUpload() {
 
   return (
     <div className="upload-container">
-      <h2>Upload file</h2>
       <div className="upload-box">
         {!file ? (
-          <div className="upload-prompt">
+          <div
+            className="upload-prompt"
+            onClick={() => document.querySelector("input[type='file']").click()}
+          >
             <i className="pi pi-file" style={{ fontSize: "2rem" }}></i>
             <p>Choose a file</p>
             <small>PDF format only, up to 50MB</small>
@@ -84,14 +86,7 @@ export default function CustomFileUpload() {
               onChange={handleFileChange}
               hidden
             />
-            <button
-              className="browse-button"
-              onClick={() =>
-                document.querySelector("input[type='file']").click()
-              }
-            >
-              Browse File
-            </button>
+            <button className="browse-button">Browse File</button>
           </div>
         ) : (
           <div className="uploaded-file">
