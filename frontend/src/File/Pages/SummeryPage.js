@@ -31,6 +31,7 @@ function SummaryPage() {
       pageRange,
       copies,
       numPages,
+      companyId: queryParams.get("company_id"),
     });
   }, [colorMode, printBothSides, printAllPages, pageRange, copies, numPages]);
 
