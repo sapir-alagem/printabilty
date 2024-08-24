@@ -1,7 +1,6 @@
 const { ObjectId } = require('mongodb');
 const { getClient } = require('../utils/mongo');
 
-
 async function createPrinter(printerData) {
     const client = await getClient();
 
@@ -32,20 +31,12 @@ async function getAllPrinters(companyId) {
 
 async function getPrinter(companyId, printerId) {
     const client = await getClient();
-    if (!ObjectId.isValid(printerId)) {
-        throw new Error('Invalid printer ID format');
-    }    
-    if (!ObjectId.isValid(companyId)) {
-        throw new Error('Invalid printer ID format');
-    }
     try {
         const db = client.db('printability');
         const col = db.collection('printers');
 
-        const printer = await col.findOne({ 
-            company_id: companyId,
-            _id: new ObjectId(printerId)
-         });
+        let printer = await col.findOne({ "_id": new ObjectId(printerId) });
+
          console.log(printer);
         return printer;
     } catch (error) {
@@ -83,21 +74,35 @@ async function deletePrinter(printerId, companyId) {
     }
 }
 
-async function updatePrinterStatus(id, status) {
-    // can remove????
-    await Printer.findByIdAndUpdate(id, { status });
-};
-
 async function updatePrinter(id, updates) {
     const client = await getClient();
-    const db = client.db();
-    const result = await db.collection('printers').updateOne(
-        { _id: id },
-        { $set: updates }
-    );
-    return result.modifiedCount > 0;
-}
+    
+    try {
+        const db = client.db('printability');
+        const col = db.collection('printers');
 
+        const objectId = new ObjectId(id);
+
+        let document = await col.findOne({ "_id": objectId });
+        console.log('Document before update:', document);
+
+        const result = await col.updateOne(
+            { _id: objectId },
+            { $set: updates }
+        );
+
+        if (result.modifiedCount > 0) {
+            console.log('Update successful.');
+            return true;
+        } else {
+            console.log('No documents matched the query. Update not applied.');
+            return false;
+        }
+    } catch (error) {
+        console.error('Error updating printer:', error);
+        throw error;
+    }
+}
 
 module.exports = {
     createPrinter,
@@ -105,6 +110,5 @@ module.exports = {
     getPrinter,
     findPrinterByName,
     deletePrinter,
-    updatePrinterStatus,
     updatePrinter,
 };

@@ -15,7 +15,7 @@ const CompaniesList = (props) => {
     return (
       <div className="m-4">
         <h2 className="mb-4">Companies List</h2>
-        <Table striped bordered hover>
+        <table className="table table-hover">
           <thead>
             <tr>
               <th>Name</th>
@@ -34,7 +34,7 @@ const CompaniesList = (props) => {
               />
             ))}
           </tbody>
-        </Table>
+        </table>
       </div>
     );
   }

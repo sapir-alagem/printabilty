@@ -2,8 +2,8 @@ const printerService = require('../services/printerService');
 
 const createPrinter = async (req, res) => {
     try {
-        const { name, company_id } = req.body;
-        const printerData = { name, company_id };
+        const { name, company_id, status = 'active' } = req.body;
+        const printerData = { name, company_id, status };
         const printerId = await printerService.createPrinter(printerData);
         res.status(201).json({ _id: printerId, ...printerData });
     } catch (error) {
@@ -50,22 +50,17 @@ const deletePrinter = async (req, res) => {
     }
 };
 
-const updatePrinterStatus = async (req, res) => {
-    // can remove?????????????????
-    try {
-        const { id } = req.params;
-        const { status } = req.body;
-        await printerService.updatePrinterStatus(id, status);
-        res.status(200).json({ message: 'Printer status updated successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error updating printer status', error });
-    }
-};
 
 const updatePrinter = async (req, res) => {
     try {
         const { id } = req.params;
         const updates = req.body;
+
+        if (updates.status) {
+            if (updates.status !== 'active' && updates.status !== 'suspended') {
+                return res.status(400).json({ message: 'Invalid status value' });
+            }
+        }
         const success = await printerService.updatePrinter(id, updates);
         if (!success) {
             return res.status(404).json({ message: 'Printer not found' });
@@ -82,7 +77,6 @@ module.exports = {
     getAllPrinters,
     getPrinter,
     deletePrinter,
-    updatePrinterStatus,
     updatePrinter,
 
 };

@@ -46,15 +46,6 @@ const PrinterIndex = () => {
         }
     };
 
-    const updatePrinterStatus = async (printerId, newStatus) => {
-        try {
-            await axios.put(`http://localhost:5000/printers/${printerId}`, { status: newStatus });
-            const response = await axios.get('http://localhost:5000/printers');
-            setPrinters(response.data);
-        } catch (error) {
-            console.error('Error updating printer status', error);
-        }
-    };
 
     const handleDownloadQR = async (printerId) => {
         try {
@@ -85,7 +76,6 @@ const PrinterIndex = () => {
                 printers={printers} 
                 onDelete={handleDelete} 
                 onDownloadQR={handleDownloadQR} 
-                updatePrinterStatus={updatePrinterStatus} 
                 companyId={companyId} />
         </div>
     );

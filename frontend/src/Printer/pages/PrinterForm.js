@@ -14,12 +14,10 @@ const PrinterForm = () => {
     useEffect(() => {
         const fetchPrinter = async () => {
             try {
-                console.log("form->fetchPrinter");
-                
-                // const printerRes = await axios.get(`http://localhost:5000/companies/${companyId}/printers/${printerId}`);
-                // console.log(printerRes);
-                // // const qrRes = await axios.get(`http://localhost:5000/companies/${companyId}/qrcodes`);
-                // setPrinter(printerRes.data);
+                const printerRes = await axios.get(`http://localhost:5000/companies/${companyId}/printers/${printerId}`);
+                console.log(printerRes);
+                setPrinter(printerRes.data);
+                // const qrRes = await axios.get(`http://localhost:5000/companies/${companyId}/qrcodes`);
                 // setQRCodes(qrRes.data.filter(qr => qr.printer_id === id && !qr.obsolete));
             } catch (err) {
                 setError('Error fetching printer details');
