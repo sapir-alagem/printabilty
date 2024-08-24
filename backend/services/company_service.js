@@ -585,6 +585,11 @@ async function createCompany(companyData) {
   try {
     const db = client.db("printability");
     const col = db.collection("companies");
+    //check if the company already exists
+    const company = await col.findOne({ name: companyData.name });
+    if (company) {
+      throw new Error("Company already exists)");
+    }
     // Add timestamp to the companyData that humans can read
     companyData.created_at = new Date();
     const result = await col.insertOne(companyData);
@@ -641,9 +646,27 @@ async function getCompanyCurrency(companyId) {
   }
 }
 
+async function updateCompany(details) {
+  const client = await getClient();
+
+  try {
+    const db = client.db("printability");
+    const col = db.collection("companies");
+    const result = await col.updateOne(
+      { _id: new ObjectId(details.companyId) },
+      { $set: details }
+    );
+    return result.modifiedCount;
+  } catch (error) {
+    console.error("Error updating company:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   createCompany,
   getCompany,
   getAllCompanies,
   getCompanyCurrency,
+  updateCompany,
 };

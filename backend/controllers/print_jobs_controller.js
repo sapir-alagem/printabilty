@@ -66,23 +66,17 @@ const getPrintJobs = async (req, res, next) => {
 // };
 
 const calcualtePrintJob = async (req, res) => {
-  console.log("POST Request in PrintRequests");
-
   try {
     const result = await printJobsService.printJobCalculator(req);
     res.json({
       message: "print Job cost caculation done successfully",
       finalPrice: result,
     });
-    console.log("In cacualtePrintJob %s", result);
   } catch (error) {
-    console.error("Error caculating print job cost:", error);
-    res
-      .status(500)
-      .json({
-        message: "Could not caculate costs for print job",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "Could not caculate costs for print job",
+      error: error.message,
+    });
   }
 };
 

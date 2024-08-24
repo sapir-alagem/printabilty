@@ -34,7 +34,8 @@ function App() {
       <Routes>
         {/* public routes*/}
         <Route path="/UploadFile" element={<UploadFile />} />
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<SingUp />} />
+
         <Route path="/summary" element={<SummaryPage />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/cancel" element={<CancelPage />} />

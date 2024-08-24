@@ -7,5 +7,6 @@ router.post("/", companyController.createCompany);
 router.get("/:id", verifyJWT, companyController.getCompany);
 router.get("/", verifyJWT, companyController.getAllCompanies);
 router.post("/currency", companyController.getCompanyCurrency);
+router.post("/update", companyController.updateCompany);
 
 module.exports = router;

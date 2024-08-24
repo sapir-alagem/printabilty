@@ -64,9 +64,23 @@ const getCompanyCurrency = async (req, res, next) => {
   }
 };
 
+const updateCompany = async (req, res, next) => {
+  try {
+    const details = req.body;
+    const result = await CompanyService.updateCompany(details);
+    res.status(200).json({ result });
+  } catch (error) {
+    console.error("Error updating company:", error);
+    res
+      .status(500)
+      .json({ message: "Could not update company", error: error.message });
+  }
+};
+
 module.exports = {
   createCompany,
   getCompany,
   getAllCompanies,
   getCompanyCurrency,
+  updateCompany,
 };
