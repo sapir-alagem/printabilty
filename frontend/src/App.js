@@ -4,7 +4,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import "./App.css";
 
-import Login from "./auth/pages/login";
 import LandingPage from "./pages/LandingPage";
 import Companies from "./Company/pages/Companies";
 import NewCompany from "./Company/pages/NewCompany";
@@ -35,7 +34,6 @@ function App() {
       <Layout>
         <Routes>
           {/* public routes*/}
-          <Route path="/Login" element={<Login />} />
           <Route path="/UploadFile" element={<UploadFile />} />
           <Route path="/" element={<LandingPage />} />
           <Route path="/checkout" element={<Checkout />} />

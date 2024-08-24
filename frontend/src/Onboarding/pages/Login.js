@@ -7,7 +7,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSignUpClick = () => {
-    navigate('/companies/onboarding2');
+    navigate('/onboarding');
   };
   
   return (

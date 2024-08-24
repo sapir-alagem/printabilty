@@ -101,7 +101,7 @@ function SummaryPage() {
   const handleSubmit = async () => {
     const params = new URLSearchParams();
     params.append("file_url", fileUrl);
-    params.append("companyId", companyId);
+    params.append("companyId", company_id);
     params.append("color_mode", colorMode);
     params.append("layout_mode", layoutMode);
     params.append("print_both_sides", printBothSides);

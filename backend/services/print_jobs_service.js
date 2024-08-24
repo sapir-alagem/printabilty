@@ -86,7 +86,7 @@ async function processPrintJob(jobId) {
         const numOfPages = printJob.body.numPages;
         const numOfCopies = printJob.body.copies;        
 
-        if (printJob.colorMode === "Color") {
+        if (printJob.body.colorMode === "Color") {
             singlePagePrice = company.coloredPageCost;
         } else {
             singlePagePrice = company.blackAndWhitePageCost;
