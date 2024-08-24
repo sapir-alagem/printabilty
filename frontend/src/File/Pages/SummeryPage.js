@@ -33,6 +33,7 @@ function SummaryPage() {
       numPages,
       companyId: queryParams.get("company_id"),
       price,
+      documentName,
     });
   }, [
     colorMode,
@@ -42,6 +43,7 @@ function SummaryPage() {
     copies,
     numPages,
     price,
+    documentName,
   ]);
 
   useEffect(() => {
