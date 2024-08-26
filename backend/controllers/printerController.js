@@ -69,10 +69,25 @@ const updatePrinter = async (req, res) => {
   }
 };
 
+const findPrinterByName = async (req, res) => {
+  try {
+    const { companyId, name } = req.body;
+    const printer = await printerService.findPrinterByName(companyId, name);
+    if (!printer) {
+      res.status(404).json({ message: "Printer not found" });
+    } else {
+      res.status(200).json(printer);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error retrieving printer", error });
+  }
+};
+
 module.exports = {
   createPrinter,
   getAllPrinters,
   getPrinter,
   deletePrinter,
   updatePrinter,
+  findPrinterByName,
 };
