@@ -16,9 +16,7 @@ const createPrintJob = async (req, res, next) => {
     console.log("In createPrintJob %s", result);
   } catch (error) {
     console.error("Error creating print job:", error);
-    res
-      .status(500)
-      .json({ message: "Could not create print job", error: error.message });
+    res.status(500).json({ message: "Could not create print job", error: error.message });
   }
 };
 
@@ -30,10 +28,13 @@ const getPrintJobs = async (req, res, next) => {
     res.json({ result });
   } catch (error) {
     console.error("Error reading print jobs:", error);
-    res
-      .status(500)
-      .json({ message: "Could not read print jobs", error: error.message });
+    res.status(500).json({ message: "Could not read print jobs", error: error.message });
   }
+};
+
+const sanityCheck = (req, res, next) => {
+  printJobsService.doSanityCheck(req.body.companyId, req.body.printerName);
+  res.json({ message: "testing" });
 };
 
 // const sendPrintJob = (req, res, next) => {
@@ -86,4 +87,5 @@ module.exports = {
   getPrintJobs,
   // sendPrintJob,
   calcualtePrintJob,
+  sanityCheck,
 };

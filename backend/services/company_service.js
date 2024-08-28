@@ -590,6 +590,12 @@ async function createCompany(companyData) {
     if (company) {
       throw new Error("Company already exists)");
     }
+
+    //check if email already used
+    const email = await col.findOne({ email: companyData.email });
+    if (email) {
+      throw new Error("Email already used)");
+    }
     // Add timestamp to the companyData that humans can read
     companyData.created_at = new Date();
     const result = await col.insertOne(companyData);
@@ -652,10 +658,7 @@ async function updateCompany(details) {
   try {
     const db = client.db("printability");
     const col = db.collection("companies");
-    const result = await col.updateOne(
-      { _id: new ObjectId(details.companyId) },
-      { $set: details }
-    );
+    const result = await col.updateOne({ _id: new ObjectId(details.companyId) }, { $set: details });
     return result.modifiedCount;
   } catch (error) {
     console.error("Error updating company:", error);

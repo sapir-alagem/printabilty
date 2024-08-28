@@ -7,6 +7,7 @@ router.get("/new", printJobsController.newPrintJob); // => http://localhost:5000
 router.post("/", printJobsController.createPrintJob);
 router.get("/", printJobsController.getPrintJobs);
 router.post("/calculate", printJobsController.calcualtePrintJob);
+router.post("/test", printJobsController.sanityCheck);
 //router.post("/send_print_job", printJobsController.sendPrintJob); // => http://localhost:5000/print_jobs/send_print_job
 
 module.exports = router;

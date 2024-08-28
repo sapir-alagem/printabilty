@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { Button, Card, ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CompanyInfo from "../components/CompanyInfo";
@@ -53,22 +54,27 @@ const Onboarding = () => {
     if (activeStep < 3) {
       handleStepChange(activeStep + 1);
     } else if (activeStep === 3) {
-      await axios.post("/register", {
-        email: formData.companyMail,
-        role: "company admin",
-        companyId: companyId,
-      });
+      try {
+        axios.post("/register", {
+          email: formData.companyMail,
+          role: "company admin",
+          companyId: companyId,
+        });
 
-      await axios.post("/companies/update", {
-        companyId: companyId,
-        type: formData.companyType,
-        customerType: formData.customerType,
-        paymentsCurrency: formData.paymentsCurrency,
-        blackAndWhitePageCost: formData.blackAndWhitePageCost,
-        coloredPageCost: formData.coloredPageCost,
-      });
+        axios.post("/companies/update", {
+          companyId: companyId,
+          type: formData.companyType,
+          customerType: formData.customerType,
+          paymentsCurrency: formData.paymentsCurrency,
+          blackAndWhitePageCost: formData.blackAndWhitePageCost,
+          coloredPageCost: formData.coloredPageCost,
+        });
 
-      window.location.href = "/login";
+        // Redirect to login page
+        window.location.href = "/login";
+      } catch (error) {
+        alert(error.response.data.message);
+      }
     }
   };
 
@@ -81,32 +87,16 @@ const Onboarding = () => {
   return (
     <div className="container mt-4">
       <div className="progress-buttons-wrapper position-relative">
-        <ProgressBar
-          now={progress}
-          variant="info"
-          className="progress-bar-custom"
-        />
+        <ProgressBar now={progress} variant="info" className="progress-bar-custom" />
         <div className="grid-container">
           <div className="grid-item">
-            <Button
-              className={`step-button ${activeStep === 1 ? "active" : ""}`}
-            >
-              1
-            </Button>
+            <Button className={`step-button ${activeStep === 1 ? "active" : ""}`}>1</Button>
           </div>
           <div className="grid-item">
-            <Button
-              className={`step-button ${activeStep === 2 ? "active" : ""}`}
-            >
-              2
-            </Button>
+            <Button className={`step-button ${activeStep === 2 ? "active" : ""}`}>2</Button>
           </div>
           <div className="grid-item">
-            <Button
-              className={`step-button ${activeStep === 3 ? "active" : ""}`}
-            >
-              3
-            </Button>
+            <Button className={`step-button ${activeStep === 3 ? "active" : ""}`}>3</Button>
           </div>
         </div>
       </div>
@@ -122,10 +112,7 @@ const Onboarding = () => {
         {activeStep === 2 && (
           <Card>
             <Card.Body>
-              <PricingConfiguration
-                formData={formData}
-                handleChange={handleChange}
-              />
+              <PricingConfiguration formData={formData} handleChange={handleChange} />
             </Card.Body>
           </Card>
         )}

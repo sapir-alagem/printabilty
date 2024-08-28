@@ -4,6 +4,13 @@ const createPrinter = async (req, res) => {
   try {
     const { name, company_id, status = "active" } = req.body;
     const printerData = { name, company_id, status };
+    //if printer name already exists in this company, return error
+    const existingPrinter = await printerService.findPrinterByName(company_id, name);
+    if (existingPrinter) {
+      return res.status(400).json({ message: "Printer name already exists" });
+    }
+    //add time created
+    printerData.created_at = new Date();
     const printerId = await printerService.createPrinter(printerData);
     res.status(201).json({ _id: printerId, ...printerData });
   } catch (error) {

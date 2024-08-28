@@ -17,15 +17,7 @@
       "request": "launch",
       "name": "Launch backend",
       "skipFiles": ["<node_internals>/**"],
-      "program": "C:\\Users\\Owner\\OneDrive\\מסמכים\\Github\\printabilty\\backend\\app.js"
-    },
-
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
+      "program": "C:\\Users\\User\\Documents\\GitHub\\printabilty\\backend\\app.js"
     }
   ]
 }

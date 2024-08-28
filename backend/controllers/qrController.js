@@ -7,10 +7,7 @@ const generateQrCode = async (req, res) => {
     const company_id = req.params.companyId;
     const { printer_name } = req.body;
 
-    const printer = await printerService.findPrinterByName(
-      company_id,
-      printer_name
-    );
+    const printer = await printerService.findPrinterByName(company_id, printer_name);
     if (!printer) {
       return res.status(404).json({ message: "Printer not found" });
     }
@@ -86,9 +83,26 @@ const scanQrCode = async (req, res) => {
   }
 };
 
+const getPrinterQrCode = async (req, res) => {
+  try {
+    const { companyId, printerId } = req.params;
+    const printer = await printerService.getPrinter(companyId, printerId);
+    printerName = printer.name;
+    const qrCode = await qrCodeService.getPrinterQrCode(companyId, printerName);
+    if (!qrCode) {
+      res.status(404).json({ message: "QR code not found" });
+    } else {
+      res.status(200).json(qrCode);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching QR code", error });
+  }
+};
+
 module.exports = {
   generateQrCode,
   getAllActiveQrCodes,
   obsoleteQrCode,
   scanQrCode,
+  getPrinterQrCode,
 };

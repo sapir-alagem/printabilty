@@ -25,6 +25,7 @@ import SingUp from "./Onboarding/pages/SingUp";
 import Login from "./Onboarding/pages/Login";
 import CompanyDashboard from "./Company/pages/CompanyDashboard";
 import PrinterForm from "./Printer/pages/PrinterForm";
+import PrinterSuspended from "./Printer/pages/SuspendedPrinter";
 
 const stripePromise = loadStripe(
   "pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQWuoSDk2bKOhk5WpezGx1xKKsCfu1kdkmBruvVW5UGzQ1ejQGvQm00d3c0qhxQ"
@@ -48,6 +49,7 @@ function App() {
         <Route path="/companies/new" element={<NewCompany />} />
         <Route path="/companies/new/form" element={<SignupForm />} />
         <Route path="/companies/new/success" element={<SuccessSingup />} />
+        <Route path="/PrinterSuspended" element={<PrinterSuspended />} />
 
         {/* protected routes*/}
         <Route element={<PersistLogin />}>
@@ -55,23 +57,10 @@ function App() {
             <Route path="/companies" element={<Companies />} />
           </Route>
 
-          <Route
-            element={
-              <RequireAuth allowedRoles={["company admin", "super admin"]} />
-            }
-          >
-            <Route
-              path="/companies/:companyId/qrcodes"
-              element={<QRCodeIndex />}
-            />
-            <Route
-              path="/companies/:companyId/printers"
-              element={<PrinterIndex />}
-            />
-            <Route
-              path="/companies/:companyId/dashboard"
-              element={<CompanyDashboard />}
-            />
+          <Route element={<RequireAuth allowedRoles={["company admin", "super admin"]} />}>
+            <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
+            <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
+            <Route path="/companies/:companyId/dashboard" element={<CompanyDashboard />} />
             <Route
               path="/companies/:companyId/printers/:printerId/edit"
               element={<PrinterForm />}

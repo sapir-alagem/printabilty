@@ -6,9 +6,7 @@ const bcrypt = require("bcrypt");
 const handleNewUser = async (req, res) => {
   const { email, role, companyId } = req.body;
   if (!email || !role || !companyId) {
-    return res
-      .status(400)
-      .json({ message: "email, role and companyId are requierd" });
+    return res.status(400).json({ message: "email, role and companyId are requierd" });
   }
 
   //check for duplicate email in the database
@@ -27,7 +25,7 @@ const handleNewUser = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
   try {
-    await emailService.sendEmail(email, password);
+    emailService.sendEmail(email, password);
   } catch (error) {
     console.error("Error sending email:", error);
     return res.status(500).json({ message: error.message });

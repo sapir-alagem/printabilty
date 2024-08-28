@@ -1,19 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import FileUploadComponent from "../components/FileUploader";
 import Header from "../components/Header";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import axios from "../../api/axios";
 
 function FileUploader() {
-  const axiosPrivate = useAxiosPrivate();
-  const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
-  const [isDisabled, setIsDisabled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const queryParams = new URLSearchParams(window.location.search);
-  const company_id = queryParams.get("company_id");
-  const printer_name = queryParams.get("printer_name");
 
   useEffect(() => {
     const checkPrinterStatus = async () => {
@@ -31,18 +24,15 @@ function FileUploader() {
         }
 
         // Check if the printer is disabled
-        const response = await axios.post(
-          `/companies/${companyId}/printer/check`,
-          {
-            companyId: companyId,
-            name: printerName,
-          }
-        );
+        const response = await axios.post(`/companies/${companyId}/printer/check`, {
+          companyId: companyId,
+          name: printerName,
+        });
 
         const printer = response.data; // Assuming the printer data is in the response's data field
 
         if (printer.status === "suspended") {
-          navigate("/suspended_printer", { replace: true });
+          navigate("/PrinterSuspended", { replace: true });
         }
       } catch (error) {
         console.error("Failed to check printer status:", error);
@@ -52,41 +42,6 @@ function FileUploader() {
 
     checkPrinterStatus();
   }, [location.search, navigate]);
-
-  async function uploadFile() {
-    if (!selectedFile) {
-      alert("No file selected");
-      return;
-    }
-
-    setIsDisabled(true); // Disable the button to prevent multiple clicks
-
-    const formData = new FormData();
-    formData.append("file", selectedFile);
-
-    const requestOptions = {
-      method: "POST",
-      body: formData,
-      redirect: "follow",
-    };
-
-    try {
-      const response = await fetch(
-        "http://localhost:5000/uploads",
-        requestOptions
-      );
-      const data = await response.json();
-      navigate(
-        `/summary?file_url=${encodeURIComponent(
-          data.file_url
-        )}&company_id=${company_id}&printer_name=${encodeURIComponent(
-          printer_name
-        )}`
-      );
-    } catch (error) {
-      alert(error.message);
-    }
-  }
 
   return (
     <div>

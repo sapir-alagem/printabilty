@@ -64,7 +64,7 @@ const html = (password) => `
 <body>
     <div class="email-container">
         <div class="header">
-            <img src="[Your Logo URL]" alt="Your Company Logo">
+            <img src="" alt="Your Company Logo">
         </div>
         <div class="content">
             <h1>Welcome to Printablity!</h1>
@@ -93,7 +93,7 @@ async function sendEmail(email, password) {
     },
   });
 
-  const info = await transporter.sendMail({
+  const info = transporter.sendMail({
     from: "Printabillity <printability2@gmail.com>",
     to: email,
     subject: "Welcome to Printabillity",
@@ -107,7 +107,7 @@ async function sendEmail(email, password) {
       },
       {
         filename: "CUPS server.zip",
-        path: __dirname + "/../email attachments/CUPS server.zip",
+        path: __dirname + "/../email attachments/print_server.zip",
         contentType: "application/zip",
       },
     ],

@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import LogoBlackNoBackground from "../components/Logo";
 import axios from "../../api/axios";
-import { useState } from "react";
 
-const SingUp = () => {
+const SignUp = () => {
   const [CompanyName, setCompanyName] = useState("");
   const [email, setemail] = useState("");
-  const [companyId, setCompanyId] = useState("");
+  const [alert, setAlert] = useState({ message: "", type: "" }); // State for alerts
   const navigate = useNavigate();
 
   const handleSignUpClick = async () => {
@@ -18,19 +17,13 @@ const SingUp = () => {
       });
 
       const companyId = response.data.companyId;
-      setCompanyId(companyId);
-      //add the company id, email and name to the URL
-      navigate(
-        "/onboarding?companyId=" +
-          companyId +
-          "&email=" +
-          email +
-          "&name=" +
-          CompanyName
-      );
+      // Add the company id, email, and name to the URL
+      navigate("/onboarding?companyId=" + companyId + "&email=" + email + "&name=" + CompanyName);
     } catch (error) {
-      alert("Failed to sign up");
-      navigate("/");
+      setAlert({ message: error.response?.data?.error || "An error occurred", type: "danger" });
+      setTimeout(() => {
+        setAlert({ message: "", type: "" }); // Clear the alert after 5 seconds
+      }, 5000);
     }
   };
 
@@ -40,15 +33,12 @@ const SingUp = () => {
         <div className="col-lg-7 d-flex flex-column align-items-center text-center bg-info border rounded border-dark p-4">
           {/* <Background className="background-svg"/> */}
           <div className="column-content">
-            <h1 className="display-4 fw-bold lh-1 text-body-emphasis mb-3">
-              Welcome To
-            </h1>
+            <h1 className="display-4 fw-bold lh-1 text-body-emphasis mb-3">Welcome To</h1>
             <LogoBlackNoBackground />
             <p className="fs-4 text-black">
-              Below is an example form built entirely with Bootstrap’s form
-              controls. Each required form group has a validation state that can
-              be triggered by attempting to submit the form without completing
-              it.
+              Below is an example form built entirely with Bootstrap’s form controls. Each required
+              form group has a validation state that can be triggered by attempting to submit the
+              form without completing it.
             </p>
           </div>
         </div>
@@ -60,12 +50,23 @@ const SingUp = () => {
               handleSignUpClick();
             }}
           >
-            <h3 className="display-6 fw-bold lh-3 text-body-emphasis mb-3">
-              Let's get started
-            </h3>
+            <h3 className="display-6 fw-bold lh-3 text-body-emphasis mb-3">Let's get started</h3>
             <p>
               Already have an account? <a href="/login">Log in</a>
             </p>
+
+            {/* Render Bootstrap alert conditionally */}
+            {alert.message && (
+              <div className={`alert alert-${alert.type} alert-dismissible fade show`} role="alert">
+                {alert.message}
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="alert"
+                  aria-label="Close"
+                ></button>
+              </div>
+            )}
 
             <div className="form-floating mb-3">
               <input
@@ -73,7 +74,6 @@ const SingUp = () => {
                 className="form-control"
                 id="floatingInput"
                 placeholder=""
-                //must have a value to be able to submit the form
                 required
                 onChange={(e) => setCompanyName(e.target.value)}
               />
@@ -104,4 +104,4 @@ const SingUp = () => {
   );
 };
 
-export default SingUp;
+export default SignUp;

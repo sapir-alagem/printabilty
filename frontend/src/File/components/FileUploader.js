@@ -4,9 +4,8 @@ import "./FileUploader.css";
 
 export default function CustomFileUpload() {
   const [file, setFile] = useState(null);
-
-  const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // State to track loading
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(window.location.search);
@@ -34,6 +33,7 @@ export default function CustomFileUpload() {
     }
 
     setIsDisabled(true); // Disable the button to prevent multiple clicks
+    setIsLoading(true); // Show the loader
 
     const formData = new FormData();
     formData.append("file", file);
@@ -45,10 +45,7 @@ export default function CustomFileUpload() {
     };
 
     try {
-      const response = await fetch(
-        "http://localhost:5000/uploads",
-        requestOptions
-      );
+      const response = await fetch("http://localhost:5000/uploads", requestOptions);
       if (!response.ok) {
         throw new Error("Failed to upload file");
       }
@@ -56,12 +53,13 @@ export default function CustomFileUpload() {
       navigate(
         `/summary?file_url=${encodeURIComponent(
           data.file_url
-        )}&company_id=${company_id}&printer_name=${encodeURIComponent(
-          printer_name
-        )}`
+        )}&company_id=${company_id}&printer_name=${encodeURIComponent(printer_name)}`
       );
     } catch (error) {
       alert(error.message);
+    } finally {
+      setIsLoading(false); // Hide the loader
+      setIsDisabled(false); // Re-enable the button
     }
   }
 
@@ -80,12 +78,7 @@ export default function CustomFileUpload() {
             <i className="pi pi-file" style={{ fontSize: "2rem" }}></i>
             <p>Choose a file</p>
             <small>PDF format only, up to 50MB</small>
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={handleFileChange}
-              hidden
-            />
+            <input type="file" accept="application/pdf" onChange={handleFileChange} hidden />
             <button className="browse-button">Browse File</button>
           </div>
         ) : (
@@ -99,8 +92,12 @@ export default function CustomFileUpload() {
           </div>
         )}
       </div>
-      <button onClick={uploadFile} className="upload-button">
-        Upload
+      <button onClick={uploadFile} className="upload-button" disabled={isDisabled}>
+        {isLoading ? (
+          <div className="loader"></div> // Add your loader here
+        ) : (
+          "Upload"
+        )}
       </button>
     </div>
   );
