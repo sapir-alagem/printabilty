@@ -66,6 +66,16 @@ const updatePrinter = async (req, res) => {
         return res.status(400).json({ message: "Invalid status value" });
       }
     }
+    //if printer name already exists in this company, return error
+    if (updates.name) {
+      const existingPrinter = await printerService.findPrinterByName(
+        updates.companyId,
+        updates.name
+      );
+      if (existingPrinter) {
+        return res.status(400).json({ message: "Printer name already exists" });
+      }
+    }
     const success = await printerService.updatePrinter(id, updates);
     if (!success) {
       return res.status(404).json({ message: "Printer not found" });

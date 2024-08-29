@@ -95,6 +95,7 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
     try {
       await axiosPrivate.put(`/companies/${companyId}/printers/${currentPrinter._id}`, {
         name: printerName,
+        companyId: companyId,
         status,
       });
       setPrinters((prevPrinters) =>
@@ -110,7 +111,7 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
     } catch (error) {
       setAlert({
         type: "danger",
-        message: "Failed to update printer.",
+        message: `Failed to update printer: ${error.response.data.message}`,
       });
     }
   };
