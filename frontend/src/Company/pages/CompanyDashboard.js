@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PrinterIndex from "../../Printer/pages/PrinterIndex";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const CompanyDashboard = () => {
   const { companyId } = useParams();
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [tooltipText, setTooltipText] = useState("Copy");
+
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
@@ -25,6 +28,14 @@ const CompanyDashboard = () => {
     fetchCompany();
   }, [companyId]);
 
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(companyId); // Replace with your text
+    setTooltipText("Copied!");
+    setTimeout(() => {
+      setTooltipText("Copy"); // Reset tooltip text after 1.5 seconds
+    }, 1500);
+  };
+
   if (loading)
     return (
       <div className="container mt-4">
@@ -39,7 +50,10 @@ const CompanyDashboard = () => {
     );
 
   return (
-    <div className="p-5 w-100 m-0" style={{ backgroundColor: '#EFF7FF', minHeight: '100vh' }}>
+    <div
+      className="p-5 w-100 m-0"
+      style={{ backgroundColor: "#EFF7FF", minHeight: "100vh" }}
+    >
       <h1 className="mb-4">Company Dashboard</h1>
       {company ? (
         <>
@@ -49,12 +63,24 @@ const CompanyDashboard = () => {
                 <div className="card-body">
                   <h5 className="card-title mb-4">Company Info</h5>
                   <p className="card-text">
-                    Company Name: 
+                    Company Name:
                     <span className="text-primary ml-3">{company.name}</span>
                   </p>
                   <p className="card-text">
-                    Admin User:
-                    <span className="text-primary ml-3">{}</span>
+                    Company ID:
+                    <span className="text-primary ml-3">{companyId}</span>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-copy-to-clipboard`}>
+                          {tooltipText}
+                        </Tooltip>
+                      }
+                    >
+                      <button className="btn btn-xs" onClick={copyToClipboard}>
+                        <i className="bi bi-copy"></i>
+                      </button>
+                    </OverlayTrigger>
                   </p>
                 </div>
               </div>

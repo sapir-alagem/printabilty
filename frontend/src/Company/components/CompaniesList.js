@@ -29,7 +29,7 @@ const CompaniesList = (props) => {
     };
 
     fetchPrinterCounts();
-  }, [items, axiosPrivate]);
+  }, [items]);
 
   if (items.length === 0) {
     return (
