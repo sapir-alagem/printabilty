@@ -50,7 +50,12 @@ const Login = () => {
       setUser("");
       setPwd("");
       // redirect to the page the dashboard
-      navigate("/dashboard?companyId=" + companyId, { replace: true });
+      // if role contains "company admin" redirect to /dashboard?companyId=companyId
+      if (role.includes("company admin")) {
+        navigate(`/companies/${companyId}/dashboard`, { replace: true });
+      } else if (role.includes("super admin")) {
+        navigate("/companies", { replace: true });
+      }
     } catch (error) {
       if (!error?.response) {
         setErrMsg("No response from server");
