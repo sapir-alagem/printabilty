@@ -39,7 +39,7 @@ const CompaniesList = (props) => {
     );
   } else {
     return (
-      <div className="m-4">
+      <div>
         <table className="table table-hover">
           <thead>
             <tr>

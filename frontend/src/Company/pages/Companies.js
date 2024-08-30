@@ -68,16 +68,14 @@ const Companies = () => {
   }
 
   return (
-    <div>
-      <h1 style={{ marginLeft: "20px", marginTop: "20px" }}>Companies</h1>
+    <div className="p-5 w-100 m-4">
+      <h1>Companies</h1>
       <input
         type="text"
-        placeholder="Search company"
+        placeholder="Search companies"
         value={searchTerm}
         onChange={handleSearchChange}
-        className="form-control mb-3"
-        //make the search bar a bit to the left
-        style={{ width: "300px", marginLeft: "20px", marginTop: "20px" }}
+        className="form-control my-4"
       />
       <CompaniesList
         items={filteredItems}
