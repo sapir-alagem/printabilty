@@ -20,7 +20,9 @@ const PrinterIndex = () => {
 
   const fetchPrinters = async () => {
     try {
-      const response = await axiosPrivate.get(`/companies/${companyId}/printers`);
+      const response = await axiosPrivate.get(
+        `/companies/${companyId}/printers`
+      );
       setPrinters(response.data);
     } catch (error) {
       setError("Error fetching printers");
@@ -46,10 +48,13 @@ const PrinterIndex = () => {
     }
 
     try {
-      const response = await axiosPrivate.post(`/companies/${companyId}/printers`, {
-        name: printerName,
-        company_id: companyId,
-      });
+      const response = await axiosPrivate.post(
+        `/companies/${companyId}/printers`,
+        {
+          name: printerName,
+          company_id: companyId,
+        }
+      );
 
       await axiosPrivate.post(
         `/companies/${companyId}/printers/${response.data._id}/qrcodes/generate`,
@@ -118,9 +123,13 @@ const PrinterIndex = () => {
 
   return (
     <div>
-      <div className="d-flex mb-4">
+      <div className="d-flex m-4 mb-0 align-items-center">
         <h5 className="mr-auto">Printer Management</h5>
-        <Button variant="primary" onClick={() => setShowModal(true)}>
+        <Button
+          variant="primary"
+          onClick={() => setShowModal(true)}
+          className="mr-4"
+        >
           Add Printer
         </Button>
       </div>
