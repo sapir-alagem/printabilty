@@ -13,7 +13,6 @@ const CompanyDashboard = () => {
   useEffect(() => {
     const fetchCompany = async () => {
       try {
-        //const response = await axios.get(`http://localhost:5000/companies/${companyId}`);
         const response = await axiosPrivate.get(`/companies/${companyId}`);
         setCompany(response.data.company);
       } catch (error) {

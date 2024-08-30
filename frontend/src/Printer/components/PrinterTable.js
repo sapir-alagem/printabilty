@@ -148,7 +148,7 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
                   onChange={() => handleChangeStatus(printer)}
                 />
               </td>
-              <td>{printer.created_at ? new Date(printer.created_at).toLocaleString() : "N/A"}</td>
+              <td>{printer.created_at ? new Date(printer.created_at).toLocaleDateString() : "N/A"}</td>
               <td>
                 <OverlayTrigger
                   placement="top"
