@@ -12,17 +12,14 @@ const createCompany = async (req, res, next) => {
       companyId,
     });
 
-    // console.log(response.data); // Incorrect, should be `console.log(res.data);` but `res` does not have `data`
   } catch (error) {
     console.error("Error creating company:", error);
 
-    // Handle errors
     if (!res.headersSent) {
       res
         .status(500)
         .json({ message: "Could not create company", error: error.message });
     } else {
-      next(error); // If headers are already sent, pass the error to the default error handler
     }
   }
 };

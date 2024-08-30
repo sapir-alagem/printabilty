@@ -50,7 +50,7 @@ const CompanyDashboard = () => {
                   <h5 className="card-title mb-4">Company Info</h5>
                   <p className="card-text">
                     Company Name: 
-                    <span className="text-primary ml-3">{company.companyName}</span>
+                    <span className="text-primary ml-3">{company.name}</span>
                   </p>
                   <p className="card-text">
                     Admin User:
