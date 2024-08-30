@@ -54,13 +54,21 @@ function App() {
         {/* protected routes*/}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={["super admin"]} />}>
-            <Route path="/companies" element={<Companies />} />
+            <Route path="/companies" element={
+              <Layout>
+                <Companies />
+              </Layout>
+            } />
           </Route>
 
           <Route element={<RequireAuth allowedRoles={["company admin", "super admin"]} />}>
             <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
             <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
-            <Route path="/companies/:companyId/dashboard" element={<CompanyDashboard />} />
+            <Route path="/companies/:companyId/dashboard" element={
+              <Layout>
+                <CompanyDashboard />
+              </Layout>
+            } />
             <Route
               path="/companies/:companyId/printers/:printerId/edit"
               element={<PrinterForm />}
