@@ -68,7 +68,7 @@ const Companies = () => {
   }
 
   return (
-    <div className="p-5 w-100 m-4">
+    <div className="p-5 m-4">
       <h1>Companies</h1>
       <input
         type="text"
