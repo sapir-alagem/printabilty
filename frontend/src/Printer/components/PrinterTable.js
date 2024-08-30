@@ -1,44 +1,23 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { Alert } from "react-bootstrap";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+// PrinterTable.js
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 
 const PrinterTable = ({
-  initialPrinters,
+  printers,
   onDelete,
   onDownloadQR,
   companyId,
+  onChangeStatus
 }) => {
-  const [alert, setAlert] = useState(null);
-  const [printers, setPrinters] = useState(initialPrinters || []);
+  const [alert, setAlert] = React.useState(null);
   const navigate = useNavigate();
-  const axiosPrivate = useAxiosPrivate();
-
-  useEffect(() => {
-    if (!initialPrinters) {
-      // Function to fetch printers from the server if not provided as props
-      const fetchPrinters = async () => {
-        try {
-          const response = await axiosPrivate.get(
-            `/companies/${companyId}/printers`
-          );
-          setPrinters(response.data);
-        } catch (error) {
-          console.error("Failed to load printers:", error);
-        }
-      };
-
-      fetchPrinters();
-    }
-  }, [companyId, initialPrinters]);
 
   const handleDelete = (printerId) => {
     if (window.confirm("Are you sure you want to delete this printer?")) {
       onDelete(printerId);
     }
   };
-
-  const sanityCheck = (printerId) => {};
 
   const handleChangeStatus = async (printer) => {
     const newStatus = printer.status === "active" ? "suspended" : "active";
@@ -48,16 +27,7 @@ const PrinterTable = ({
 
     if (confirmChange) {
       try {
-        await axiosPrivate.put(
-          `/companies/${companyId}/printers/${printer._id}`,
-          { status: newStatus }
-        );
-
-        setPrinters((prevPrinters) =>
-          prevPrinters.map((p) =>
-            p._id === printer._id ? { ...p, status: newStatus } : p
-          )
-        );
+        await onChangeStatus(printer._id, newStatus); // Call function passed as prop
 
         setAlert({
           type: "success",
@@ -101,11 +71,7 @@ const PrinterTable = ({
             <tr key={printer._id}>
               <td>{printer.name}</td>
               <td>{printer.status}</td>
-              <td>
-                {printer.qrCreatedAt
-                  ? new Date(printer.qrCreatedAt).toLocaleString()
-                  : "N/A"}
-              </td>
+              <td>{printer.qrCodes.length > 0 ? new Date(printer.qrCodes[0].createdAt).toLocaleString() : 'N/A'}</td>
               <td>
                 <button
                   className="btn btn-icon btn-sm"
@@ -123,19 +89,17 @@ const PrinterTable = ({
 
                 <button
                   className="btn btn-icon btn-sm"
-                  onClick={() => sanityCheck(printer._id)}
+                  onClick={() => handleDelete(printer._id)}
                 >
                   <i className="bi bi-clipboard-check"></i>
                 </button>
 
-                {/* {printer.qrCreatedAt && !printer.qrObsolete && ( */}
                 <button
                   className="btn btn-icon btn-sm"
                   onClick={() => onDownloadQR(printer._id)}
                 >
                   <i className="bi bi-qr-code"></i>
                 </button>
-                {/* )} */}
               </td>
             </tr>
           ))}

@@ -1,38 +1,22 @@
-import React, { useState, useEffect } from "react";
-import PrinterTable from "../components/PrinterTable";
-import PrinterGenerateButton from "../components/PrinterGenerateButton";
-import { useParams } from "react-router-dom";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+// PrinterIndex.js
+import React from 'react';
+import PrinterTable from '../components/PrinterTable';
+import PrinterGenerateButton from '../components/PrinterGenerateButton';
+import { useParams } from 'react-router-dom';
+import usePrinters from '../../hooks/usePrinters';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 
 const PrinterIndex = () => {
   const { companyId } = useParams();
-  const [printers, setPrinters] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { printers, loading, error } = usePrinters(companyId);
   const axiosPrivate = useAxiosPrivate();
-
-  useEffect(() => {
-    fetchPrinters();
-  }, [companyId]);
-
-  const fetchPrinters = async () => {
-    try {
-      const response = await axiosPrivate.get(
-        `/companies/${companyId}/printers`
-      );
-      setPrinters(response.data);
-    } catch (error) {
-      setError("Error fetching printers");
-      setPrinters([]);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = async (id) => {
     try {
       await axiosPrivate.delete(`/companies/${companyId}/printers/${id}`);
-      fetchPrinters();
+      // Refetch printers after deletion
+      const { printers: updatedPrinters } = await usePrinters(companyId);
+      setPrinters(updatedPrinters);
     } catch (error) {
       setError("Error deleting printer");
     }
@@ -46,7 +30,9 @@ const PrinterIndex = () => {
         name,
         company_id: companyId,
       });
-      fetchPrinters();
+      // Refetch printers after generation
+      const { printers: updatedPrinters } = await usePrinters(companyId);
+      setPrinters(updatedPrinters);
     } catch (error) {
       setError("Error adding printer");
     }
@@ -67,6 +53,17 @@ const PrinterIndex = () => {
     }
   };
 
+  const handleChangeStatus = async (printerId, newStatus) => {
+    try {
+      await axiosPrivate.put(
+        `/companies/${companyId}/printers/${printerId}`,
+        { status: newStatus }
+      );
+    } catch (error) {
+      throw new Error("Failed to update printer status.");
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -83,6 +80,7 @@ const PrinterIndex = () => {
         onDelete={handleDelete}
         onDownloadQR={handleDownloadQR}
         companyId={companyId}
+        onChangeStatus={handleChangeStatus}
       />
     </div>
   );

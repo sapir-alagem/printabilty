@@ -18,7 +18,6 @@ const generateQrCode = async (req, res) => {
     const printer_id = printer._id;
     const value = `http://localhost:3000/UploadFile?company_id=${company_id}&printer_name=${printer_name}`;
 
-    // Prepare QR code data
     const data = {
       value,
       printer_id,
@@ -28,14 +27,10 @@ const generateQrCode = async (req, res) => {
       createdAt: new Date(),
     };
 
-    // Generate QR code image
     const qrCodeDataUrl = await QRCode.toDataURL(value);
     const qrCode = { ...data, code: qrCodeDataUrl };
-
-    // Save QR code to database
     const qrCodeId = await qrCodeService.createQrCode(qrCode);
 
-    // Return successful response
     res.status(201).json({ ...qrCode, _id: qrCodeId });
   } catch (error) {
     res.status(500).json({ message: "Error generating QR code", error });
@@ -44,6 +39,8 @@ const generateQrCode = async (req, res) => {
 
 const getAllActiveQrCodes = async (req, res) => {
   try {
+
+    /// can remove??????????????????????????
     const company_id = req.params.companyId;
     const qrCodes = await qrCodeService.getAllActiveQrCodes(company_id);
     if (qrCodes.length === 0) {
@@ -53,6 +50,16 @@ const getAllActiveQrCodes = async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: "Error fetching QR codes", error });
+  }
+};
+
+const getActiveQrCodesForPrinter = async (req, res) => {
+  try {
+      const { printerId } = req.params;
+      const qrCodes = await qrCodeService.getActiveQrCodesForPrinter(printerId);
+      res.status(200).json(qrCodes);
+  } catch (error) {
+      res.status(500).json({ message: 'Error fetching QR codes for printer', error });
   }
 };
 
@@ -91,4 +98,5 @@ module.exports = {
   getAllActiveQrCodes,
   obsoleteQrCode,
   scanQrCode,
+  getActiveQrCodesForPrinter,
 };

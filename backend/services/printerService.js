@@ -109,6 +109,20 @@ async function updatePrinter(id, updates) {
     }
 }
 
+async function getActiveQrCodesForPrinter(printerId) {
+  const client = await getClient();
+  try {
+      const db = client.db('printability');
+      const col = db.collection('qrcodes');
+      const qrCodes = await col.find({ printer_id: printerId, obsolete: false }).toArray();
+      return qrCodes;
+  } catch (error) {
+      console.error('Error retrieving active QR codes for printer:', error);
+      throw error;
+  }
+}
+
+
 module.exports = {
     createPrinter,
     getAllPrinters,
@@ -116,4 +130,5 @@ module.exports = {
     findPrinterByName,
     deletePrinter,
     updatePrinter,
+    getActiveQrCodesForPrinter,
 };
