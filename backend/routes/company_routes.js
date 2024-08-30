@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const companyController = require("../controllers/company_controller");
-const verifyJWT = require("../middleWare/verifyJWT"); //adding middleware to verify JWT
+const verifyJWT = require("../middleWare/verifyJWT");
 
 router.post("/", companyController.createCompany);
 router.get("/:id", verifyJWT, companyController.getCompany);

@@ -70,7 +70,6 @@ const Onboarding = () => {
           coloredPageCost: formData.coloredPageCost,
         });
 
-        // Redirect to login page
         window.location.href = "/login";
       } catch (error) {
         alert(error.response.data.message);
