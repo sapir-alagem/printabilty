@@ -1,9 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Modal, Button, Form, Tooltip, OverlayTrigger } from "react-bootstrap";
+import {
+  Alert,
+  Modal,
+  Button,
+  Form,
+  Tooltip,
+  OverlayTrigger,
+} from "react-bootstrap";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
-const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) => {
+const PrinterTable = ({
+  initialPrinters,
+  onDelete,
+  onDownloadQR,
+  companyId,
+}) => {
   const [alert, setAlert] = useState(null);
   const [printers, setPrinters] = useState(initialPrinters || []);
   const [showModal, setShowModal] = useState(false);
@@ -17,7 +29,9 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
     if (!initialPrinters) {
       const fetchPrinters = async () => {
         try {
-          const response = await axiosPrivate.get(`/companies/${companyId}/printers`);
+          const response = await axiosPrivate.get(
+            `/companies/${companyId}/printers`
+          );
           setPrinters(response.data);
         } catch (error) {
           console.error("Failed to load printers:", error);
@@ -25,13 +39,17 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
       };
       fetchPrinters();
     }
-  }, [companyId, initialPrinters]);
+  }, [companyId, initialPrinters, printers]);
 
   const handleDelete = async (printerId) => {
     if (window.confirm("Are you sure you want to delete this printer?")) {
       try {
-        await axiosPrivate.delete(`/companies/${companyId}/printers/${printerId}`);
-        setPrinters((prevPrinters) => prevPrinters.filter((p) => p._id !== printerId));
+        await axiosPrivate.delete(
+          `/companies/${companyId}/printers/${printerId}`
+        );
+        setPrinters((prevPrinters) =>
+          prevPrinters.filter((p) => p._id !== printerId)
+        );
         setAlert({
           type: "success",
           message: "Printer deleted successfully.",
@@ -57,12 +75,17 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
   const handleChangeStatus = async (printer) => {
     const newStatus = printer.status === "active" ? "suspended" : "active";
     try {
-      await axiosPrivate.put(`/companies/${companyId}/printers/${printer._id}`, {
-        status: newStatus,
-      });
+      await axiosPrivate.put(
+        `/companies/${companyId}/printers/${printer._id}`,
+        {
+          status: newStatus,
+        }
+      );
 
       setPrinters((prevPrinters) =>
-        prevPrinters.map((p) => (p._id === printer._id ? { ...p, status: newStatus } : p))
+        prevPrinters.map((p) =>
+          p._id === printer._id ? { ...p, status: newStatus } : p
+        )
       );
 
       setAlert({
@@ -93,11 +116,14 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axiosPrivate.put(`/companies/${companyId}/printers/${currentPrinter._id}`, {
-        name: printerName,
-        companyId: companyId,
-        status,
-      });
+      await axiosPrivate.put(
+        `/companies/${companyId}/printers/${currentPrinter._id}`,
+        {
+          name: printerName,
+          companyId: companyId,
+          status,
+        }
+      );
       setPrinters((prevPrinters) =>
         prevPrinters.map((p) =>
           p._id === currentPrinter._id ? { ...p, name: printerName, status } : p
@@ -148,24 +174,56 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
                   onChange={() => handleChangeStatus(printer)}
                 />
               </td>
-              <td>{printer.created_at ? new Date(printer.created_at).toLocaleDateString() : "N/A"}</td>
               <td>
-                <OverlayTrigger placement="top" overlay={<Tooltip id={`tooltip-edit-${printer._id}`}>Edit Printer</Tooltip>}>
-                  <button className="btn btn-icon btn-sm" onClick={() => handleEditClick(printer)}>
+                {printer.created_at
+                  ? new Date(printer.created_at).toLocaleDateString()
+                  : "N/A"}
+              </td>
+              <td>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip id={`tooltip-edit-${printer._id}`}>
+                      Edit Printer
+                    </Tooltip>
+                  }
+                >
+                  <button
+                    className="btn btn-icon btn-sm"
+                    onClick={() => handleEditClick(printer)}
+                  >
                     <i className="bi bi-pencil"></i>
                   </button>
                 </OverlayTrigger>
 
-                <OverlayTrigger placement="top" overlay={
-                    <Tooltip id={`tooltip-sanity-check-${printer._id}`}>Sanity Check</Tooltip>}>
-                  <button className="btn btn-icon btn-sm" onClick={() => sanityCheck(companyId, printer.name)}>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip id={`tooltip-sanity-check-${printer._id}`}>
+                      Sanity Check
+                    </Tooltip>
+                  }
+                >
+                  <button
+                    className="btn btn-icon btn-sm"
+                    onClick={() => sanityCheck(companyId, printer.name)}
+                  >
                     <i className="bi bi-clipboard-check"></i>
                   </button>
                 </OverlayTrigger>
 
-                <OverlayTrigger placement="top" overlay={
-                    <Tooltip id={`tooltip-download-qr-${printer._id}`}>Download QR Code</Tooltip>}>
-                  <button className="btn btn-icon btn-sm" onClick={() => onDownloadQR(printer._id, printer.name)}>
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip id={`tooltip-download-qr-${printer._id}`}>
+                      Download QR Code
+                    </Tooltip>
+                  }
+                >
+                  <button
+                    className="btn btn-icon btn-sm"
+                    onClick={() => onDownloadQR(printer._id, printer.name)}
+                  >
                     <i className="bi bi-qr-code"></i>
                   </button>
                 </OverlayTrigger>
@@ -183,7 +241,11 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
           </Modal.Header>
           <Modal.Body>
             {alert && (
-              <Alert variant={alert.type} dismissible onClose={() => setAlert(null)}>
+              <Alert
+                variant={alert.type}
+                dismissible
+                onClose={() => setAlert(null)}
+              >
                 {alert.message}
               </Alert>
             )}
@@ -200,7 +262,11 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
               </Form.Group>
               <Form.Group className="mb-3" controlId="formPrinterStatus">
                 <Form.Label>Status</Form.Label>
-                <Form.Select value={status} onChange={(e) => setStatus(e.target.value)} required>
+                <Form.Select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  required
+                >
                   <option value="active">Active</option>
                   <option value="suspended">Suspended</option>
                 </Form.Select>

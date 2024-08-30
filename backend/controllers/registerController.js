@@ -1,34 +1,38 @@
 const userService = require("../services/users_service");
 const emailService = require("../services/email_service");
-
 const bcrypt = require("bcrypt");
 
 const handleNewUser = async (req, res) => {
   const { email, role, companyId } = req.body;
+
   if (!email || !role || !companyId) {
-    return res.status(400).json({ message: "email, role and companyId are requierd" });
+    return res
+      .status(400)
+      .json({ message: "email, role and companyId are required" });
   }
-
-  //check for duplicate email in the database
-  const duplicateUser = await userService.isUserExist(email);
-  if (duplicateUser) {
-    return res.status(409).json({ message: "email already exists" });
-  }
-
-  const password = Math.random().toString(36).slice(-8);
 
   try {
+    // Check for duplicate email in the database
+    const duplicateUser = await userService.isUserExist(email);
+    if (duplicateUser) {
+      return res.status(409).json({ message: "email already exists" });
+    }
+
+    // Generate a random password and hash it
+    const password = Math.random().toString(36).slice(-8);
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create the user in the database
     await userService.createUser({ email, hashedPassword, role, companyId });
+
+    // Send the email with the new password
+    await emailService.sendEmail(email, password);
+
+    // Return a success response
+    return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
-    console.error("Error creating user:", error);
-    return res.status(500).json({ message: error.message });
-  }
-  try {
-    emailService.sendEmail(email, password);
-  } catch (error) {
-    console.error("Error sending email:", error);
-    return res.status(500).json({ message: error.message });
+    console.error("Error handling new user:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 

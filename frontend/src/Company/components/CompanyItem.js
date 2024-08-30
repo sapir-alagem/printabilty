@@ -6,20 +6,17 @@ const CompanyItem = (props) => {
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
-  const viewQrCodesHandler = () => {
-    navigate(`/companies/${props.id}/qrcodes`);
-  };
-
-  const viewPrintersHandler = () => {
-    navigate(`/companies/${props.id}/printers`);
-  };
-
   const viewDashboardHandler = () => {
     navigate(`/companies/${props.id}/dashboard`);
   };
 
-  const deleteCompanyHandler = () => {
-    axiosPrivate.delete(`/companies/${props.id}`);
+  const deleteCompanyHandler = async () => {
+    try {
+      await axiosPrivate.delete(`/companies/${props.id}`);
+      props.onDelete(props.id);
+    } catch (error) {
+      alert("Failed to delete company: " + error.message);
+    }
   };
 
   return (
@@ -40,8 +37,6 @@ const CompanyItem = (props) => {
         >
           Delete company
         </button>
-        {/* <button className="btn btn-sm btn-primary ml-2" onClick={viewPrintersHandler}>View Printers</button> */}
-        {/* <button className="btn btn-sm btn-primary ml-2" onClick={viewQrCodesHandler}>Manage QR Codes</button> */}
       </td>
     </tr>
   );

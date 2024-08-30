@@ -658,10 +658,41 @@ async function updateCompany(details) {
   try {
     const db = client.db("printability");
     const col = db.collection("companies");
-    const result = await col.updateOne({ _id: new ObjectId(details.companyId) }, { $set: details });
+    const result = await col.updateOne(
+      { _id: new ObjectId(details.companyId) },
+      { $set: details }
+    );
     return result.modifiedCount;
   } catch (error) {
     console.error("Error updating company:", error);
+    throw error;
+  }
+}
+
+async function deleteCompany(companyId) {
+  const client = await getClient();
+
+  try {
+    const db = client.db("printability");
+    const col = db.collection("companies");
+    const result = await col.deleteOne({ _id: new ObjectId(companyId) });
+    return result.deletedCount;
+  } catch (error) {
+    console.error("Error deleting company:", error);
+    throw error;
+  }
+}
+
+async function countCompanyPrinters(companyId) {
+  const client = await getClient();
+
+  try {
+    const db = client.db("printability");
+    const col = db.collection("printers");
+    const count = await col.countDocuments({ company_id: companyId });
+    return count;
+  } catch (error) {
+    console.error("Error counting printers:", error);
     throw error;
   }
 }
@@ -672,4 +703,6 @@ module.exports = {
   getAllCompanies,
   getCompanyCurrency,
   updateCompany,
+  deleteCompany,
+  countCompanyPrinters,
 };

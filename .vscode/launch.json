@@ -17,7 +17,7 @@
       "request": "launch",
       "name": "Launch backend",
       "skipFiles": ["<node_internals>/**"],
-      "program": "C:\\Users\\User\\Documents\\GitHub\\printabilty\\backend\\app.js"
+      "program": "C:\\Users\\Owner\\OneDrive\\מסמכים\\Github\\printabilty\\backend\\app.js"
     }
   ]
 }

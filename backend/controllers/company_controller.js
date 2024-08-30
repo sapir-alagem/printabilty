@@ -1,4 +1,6 @@
 const CompanyService = require("../services/company_service");
+const PrinterService = require("../services/printerService");
+const UserService = require("../services/users_service");
 
 const createCompany = async (req, res, next) => {
   try {
@@ -77,10 +79,43 @@ const updateCompany = async (req, res, next) => {
   }
 };
 
+const deleteCompany = async (req, res, next) => {
+  try {
+    const companyId = req.params.id;
+    //delete company's printers, users, and other data
+    const deletePrinters = await PrinterService.deletePrinters(companyId);
+    const deleteUsers = await UserService.deleteUsers(companyId);
+    const deleteCompany = await CompanyService.deleteCompany(companyId);
+    //return the rest of the company's that are not deleted
+    const companies = await CompanyService.getAllCompanies();
+    res.status(200).json(companies);
+  } catch (error) {
+    console.error("Error deleting company:", error);
+    res
+      .status(500)
+      .json({ message: "Could not delete company", error: error.message });
+  }
+};
+
+const countPrinters = async (req, res, next) => {
+  try {
+    const companyId = req.params.id;
+    const printers = await CompanyService.countCompanyPrinters(companyId);
+    res.status(200).json({ printers });
+  } catch (error) {
+    console.error("Error counting printers:", error);
+    res
+      .status(500)
+      .json({ message: "Could not count printers", error: error.message });
+  }
+};
+
 module.exports = {
   createCompany,
   getCompany,
   getAllCompanies,
   getCompanyCurrency,
   updateCompany,
+  deleteCompany,
+  countPrinters,
 };

@@ -76,10 +76,36 @@ async function getUserByRefreshToken(refreshToken) {
   }
 }
 
+async function deleteUser(email) {
+  const client = await getClient();
+  try {
+    const db = client.db("printability");
+    const col = db.collection("users");
+    await col.deleteOne({ email: email });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    throw error;
+  }
+}
+
+async function deleteUsers(companyId) {
+  const client = await getClient();
+  try {
+    const db = client.db("printability");
+    const col = db.collection("users");
+    await col.deleteMany({ companyId: companyId });
+  } catch (error) {
+    console.error("Error deleting users:", error);
+    throw error;
+  }
+}
+
 module.exports = {
   createUser,
   getUser,
   isUserExist,
   saveRefreshToken,
   getUserByRefreshToken,
+  deleteUser,
+  deleteUsers,
 };

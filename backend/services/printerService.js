@@ -7,11 +7,11 @@ async function createPrinter(printerData) {
   try {
     const db = client.db("printability");
     const col = db.collection("printers");
+
+    // Insert the new printer
     const result = await col.insertOne(printerData);
-    return result.insertedId;
   } catch (error) {
-    console.error("Error creating printer:", error);
-    throw error;
+    console.error("Error updating number of printers:", error);
   }
 }
 
@@ -70,9 +70,23 @@ async function deletePrinter(printerId, companyId) {
       _id: new ObjectId(printerId),
       company_id: companyId,
     });
+
     return result.deletedCount;
   } catch (error) {
     console.error("Error deleting printer:", error);
+    throw error;
+  }
+}
+
+async function deletePrinters(companyId) {
+  const client = await getClient();
+  try {
+    const db = client.db("printability");
+    const col = db.collection("printers");
+    const result = await col.deleteMany({ company_id: companyId });
+    return result.deletedCount;
+  } catch (error) {
+    console.error("Error deleting printers:", error);
     throw error;
   }
 }
@@ -117,4 +131,5 @@ module.exports = {
   findPrinterByName,
   deletePrinter,
   updatePrinter,
+  deletePrinters,
 };
