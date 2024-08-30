@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const CompanyItem = (props) => {
   const axiosPrivate = useAxiosPrivate();
@@ -25,18 +26,35 @@ const CompanyItem = (props) => {
       <td>{props.id}</td>
       <td>{props.printersCount}</td>
       <td>
-        <button
-          className="btn btn-sm btn-primary"
-          onClick={viewDashboardHandler}
+        <OverlayTrigger
+          placement="top"
+          overlay={
+            <Tooltip id={`tooltip-view-dashboard`}>View Dashboard</Tooltip>
+          }
         >
-          View Dashboard
-        </button>
-        <button
-          className="btn btn-sm btn-danger ml-2"
-          onClick={deleteCompanyHandler}
+          <button
+            className="btn btn-icon btn-sm"
+            onClick={viewDashboardHandler}
+          >
+            <i className="bi bi-eye"></i>
+          </button>
+        </OverlayTrigger>
+
+        <OverlayTrigger
+          placement="top"
+          overlay={
+            <Tooltip id={`tooltip-delete-company-${props.id}`}>
+              Delete company
+            </Tooltip>
+          }
         >
-          Delete company
-        </button>
+          <button
+            className="btn btn-icon btn-sm"
+            onClick={deleteCompanyHandler}
+          >
+            <i className="bi bi-trash"></i>
+          </button>
+        </OverlayTrigger>
       </td>
     </tr>
   );
