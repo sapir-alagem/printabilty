@@ -68,19 +68,19 @@ const Companies = () => {
   }
 
   return (
-    <div>
+    <div className="p-5 w-100 m-4">
       <h1>Companies</h1>
-      <input
-        type="text"
-        placeholder="Search companies"
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="form-control mb-3"
-      />
-      <CompaniesList
-        items={filteredItems}
-        onDeleteCompany={handleDeleteCompany}
-      />
+        <input
+          type="text"
+          placeholder="Search companies"
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="form-control my-4"
+        />
+        <CompaniesList
+          items={filteredItems}
+          onDeleteCompany={handleDeleteCompany}
+        />
     </div>
   );
 };
