@@ -108,6 +108,10 @@ const PrinterTable = ({
     setShowModal(true);
   };
 
+  const onPrintOnThisPrinter = (companyId, printerName) => {
+    navigate(`/uploadFile?company_id=${companyId}&printer_name=${printerName}`);
+  };
+
   const handleModalClose = () => {
     setShowModal(false);
     setCurrentPrinter(null);
@@ -225,6 +229,24 @@ const PrinterTable = ({
                     onClick={() => onDownloadQR(printer._id, printer.name)}
                   >
                     <i className="bi bi-qr-code"></i>
+                  </button>
+                </OverlayTrigger>
+
+                <OverlayTrigger
+                  placement="top"
+                  overlay={
+                    <Tooltip id={`tooltip-print-${printer._id}`}>
+                      Print on this printer
+                    </Tooltip>
+                  }
+                >
+                  <button
+                    className="btn btn-icon btn-sm"
+                    onClick={() =>
+                      onPrintOnThisPrinter(companyId, printer.name)
+                    }
+                  >
+                    <i className="bi bi-printer"></i>
                   </button>
                 </OverlayTrigger>
               </td>
