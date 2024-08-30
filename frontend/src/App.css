@@ -1,42 +1,3 @@
-/* .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
 .btn-icon {
   background: none;
   border: none;
@@ -46,37 +7,12 @@
 }
 
 .btn-icon i {
-  font-size: 1.5rem; /* Adjust the size as needed */
-  color: inherit; /* This will take the color of the parent element */
+  font-size: 1.5rem;
+  color: inherit;
 }
 
 .btn-icon:hover i {
-  color: #007bff; /* Optional: Change color on hover */
-}
-
-/* Add a margin to the left of the icon button */
-.ml-2 {
-  margin-left: 0.5rem; /* Adjust the size as needed */
-}
-
-.qr-code-cell {
-  width: 100%;
-  height: 100%;
-  padding: 0;
-  margin: 0;
-}
-
-.qr-code-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-}
-
-.qr-code-container canvas {
-  width: 100% !important;
-  height: 100% !important;
+  color: #007bff;
 }
 
 .column-background-container

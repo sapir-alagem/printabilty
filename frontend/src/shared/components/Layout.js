@@ -1,17 +1,14 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import NavigationBar from "./NavigationBar.js";
+import Sidebar from "./Sidebar";
 
 function Layout({ children }) {
   const location = useLocation();
 
-  // Check if the current route is the login page
-  const isLoginPage =
-    location.pathname === "/Login" || location.pathname === "/login";
   return (
-    <div className="app-layout">
-      {!isLoginPage && <NavigationBar />}
-      <div className="">{children}</div>
+    <div className="d-flex" style={{ height: "100vh" }}>
+      <Sidebar />
+      <div className="flex-grow-1">{children}</div>
     </div>
   );
 }
