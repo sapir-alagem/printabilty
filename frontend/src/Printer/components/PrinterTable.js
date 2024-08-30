@@ -150,39 +150,22 @@ const PrinterTable = ({ initialPrinters, onDelete, onDownloadQR, companyId }) =>
               </td>
               <td>{printer.created_at ? new Date(printer.created_at).toLocaleDateString() : "N/A"}</td>
               <td>
-                <OverlayTrigger
-                  placement="top"
-                  overlay={<Tooltip id={`tooltip-edit-${printer._id}`}>Edit Printer</Tooltip>}
-                >
+                <OverlayTrigger placement="top" overlay={<Tooltip id={`tooltip-edit-${printer._id}`}>Edit Printer</Tooltip>}>
                   <button className="btn btn-icon btn-sm" onClick={() => handleEditClick(printer)}>
                     <i className="bi bi-pencil"></i>
                   </button>
                 </OverlayTrigger>
 
-                <OverlayTrigger
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`tooltip-sanity-check-${printer._id}`}>Sanity Check</Tooltip>
-                  }
-                >
-                  <button
-                    className="btn btn-icon btn-sm"
-                    onClick={() => sanityCheck(companyId, printer.name)}
-                  >
+                <OverlayTrigger placement="top" overlay={
+                    <Tooltip id={`tooltip-sanity-check-${printer._id}`}>Sanity Check</Tooltip>}>
+                  <button className="btn btn-icon btn-sm" onClick={() => sanityCheck(companyId, printer.name)}>
                     <i className="bi bi-clipboard-check"></i>
                   </button>
                 </OverlayTrigger>
 
-                <OverlayTrigger
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`tooltip-download-qr-${printer._id}`}>Download QR Code</Tooltip>
-                  }
-                >
-                  <button
-                    className="btn btn-icon btn-sm"
-                    onClick={() => onDownloadQR(printer._id, printer.name)}
-                  >
+                <OverlayTrigger placement="top" overlay={
+                    <Tooltip id={`tooltip-download-qr-${printer._id}`}>Download QR Code</Tooltip>}>
+                  <button className="btn btn-icon btn-sm" onClick={() => onDownloadQR(printer._id, printer.name)}>
                     <i className="bi bi-qr-code"></i>
                   </button>
                 </OverlayTrigger>
