@@ -15,7 +15,7 @@ const Companies = () => {
       try {
         const response = await axiosPrivate.get("/companies");
 
-        if (response.statusText !== "OK") {
+        if (response.status !== 200) {
           throw new Error("Network response was not ok");
         }
         const data = await response.data;
