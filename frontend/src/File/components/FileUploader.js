@@ -40,14 +40,8 @@ export default function CustomFileUpload() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const requestOptions = {
-      method: "POST",
-      body: formData,
-      redirect: "follow",
-    };
-
     try {
-      const response = await axiosPrivate.post("/uploads", requestOptions);
+      const response = await axiosPrivate.post("/uploads", formData);
       if (response.status !== 200) {
         throw new Error("Failed to upload file");
       }
