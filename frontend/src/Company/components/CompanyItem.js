@@ -26,32 +26,19 @@ const CompanyItem = (props) => {
       <td>{props.id}</td>
       <td>{props.printersCount}</td>
       <td>
-        <OverlayTrigger
-          placement="top"
-          overlay={
-            <Tooltip id={`tooltip-view-dashboard`}>View Dashboard</Tooltip>
-          }
-        >
-          <button
-            className="btn btn-icon btn-sm"
-            onClick={viewDashboardHandler}
-          >
+        <OverlayTrigger placement="top" overlay={<Tooltip id={`tooltip-view-dashboard`}>View Dashboard</Tooltip>}>
+          <button className="btn btn-icon" onClick={viewDashboardHandler}>
             <i className="bi bi-eye"></i>
           </button>
         </OverlayTrigger>
 
-        <OverlayTrigger
-          placement="top"
-          overlay={
+        <OverlayTrigger placement="top" overlay={
             <Tooltip id={`tooltip-delete-company-${props.id}`}>
               Delete company
             </Tooltip>
           }
         >
-          <button
-            className="btn btn-icon btn-sm"
-            onClick={deleteCompanyHandler}
-          >
+          <button className="btn btn-icon btn-sm" onClick={deleteCompanyHandler}>
             <i className="bi bi-trash"></i>
           </button>
         </OverlayTrigger>

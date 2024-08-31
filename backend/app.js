@@ -31,7 +31,6 @@ app.use("/webhook", webhookRouter);
 app.use(express.json());
 app.use(cookieParser());
 
-//if want to use JWT token verification, add app.use(verifyJWT) above the routes that need to be protected and uncomment the verifyJWT import
 app.use("/print_jobs", PrintJobsRoutes);
 app.use("/companies", companyRoutes);
 app.use("/uploads", UploadRoutes);

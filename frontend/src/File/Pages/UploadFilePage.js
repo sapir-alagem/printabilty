@@ -19,24 +19,22 @@ function FileUploader() {
           alert(
             "Required query parameters are missing. Please ensure you provide company_id and printer_name."
           );
-          navigate("/"); // Redirect to a different route if parameters are missing
-          return; // Exit the function early if parameters are missing
+          navigate("/");
+          return;
         }
 
-        // Check if the printer is disabled
         const response = await axios.post(`/companies/${companyId}/printer/check`, {
           companyId: companyId,
           name: printerName,
         });
 
-        const printer = response.data; // Assuming the printer data is in the response's data field
+        const printer = response.data;
 
         if (printer.status === "suspended") {
           navigate("/PrinterSuspended", { replace: true });
         }
       } catch (error) {
         console.error("Failed to check printer status:", error);
-        // Optionally, handle the error (e.g., navigate to an error page)
       }
     };
 
