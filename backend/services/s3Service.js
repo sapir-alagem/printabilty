@@ -1,35 +1,40 @@
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
-const AWS = require("aws-sdk");
 
 exports.s3Uploadv3 = async (files) => {
-  try {
-    AWS.config.update({
+  const s3client = new S3Client({
+    region: process.env.AWS_REGION || "us-east-1",
+    credentials: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-      region: process.env.AWS_REGION,
-      AWS_SDK_LOAD_CONFIG: 1,
-    });
+    },
+  });
 
-    const s3 = new AWS.S3();
+  const uploadedFiles = [];
 
-    if (!Array.isArray(files)) {
-      files = [files];
-    }
+  if (!Array.isArray(files)) {
+    files = [files];
+  }
 
-    const params = {
+  for (const file of files) {
+    const uploadParams = {
       Bucket: process.env.AWS_BUCKET_NAME,
-      Key: `uploads/${files[0].originalname}`,
-      Body: files[0].buffer,
+      Key: `uploads/${file.originalname}`,
+      Body: file.buffer,
       ACL: "public-read",
+      ContentType: file.mimetype || "application/octet-stream", // Specify content type
     };
 
-    await s3.upload(params).promise();
-    const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.amazonaws.com/${params.Key}`;
-    return fileUrl;
-  } catch (error) {
-    console.error("Error uploading file to S3:", error);
-    throw error;
+    try {
+      await s3client.send(new PutObjectCommand(uploadParams));
+      const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${uploadParams.Key}`;
+      uploadedFiles.push(fileUrl);
+    } catch (error) {
+      console.error("Error uploading file to S3:", error);
+      throw error;
+    }
   }
+
+  return uploadedFiles;
 };
 
 // exports.s3Uploadv3 = async (files) => {
