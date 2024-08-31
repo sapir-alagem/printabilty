@@ -30,12 +30,8 @@ const server = http.createServer(app);
 app.use(credentials);
 
 // CORS middleware
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-// app.use(cors(corsOptions));
+
+app.use(cors(corsOptions));
 
 // Routes (ensure /webhook route comes before express.json())
 app.use("/webhook", webhookRouter);
