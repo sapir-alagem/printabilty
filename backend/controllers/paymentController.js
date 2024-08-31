@@ -6,7 +6,7 @@ const createCheckoutSession = async (req, res) => {
   const { price, quantity, jobId } = req.body;
 
   try {
-    console.log("config:" + config);
+    console.log("config:" + config.appUrl);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
