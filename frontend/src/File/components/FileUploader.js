@@ -50,12 +50,9 @@ export default function CustomFileUpload() {
         throw new Error("Failed to upload file");
       }
       const data = await response.data;
+      console.log(data);
       navigate(
-        `/summary?file_url=${encodeURIComponent(
-          data.file_url
-        )}&company_id=${company_id}&printer_name=${encodeURIComponent(
-          printer_name
-        )}`
+        `/summary?file_url=${data.file_url}&company_id=${company_id}&printer_name=${printer_name}`
       );
     } catch (error) {
       alert(error.message);
