@@ -39,6 +39,7 @@ export default function CustomFileUpload() {
 
     const formData = new FormData();
     formData.append("file", file);
+    console.log(`formdata: ${formData}`);
 
     try {
       const response = await axiosPrivate.post("/uploads", formData);
@@ -62,6 +63,7 @@ export default function CustomFileUpload() {
   }
 
   const handleFileChange = (e) => {
+    console.log(e.target.files);
     setFile(e.target.files[0]);
   };
 
