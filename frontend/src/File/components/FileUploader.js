@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./FileUploader.css";
 import config from "../../config.js";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export default function CustomFileUpload() {
+  const axiosPrivate = useAxiosPrivate();
   const [file, setFile] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -45,7 +47,7 @@ export default function CustomFileUpload() {
     };
 
     try {
-      const response = await fetch(`${config.backUrl}/uploads`, requestOptions);
+      const response = await axiosPrivate.post("/uploads", requestOptions);
       if (response.status !== 200) {
         throw new Error("Failed to upload file");
       }
