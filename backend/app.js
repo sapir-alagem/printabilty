@@ -30,7 +30,12 @@ const server = http.createServer(app);
 app.use(credentials);
 
 // CORS middleware
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: "*",
+  })
+);
+// app.use(cors(corsOptions));
 
 // Routes (ensure /webhook route comes before express.json())
 app.use("/webhook", webhookRouter);
@@ -46,14 +51,13 @@ app.use(cookieParser());
 app.use("/print_jobs", PrintJobsRoutes);
 app.use("/companies", companyRoutes);
 app.use("/uploads", UploadRoutes);
-app.use('/payment', paymentRoutes);
-app.use('/companies/:companyId/printers/:printerId/qrcodes', qrCodesRouter);
-app.use('/companies/:companyId', printerRouter);
-app.use('/register', registerRouter);
-app.use('/auth', authRouter);
-app.use('/refresh', refreshTokenRouter);
-app.use('/logout', logoutRouter);
-
+app.use("/payment", paymentRoutes);
+app.use("/companies/:companyId/printers/:printerId/qrcodes", qrCodesRouter);
+app.use("/companies/:companyId", printerRouter);
+app.use("/register", registerRouter);
+app.use("/auth", authRouter);
+app.use("/refresh", refreshTokenRouter);
+app.use("/logout", logoutRouter);
 
 // Error handler middleware
 app.use(errorHandler);
