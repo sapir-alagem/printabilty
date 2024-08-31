@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000";
+let BASE_URL = "http://localhost:5000";
 
 
 if (process.env.NODE_ENV === "production") {
