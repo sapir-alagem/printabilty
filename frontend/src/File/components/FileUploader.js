@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./FileUploader.css";
+import config from "../../config.js";
 
 export default function CustomFileUpload() {
   const [file, setFile] = useState(null);
   const [isDisabled, setIsDisabled] = useState(false);
-  const [isLoading, setIsLoading] = useState(false); // State to track loading
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(window.location.search);
@@ -21,8 +22,7 @@ export default function CustomFileUpload() {
       alert(
         "Required query parameters are missing. Please ensure you provide company_id and printer_name."
       );
-      // Redirect to an error page or another route if the parameters are missing
-      navigate("/"); // Replace '/error' with your actual error route
+      navigate("/"); 
     }
   }, [location.search, navigate]);
 
@@ -32,8 +32,8 @@ export default function CustomFileUpload() {
       return;
     }
 
-    setIsDisabled(true); // Disable the button to prevent multiple clicks
-    setIsLoading(true); // Show the loader
+    setIsDisabled(true);
+    setIsLoading(true);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -45,7 +45,7 @@ export default function CustomFileUpload() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/uploads", requestOptions);
+      const response = await fetch(`${config.backUrl}/uploads`, requestOptions);
       if (!response.ok) {
         throw new Error("Failed to upload file");
       }
@@ -58,8 +58,8 @@ export default function CustomFileUpload() {
     } catch (error) {
       alert(error.message);
     } finally {
-      setIsLoading(false); // Hide the loader
-      setIsDisabled(false); // Re-enable the button
+      setIsLoading(false);
+      setIsDisabled(false);
     }
   }
 

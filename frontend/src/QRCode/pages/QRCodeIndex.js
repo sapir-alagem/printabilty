@@ -4,6 +4,7 @@ import QRCodeTable from "../components/QRCodeTable";
 import QRCodeGenerateButton from "../components/QRCodeGenerateButton";
 import { useParams } from "react-router-dom";
 import html2canvas from "html2canvas";
+import config from "../../config.js";
 
 const QRCodeIndex = () => {
   const { companyId } = useParams();
@@ -18,7 +19,7 @@ const QRCodeIndex = () => {
   const fetchQRCodes = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/companies/${companyId}/qrcodes`
+        `${config.backUrl}/companies/${companyId}/qrcodes`
       );
       console.log("Response data:", response.data);
       if (Array.isArray(response.data)) {
@@ -38,7 +39,7 @@ const QRCodeIndex = () => {
   const handleObsolete = async (id) => {
     try {
       await axios.post(
-        `http://localhost:5000/companies/${companyId}/qrcodes/obsolete/${id}`
+        `${config.backUrl}/companies/${companyId}/qrcodes/obsolete/${id}`
       );
       fetchQRCodes();
     } catch (error) {
@@ -51,7 +52,7 @@ const QRCodeIndex = () => {
 
     try {
       await axios.post(
-        `http://localhost:5000/companies/${companyId}/qrcodes/generate`,
+        `${config.backUrl}/companies/${companyId}/qrcodes/generate`,
         { printer_name }
       );
       fetchQRCodes();

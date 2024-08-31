@@ -1,11 +1,12 @@
 import axios from "axios";
 import useAuth from "./useAuth";
+import config from "../config.js";
 
 const useRefreshToken = () => {
   const { setAuth } = useAuth();
 
   const refresh = async () => {
-    const response = await axios.get("http://localhost:5000/refresh", {
+    const response = await axios.get(`${config.backUrl}/refresh`, {
       withCredentials: true,
     });
     setAuth((prev) => ({

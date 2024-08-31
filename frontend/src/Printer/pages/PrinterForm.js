@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import QRCodeTable from '../../QRCode/components/QRCodeTable'; 
+import config from "../../config.js";
 
 const PrinterForm = () => {
     const { companyId, printerId } = useParams();
@@ -14,11 +15,8 @@ const PrinterForm = () => {
     useEffect(() => {
         const fetchPrinter = async () => {
             try {
-                const printerRes = await axios.get(`http://localhost:5000/companies/${companyId}/printers/${printerId}`);
-                console.log(printerRes);
+                const printerRes = await axios.get(`${config.backUrl}/companies/${companyId}/printers/${printerId}`);
                 setPrinter(printerRes.data);
-                // const qrRes = await axios.get(`http://localhost:5000/companies/${companyId}/qrcodes`);
-                // setQRCodes(qrRes.data.filter(qr => qr.printer_id === id && !qr.obsolete));
             } catch (err) {
                 setError('Error fetching printer details');
             } finally {
@@ -35,7 +33,7 @@ const PrinterForm = () => {
     const handleDelete = async () => {
         if (window.confirm('Are you sure you want to delete this printer?')) {
             try {
-                await axios.delete(`http://localhost:5000/companies/${companyId}/printers/${printerId}`);
+                await axios.delete(`${config.backUrl}/companies/${companyId}/printers/${printerId}`);
                 navigate(`/companies/${companyId}/dashboard`);
             } catch (err) {
                 setError('Error deleting printer');
@@ -46,7 +44,7 @@ const PrinterForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put(`http://localhost:5000/companies/${companyId}/printers/${printerId}`, printer);
+            await axios.put(`${config.backUrl}/companies/${companyId}/printers/${printerId}`, printer);
             navigate(`/companies/${companyId}/dashboard`);
         } catch (err) {
             setError('Error saving printer details');

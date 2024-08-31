@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import currencyCodes from "currency-codes";
 import { useNavigate } from "react-router-dom";
+import config from "../../config.js";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -56,19 +57,17 @@ const SignupForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/companies",
+        `${config.appUrl}/companies`,
         formData
       );
-      console.log(response.data); // just for check
 
       const params = new URLSearchParams();
       params.append("companyEmail", formData.companyEmail);
       params.append("companyName", formData.companyName);
 
-      // Navigate with the constructed query string
       navigate(`/companies/new/success?${params.toString()}`);
     } catch (error) {
-      console.error(error); // just for check
+      console.error(error);
     }
   };
 

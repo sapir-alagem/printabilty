@@ -1,6 +1,7 @@
 const QRCode = require("qrcode");
 const qrCodeService = require("../services/qrCodeService");
 const printerService = require("../services/printerService");
+const config = require('../config/config.js');
 
 const generateQrCode = async (req, res) => {
   try {
@@ -13,9 +14,8 @@ const generateQrCode = async (req, res) => {
     }
 
     const printer_id = printer._id;
-    const value = `http://localhost:3000/UploadFile?company_id=${company_id}&printer_name=${printer_name}`;
+    const value = `${config.backUrl}/UploadFile?company_id=${company_id}&printer_name=${printer_name}`;
 
-    // Prepare QR code data
     const data = {
       value,
       printer_id,
@@ -25,14 +25,11 @@ const generateQrCode = async (req, res) => {
       createdAt: new Date(),
     };
 
-    // Generate QR code image
     const qrCodeDataUrl = await QRCode.toDataURL(value);
     const qrCode = { ...data, code: qrCodeDataUrl };
 
-    // Save QR code to database
     const qrCodeId = await qrCodeService.createQrCode(qrCode);
 
-    // Return successful response
     res.status(201).json({ ...qrCode, _id: qrCodeId });
   } catch (error) {
     res.status(500).json({ message: "Error generating QR code", error });

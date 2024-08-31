@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
+import config from "../config.js";
 
 const CheckoutContext = createContext();
 
@@ -14,11 +15,11 @@ export const CheckoutProvider = ({ children, initialPrintDetails }) => {
     const updatePrice = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:5000/print_jobs/calculate",
+          `${config.backUrl}/print_jobs/calculate`,
           printDetails
         );
         const currency = await axios.post(
-          "http://localhost:5000/companies/currency",
+          `${config.backUrl}/companies/currency`,
           { companyId: company_id }
         );
 
@@ -37,7 +38,7 @@ export const CheckoutProvider = ({ children, initialPrintDetails }) => {
   const savePrintDetails = async (details) => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/print_jobs",
+        `${config.backUrl}/print_jobs`,
         details
       );
       return response.data;

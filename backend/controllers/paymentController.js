@@ -1,5 +1,6 @@
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+const config = require('../config/config.js');
 
 const createCheckoutSession = async (req, res) => {
   const { price, quantity, jobId } = req.body;
@@ -23,8 +24,8 @@ const createCheckoutSession = async (req, res) => {
       metadata: {
         jobId: jobId,
       },
-      success_url: "http://localhost:3000/success",
-      cancel_url: "http://localhost:3000/cancel",
+      success_url: `${config.appUrl}/success`,
+      cancel_url: `${config.appUrl}/cancel`,
     });
 
     res.send({ id: session.id });
