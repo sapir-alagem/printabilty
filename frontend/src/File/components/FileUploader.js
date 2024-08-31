@@ -22,7 +22,7 @@ export default function CustomFileUpload() {
       alert(
         "Required query parameters are missing. Please ensure you provide company_id and printer_name."
       );
-      navigate("/"); 
+      navigate("/");
     }
   }, [location.search, navigate]);
 
@@ -46,14 +46,16 @@ export default function CustomFileUpload() {
 
     try {
       const response = await fetch(`${config.backUrl}/uploads`, requestOptions);
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error("Failed to upload file");
       }
       const data = await response.json();
       navigate(
         `/summary?file_url=${encodeURIComponent(
           data.file_url
-        )}&company_id=${company_id}&printer_name=${encodeURIComponent(printer_name)}`
+        )}&company_id=${company_id}&printer_name=${encodeURIComponent(
+          printer_name
+        )}`
       );
     } catch (error) {
       alert(error.message);
@@ -78,7 +80,12 @@ export default function CustomFileUpload() {
             <i className="pi pi-file" style={{ fontSize: "2rem" }}></i>
             <p>Choose a file</p>
             <small>PDF format only, up to 50MB</small>
-            <input type="file" accept="application/pdf" onChange={handleFileChange} hidden />
+            <input
+              type="file"
+              accept="application/pdf"
+              onChange={handleFileChange}
+              hidden
+            />
             <button className="browse-button">Browse File</button>
           </div>
         ) : (
@@ -92,7 +99,11 @@ export default function CustomFileUpload() {
           </div>
         )}
       </div>
-      <button onClick={uploadFile} className="upload-button" disabled={isDisabled}>
+      <button
+        onClick={uploadFile}
+        className="upload-button"
+        disabled={isDisabled}
+      >
         {isLoading ? (
           <div className="loader"></div> // Add your loader here
         ) : (
