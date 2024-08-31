@@ -50,7 +50,7 @@ async function sendPrintJobToPrinter(printJob) {
     type: "print_request",
   };
 
-  sendMessageToClient(printJob.company_id, data);
+  sendMessageToClient(printJob.companyId, data);
 }
 
 async function processPrintJob(jobId) {
@@ -112,14 +112,15 @@ async function printJobCalculator(printJob) {
 
 function doSanityCheck(companyId, printerName) {
   sendPrintJobToPrinter({
-    fileUrl: "https://printabillty-file-uploads.s3.eu-north-1.amazonaws.com/uploads/test.pdf",
+    fileUrl:
+      "https://printabillty-file-uploads.s3.eu-north-1.amazonaws.com/uploads/test.pdf",
     colorMode: "Color",
     printBothSides: true,
     printAllPages: true,
     pageRange: { start: 1, end: 10 },
     copies: 1,
     printer_name: printerName,
-    company_id: companyId,
+    companyId: companyId,
   });
   console.log("Sanity sent");
 }

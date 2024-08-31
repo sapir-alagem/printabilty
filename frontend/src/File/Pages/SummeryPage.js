@@ -25,6 +25,7 @@ function SummaryPage() {
 
   useEffect(() => {
     setPrintDetails({
+      fileUrl: fileUrl,
       colorMode,
       printBothSides,
       printAllPages,
@@ -32,10 +33,12 @@ function SummaryPage() {
       copies,
       numPages,
       companyId: queryParams.get("company_id"),
+      printer_name: queryParams.get("printer_name"),
       price,
       documentName,
     });
   }, [
+    fileUrl,
     colorMode,
     printBothSides,
     printAllPages,
