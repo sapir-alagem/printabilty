@@ -4,6 +4,11 @@ exports.s3Uploadv3 = async (files) => {
   const s3client = new S3Client();
   const uploadedFiles = [];
 
+  //handel single file upload
+  if (!Array.isArray(files)) {
+    files = [files];
+  }
+
   for (const file of files) {
     const uploadParams = {
       Bucket: process.env.AWS_BUCKET_NAME,
