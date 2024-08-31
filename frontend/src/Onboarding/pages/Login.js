@@ -96,10 +96,7 @@ const Login = () => {
           </div>
         </div>
         <div className="col-md-10 mx-auto col-lg-5">
-          <form
-            className="p-4 p-md-5 border rounded-3 bg-body-tertiary"
-            onSubmit={handleSubmit}
-          >
+          <form className="p-4 p-md-5 border rounded-3 bg-body-tertiary" onSubmit={handleSubmit}>
             <h3 className="display-6 fw-bold lh-3 text-body-emphasis mb-3">
               Welcome Back,
             </h3>
@@ -112,7 +109,7 @@ const Login = () => {
                 className="form-control"
                 id="floatingInput"
                 placeholder="name@example.com"
-                ref={userRef} // Attach ref here
+                ref={userRef}
                 required
                 onChange={(e) => setUser(e.target.value)}
               />
