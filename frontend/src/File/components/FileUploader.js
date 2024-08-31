@@ -39,14 +39,17 @@ export default function CustomFileUpload() {
 
     const formData = new FormData();
     formData.append("file", file);
-    console.log(`formdata: ${formData}`);
 
     try {
-      const response = await axiosPrivate.post("/uploads", formData);
+      const response = await axiosPrivate.post("/uploads", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       if (response.status !== 200) {
         throw new Error("Failed to upload file");
       }
-      const data = await response.json();
+      const data = await response.data;
       navigate(
         `/summary?file_url=${encodeURIComponent(
           data.file_url
