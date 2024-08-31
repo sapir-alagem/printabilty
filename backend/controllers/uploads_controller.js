@@ -3,6 +3,7 @@ const { s3Uploadv3 } = require("../services/s3Service");
 async function uploadFiles(req, res) {
   console.log("function uploadFiles");
   try {
+    console.log(req.files);
     const results = await s3Uploadv3(req.files);
     console.log(results);
     const fileUrl = results[0];
