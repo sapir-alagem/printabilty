@@ -39,7 +39,7 @@ const PrinterTable = ({
       };
       fetchPrinters();
     }
-  }, [companyId, initialPrinters, printers]);
+  }, [companyId, initialPrinters]);
 
   const handleDelete = async (printerId) => {
     if (window.confirm("Are you sure you want to delete this printer?")) {
