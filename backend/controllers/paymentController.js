@@ -1,11 +1,12 @@
 const Stripe = require("stripe");
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-const config = require('../config/config.js');
+const config = require("../config/config.js");
 
 const createCheckoutSession = async (req, res) => {
   const { price, quantity, jobId } = req.body;
 
   try {
+    console.log("config:" + config);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
