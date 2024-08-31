@@ -57,7 +57,7 @@ const Onboarding = () => {
       try {
         axios.post("/register", {
           email: formData.companyMail,
-          role: "company admin",
+          role: ["company admin"],
           companyId: companyId,
         });
 
@@ -86,16 +86,32 @@ const Onboarding = () => {
   return (
     <div className="container mt-4">
       <div className="progress-buttons-wrapper position-relative">
-        <ProgressBar now={progress} variant="info" className="progress-bar-custom" />
+        <ProgressBar
+          now={progress}
+          variant="info"
+          className="progress-bar-custom"
+        />
         <div className="grid-container">
           <div className="grid-item">
-            <Button className={`step-button ${activeStep === 1 ? "active" : ""}`}>1</Button>
+            <Button
+              className={`step-button ${activeStep === 1 ? "active" : ""}`}
+            >
+              1
+            </Button>
           </div>
           <div className="grid-item">
-            <Button className={`step-button ${activeStep === 2 ? "active" : ""}`}>2</Button>
+            <Button
+              className={`step-button ${activeStep === 2 ? "active" : ""}`}
+            >
+              2
+            </Button>
           </div>
           <div className="grid-item">
-            <Button className={`step-button ${activeStep === 3 ? "active" : ""}`}>3</Button>
+            <Button
+              className={`step-button ${activeStep === 3 ? "active" : ""}`}
+            >
+              3
+            </Button>
           </div>
         </div>
       </div>
@@ -111,7 +127,10 @@ const Onboarding = () => {
         {activeStep === 2 && (
           <Card>
             <Card.Body>
-              <PricingConfiguration formData={formData} handleChange={handleChange} />
+              <PricingConfiguration
+                formData={formData}
+                handleChange={handleChange}
+              />
             </Card.Body>
           </Card>
         )}
