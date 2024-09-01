@@ -112,8 +112,7 @@ async function printJobCalculator(printJob) {
 
 function doSanityCheck(companyId, printerName) {
   sendPrintJobToPrinter({
-    fileUrl:
-      "https://printabillty-file-uploads.s3.eu-north-1.amazonaws.com/uploads/test.pdf",
+    fileUrl: "https://printabillty-file-uploads.s3.eu-north-1.amazonaws.com/uploads/test.pdf",
     colorMode: "Color",
     printBothSides: true,
     printAllPages: true,

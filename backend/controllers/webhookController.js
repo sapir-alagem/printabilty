@@ -17,11 +17,7 @@ function handleWebhook(request, response) {
   let event;
 
   try {
-    event = stripe.webhooks.constructEvent(
-      request.rawBody,
-      sig,
-      endpointSecret
-    );
+    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
   } catch (err) {
     console.error(`Webhook signature verification failed.`, err.message);
     return response.status(400).send(`Webhook Error: ${err.message}`);

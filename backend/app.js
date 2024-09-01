@@ -1,9 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-// require("dotenv").config({ path: "../.env" });
 require("dotenv").config();
 const cors = require("cors");
-const http = require("http");
 const corsOptions = require("./config/corsOptions");
 const paymentRoutes = require("./routes/payment_routes.js");
 const PrintJobsRoutes = require("./routes/print_jobs_routes.js");
@@ -23,7 +21,6 @@ const { setupWebSocketServer } = require("./services/web_socket_service.js");
 const credentials = require("./middleWare/credentials.js");
 
 const app = express();
-const server = http.createServer(app);
 
 app.use(credentials);
 app.use(cors(corsOptions));
@@ -34,20 +31,21 @@ app.use(cookieParser());
 app.use("/print_jobs", PrintJobsRoutes);
 app.use("/companies", companyRoutes);
 app.use("/uploads", UploadRoutes);
-app.use('/payment', paymentRoutes);
-app.use('/companies/:companyId/printers/:printerId/qrcodes', qrCodesRouter);
-app.use('/companies/:companyId', printerRouter);
-app.use('/register', registerRouter);
-app.use('/auth', authRouter);
-app.use('/refresh', refreshTokenRouter);
-app.use('/logout', logoutRouter);
+app.use("/payment", paymentRoutes);
+app.use("/companies/:companyId/printers/:printerId/qrcodes", qrCodesRouter);
+app.use("/companies/:companyId", printerRouter);
+app.use("/register", registerRouter);
+app.use("/auth", authRouter);
+app.use("/refresh", refreshTokenRouter);
+app.use("/logout", logoutRouter);
 
 app.use(errorHandler);
-setupWebSocketServer(server);
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`App listening on port: ${port}`);
 });
 
+// Setup WebSocket server
+setupWebSocketServer(server);
