@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./FileUploader.css";
+import config from "../../config.js";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export default function CustomFileUpload() {
+  const axiosPrivate = useAxiosPrivate();
   const [file, setFile] = useState(null);
-
-  const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
   const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const queryParams = new URLSearchParams(window.location.search);
@@ -22,8 +24,7 @@ export default function CustomFileUpload() {
       alert(
         "Required query parameters are missing. Please ensure you provide company_id and printer_name."
       );
-      // Redirect to an error page or another route if the parameters are missing
-      navigate("/"); // Replace '/error' with your actual error route
+      navigate("/");
     }
   }, [location.search, navigate]);
 
@@ -33,39 +34,36 @@ export default function CustomFileUpload() {
       return;
     }
 
-    setIsDisabled(true); // Disable the button to prevent multiple clicks
+    setIsDisabled(true);
+    setIsLoading(true);
 
     const formData = new FormData();
     formData.append("file", file);
 
-    const requestOptions = {
-      method: "POST",
-      body: formData,
-      redirect: "follow",
-    };
-
     try {
-      const response = await fetch(
-        "http://localhost:5000/uploads",
-        requestOptions
-      );
-      if (!response.ok) {
+      const response = await axiosPrivate.post("/uploads", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      if (response.status !== 200) {
         throw new Error("Failed to upload file");
       }
-      const data = await response.json();
+      const data = await response.data;
+      console.log(data);
       navigate(
-        `/summary?file_url=${encodeURIComponent(
-          data.file_url
-        )}&company_id=${company_id}&printer_name=${encodeURIComponent(
-          printer_name
-        )}`
+        `/summary?file_url=${data.file_url}&company_id=${company_id}&printer_name=${printer_name}`
       );
     } catch (error) {
       alert(error.message);
+    } finally {
+      setIsLoading(false);
+      setIsDisabled(false);
     }
   }
 
   const handleFileChange = (e) => {
+    console.log(e.target.files);
     setFile(e.target.files[0]);
   };
 
@@ -99,8 +97,16 @@ export default function CustomFileUpload() {
           </div>
         )}
       </div>
-      <button onClick={uploadFile} className="upload-button">
-        Upload
+      <button
+        onClick={uploadFile}
+        className="upload-button"
+        disabled={isDisabled}
+      >
+        {isLoading ? (
+          <div className="loader"></div> // Add your loader here
+        ) : (
+          "Upload"
+        )}
       </button>
     </div>
   );

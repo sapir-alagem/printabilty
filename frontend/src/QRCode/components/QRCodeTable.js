@@ -119,14 +119,14 @@ const QRCodeTable = ({ qrCodes, onObsolete, onDownload }) => {
                                     disabled={loading === qrCode._id} 
                                 >
                                     {loading === qrCode._id ? (
-                                        <div class="spinner-border text-primary" role="status">
-                                        <span class="visually-hidden">Loading...</span>
+                                        <div className="spinner-border text-primary" role="status">
+                                        <span className="visually-hidden">Loading...</span>
                                       </div>
                                     ) : (
                                         <i className="bi bi-download"></i>
                                     )}
                                 </button>
-                                <button className='btn-icon' onClick={() => onObsolete(qrCode._id)} style={{ marginLeft: '8px' }} ><i class="bi bi-trash"></i></button>
+                                <button className='btn-icon' onClick={() => onObsolete(qrCode._id)} style={{ marginLeft: '8px' }} ><i className="bi bi-trash"></i></button>
                             </td>
                         </tr>
                     ))}

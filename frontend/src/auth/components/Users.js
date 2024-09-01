@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import config from "../../config.js";
 
 const Users = () => {
   const [users, setUsers] = useState();
@@ -10,7 +11,7 @@ const Users = () => {
     const controller = new AbortController();
     const getUsers = async () => {
       try {
-        const response = await axiosPrivate.get("http://localhost:5000/users", {
+        const response = await axiosPrivate.get(`${config.backUrl}/users`, {
           signal: controller.signal,
         });
         if (isMounted) {

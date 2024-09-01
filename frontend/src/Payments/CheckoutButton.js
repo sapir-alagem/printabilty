@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useCheckout } from "./CheckoutContext";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import config from "../config.js";
 
 const stripePromise = loadStripe(
   "pk_test_51OlWKuEfxT2rIn1yjXfG5QpuSBYmXKB1ORUnQWuoSDk2bKOhk5WpezGx1xKKsCfu1kdkmBruvVW5UGzQ1ejQGvQm00d3c0qhxQ"
@@ -22,7 +23,7 @@ const CheckoutButton = () => {
 
       // Proceed to create checkout session
       const checkoutResponse = await axios.post(
-        "http://localhost:5000/payment/create-checkout-session",
+        `${config.backUrl}/payment/create-checkout-session`,
         {
           price: price,
           quantity: 1, // Adjust the quantity as needed
@@ -49,7 +50,7 @@ const CheckoutButton = () => {
         {isDisabled ? (
           <>
             <span
-              class="spinner-border spinner-border-sm"
+              className="spinner-border spinner-border-sm"
               role="status"
               aria-hidden="true"
             ></span>

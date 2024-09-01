@@ -1,21 +1,23 @@
-const WebSocket = require("ws");
+const { WebSocketServer, WebSocket } = require("ws");
 
 const clients = new Map();
 
 async function setupWebSocketServer(server) {
   try {
-    const wss = new WebSocket.Server({ server });
+    const wss = new WebSocketServer({ server });
 
     wss.on("connection", (ws) => {
-      ws.on("message", async (message) => {
+      ws.on("message", (message) => {
         console.log("received: %s", message);
         const data = JSON.parse(message);
         const { company_id } = data;
-        // Track the client with companyId and printer_name as key
+
+        // Track the client with companyId as key
         const clientKey = `${company_id}`;
         clients.set(clientKey, ws);
 
-        sendMessageToClient(company_id, "Hello, client!");
+        // Optionally, send an initial message to the connected client
+        sendMessageToClient(company_id, { message: "Hello, client!" });
       });
 
       ws.on("close", () => {
@@ -27,12 +29,12 @@ async function setupWebSocketServer(server) {
         }
       });
 
-      ws.send("Connection established");
+      ws.send(JSON.stringify({ message: "Connection established" }));
     });
 
     console.log("WebSocket server is running");
   } catch (error) {
-    console.error(error);
+    console.error("Error setting up WebSocket server:", error);
   }
 }
 

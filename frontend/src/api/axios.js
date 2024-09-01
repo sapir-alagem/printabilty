@@ -1,6 +1,11 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000";
+let BASE_URL = "http://localhost:5000";
+
+
+if (process.env.NODE_ENV === "production") {
+  BASE_URL = "https://printabilty-backend.up.railway.app"
+}
 
 export default axios.create({
   baseURL: BASE_URL,

@@ -42,7 +42,6 @@ async function sendPrintJobToPrinter(printJob) {
     file_url: printJob.fileUrl,
     color_mode: printJob.colorMode,
     print_both_sides: printJob.printBothSides,
-    layout_mode: printJob.layoutMode,
     print_all_pages: printJob.printAllPages,
     page_range_start: printJob.pageRange.start,
     page_range_end: printJob.pageRange.end,
@@ -51,7 +50,7 @@ async function sendPrintJobToPrinter(printJob) {
     type: "print_request",
   };
 
-  sendMessageToClient(printJob.company_id, data);
+  sendMessageToClient(printJob.companyId, data);
 }
 
 async function processPrintJob(jobId) {
@@ -111,9 +110,24 @@ async function printJobCalculator(printJob) {
   }
 }
 
+function doSanityCheck(companyId, printerName) {
+  sendPrintJobToPrinter({
+    fileUrl: "https://printabillty-file-uploads.s3.eu-north-1.amazonaws.com/uploads/test.pdf",
+    colorMode: "Color",
+    printBothSides: true,
+    printAllPages: true,
+    pageRange: { start: 1, end: 10 },
+    copies: 1,
+    printer_name: printerName,
+    companyId: companyId,
+  });
+  console.log("Sanity sent");
+}
+
 module.exports = {
   createPrintJob,
   getPrintJobs,
   processPrintJob,
   printJobCalculator,
+  doSanityCheck,
 };

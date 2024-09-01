@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 import { Button, Card, ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CompanyInfo from "../components/CompanyInfo";
@@ -53,22 +54,26 @@ const Onboarding = () => {
     if (activeStep < 3) {
       handleStepChange(activeStep + 1);
     } else if (activeStep === 3) {
-      await axios.post("/register", {
-        email: formData.companyMail,
-        role: "company admin",
-        companyId: companyId,
-      });
+      try {
+        axios.post("/register", {
+          email: formData.companyMail,
+          role: ["company admin"],
+          companyId: companyId,
+        });
 
-      await axios.post("/companies/update", {
-        companyId: companyId,
-        type: formData.companyType,
-        customerType: formData.customerType,
-        paymentsCurrency: formData.paymentsCurrency,
-        blackAndWhitePageCost: formData.blackAndWhitePageCost,
-        coloredPageCost: formData.coloredPageCost,
-      });
+        axios.post("/companies/update", {
+          companyId: companyId,
+          type: formData.companyType,
+          customerType: formData.customerType,
+          paymentsCurrency: formData.paymentsCurrency,
+          blackAndWhitePageCost: formData.blackAndWhitePageCost,
+          coloredPageCost: formData.coloredPageCost,
+        });
 
-      window.location.href = "/login";
+        window.location.href = "/login";
+      } catch (error) {
+        alert(error.response.data.message);
+      }
     }
   };
 

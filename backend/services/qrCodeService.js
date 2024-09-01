@@ -31,10 +31,7 @@ async function obsoleteQrCode(qrCodeId, company_id) {
   try {
     const db = client.db("printability");
     const col = db.collection("qrcodes");
-    const result = await col.updateOne(
-      { _id: qrCodeId, company_id },
-      { $set: { obsolete: true } }
-    );
+    const result = await col.updateOne({ _id: qrCodeId, company_id }, { $set: { obsolete: true } });
     return result;
   } catch (error) {
     console.error("Error obsoleting QR code:", error);
@@ -47,13 +44,26 @@ async function scanQrCode(qrCodeId, user) {
   try {
     const db = client.db("printability");
     const col = db.collection("qrcodes");
-    const result = await col.updateOne(
-      { _id: qrCodeId },
-      { $set: { scannedBy: user } }
-    );
+    const result = await col.updateOne({ _id: qrCodeId }, { $set: { scannedBy: user } });
     return result;
   } catch (error) {
     console.error("Error scanning QR code:", error);
+    throw error;
+  }
+}
+
+async function getPrinterQrCode(companyId, printerName) {
+  const client = await getClient();
+  try {
+    const db = client.db("printability");
+    const col = db.collection("qrcodes");
+    const qrCode = await col.findOne({ company_id: companyId, printer_name: printerName });
+    if (!qrCode) {
+      return null;
+    }
+    return qrCode;
+  } catch (error) {
+    console.error("Error retrieving printer QR code:", error);
     throw error;
   }
 }
@@ -63,4 +73,5 @@ module.exports = {
   getAllActiveQrCodes,
   obsoleteQrCode,
   scanQrCode,
+  getPrinterQrCode,
 };

@@ -9,7 +9,7 @@ const corsOptions = {
     }
   },
   optionsSuccessStatus: 200,
-  credentials: true, // This allows the server to accept credentials
+  credentials: true,
 };
 
 module.exports = corsOptions;

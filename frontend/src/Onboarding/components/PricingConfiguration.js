@@ -23,7 +23,7 @@ const PricingConfiguration = ({ formData, handleChange }) => {
 
             <div className="form-group">
                 <label>Payments Currency:</label>
-                <select class="form-select-sm" aria-label="Default select example" name="paymentsCurrency"
+                <select className="form-select-sm" aria-label="Default select example" name="paymentsCurrency"
                     value={formData.paymentsCurrency}
                     onChange={handleChange}
                     required>

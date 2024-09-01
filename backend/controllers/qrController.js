@@ -1,24 +1,21 @@
 const QRCode = require("qrcode");
 const qrCodeService = require("../services/qrCodeService");
 const printerService = require("../services/printerService");
+const config = require('../config/config.js');
 
 const generateQrCode = async (req, res) => {
   try {
     const company_id = req.params.companyId;
     const { printer_name } = req.body;
 
-    const printer = await printerService.findPrinterByName(
-      company_id,
-      printer_name
-    );
+    const printer = await printerService.findPrinterByName(company_id, printer_name);
     if (!printer) {
       return res.status(404).json({ message: "Printer not found" });
     }
 
     const printer_id = printer._id;
-    const value = `http://localhost:3000/UploadFile?company_id=${company_id}&printer_name=${printer_name}`;
+    const value = `${config.backUrl}/UploadFile?company_id=${company_id}&printer_name=${printer_name}`;
 
-    // Prepare QR code data
     const data = {
       value,
       printer_id,
@@ -28,14 +25,11 @@ const generateQrCode = async (req, res) => {
       createdAt: new Date(),
     };
 
-    // Generate QR code image
     const qrCodeDataUrl = await QRCode.toDataURL(value);
     const qrCode = { ...data, code: qrCodeDataUrl };
 
-    // Save QR code to database
     const qrCodeId = await qrCodeService.createQrCode(qrCode);
 
-    // Return successful response
     res.status(201).json({ ...qrCode, _id: qrCodeId });
   } catch (error) {
     res.status(500).json({ message: "Error generating QR code", error });
@@ -86,9 +80,26 @@ const scanQrCode = async (req, res) => {
   }
 };
 
+const getPrinterQrCode = async (req, res) => {
+  try {
+    const { companyId, printerId } = req.params;
+    const printer = await printerService.getPrinter(companyId, printerId);
+    printerName = printer.name;
+    const qrCode = await qrCodeService.getPrinterQrCode(companyId, printerName);
+    if (!qrCode) {
+      res.status(404).json({ message: "QR code not found" });
+    } else {
+      res.status(200).json(qrCode);
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching QR code", error });
+  }
+};
+
 module.exports = {
   generateQrCode,
   getAllActiveQrCodes,
   obsoleteQrCode,
   scanQrCode,
+  getPrinterQrCode,
 };

@@ -90,20 +90,16 @@ def on_print_request(data):
         # Extract values
         color_mode = data['color_mode']
         print_both_sides = data['print_both_sides']
-        layout_mode = data['layout_mode']
         print_all_pages = data['print_all_pages']
         page_range_start = data['page_range_start']
         page_range_end = data['page_range_end']
         copies = data['copies']
 
-        # Convert layout mode to the appropriate CUPS option
-        orientation_requested = "3" if layout_mode == "portrait" else "4"  # 3 for portrait, 4 for landscape
 
         # Prepare options for print job
         options = {
             "ColorModel": "RGB" if color_mode == 'color' else 'Gray',
             "sides": "two-sided-long-edge" if print_both_sides else "None",
-            "orientation-requested": orientation_requested,
             "copies" : str(copies)
         }
 

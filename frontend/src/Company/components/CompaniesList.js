@@ -1,9 +1,35 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import CompanyItem from "./CompanyItem";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import Spinner from "react-bootstrap/Spinner"; // Import Spinner
 
 const CompaniesList = (props) => {
-  const items = Array.isArray(props.items.companies) ? props.items.companies : [];
+  const axiosPrivate = useAxiosPrivate();
+  const [printerCounts, setPrinterCounts] = useState({});
+
+  const items = Array.isArray(props.items.companies)
+    ? props.items.companies
+    : [];
+
+  useEffect(() => {
+    const fetchPrinterCounts = async () => {
+      try {
+        const counts = {};
+        for (const company of items) {
+          const result = await axiosPrivate.get(
+            `/companies/${company._id}/countPrinters`
+          );
+          counts[company._id] = result.data.printers;
+        }
+        setPrinterCounts(counts);
+      } catch (error) {
+        console.error("Error fetching printer counts:", error);
+      }
+    };
+
+    fetchPrinterCounts();
+  }, [items]);
 
   if (items.length === 0) {
     return (
@@ -13,8 +39,7 @@ const CompaniesList = (props) => {
     );
   } else {
     return (
-      <div className="m-4">
-        <h2 className="mb-4">Companies List</h2>
+      <div>
         <table className="table table-hover">
           <thead>
             <tr>
@@ -29,8 +54,15 @@ const CompaniesList = (props) => {
               <CompanyItem
                 key={company._id}
                 id={company._id}
-                name={company.companyName}
-                printersCount={company.numOfPrinters}
+                name={company.name}
+                printersCount={
+                  printerCounts[company._id] !== undefined ? (
+                    printerCounts[company._id]
+                  ) : (
+                    <Spinner animation="border" size="sm" />
+                  )
+                }
+                onDelete={props.onDeleteCompany}
               />
             ))}
           </tbody>
