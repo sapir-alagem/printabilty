@@ -15,17 +15,21 @@ const CheckoutButton = () => {
   const handleCheckout = async () => {
     try {
       setIsDisabled(true); // Disable the button to prevent multiple clicks
+
       // Save print details to the database
       const response = await savePrintDetails(printDetails);
       const jobId = response.jobId; // Assuming the response contains the inserted jobId
 
       console.log("Print details saved successfully with jobId:", jobId);
 
+      // Ensure the price is rounded to 2 decimal places
+      const roundedPrice = parseFloat(price).toFixed(2);
+
       // Proceed to create checkout session
       const checkoutResponse = await axios.post(
         `${config.backUrl}/payment/create-checkout-session`,
         {
-          price: price,
+          price: roundedPrice, // Use the rounded price
           quantity: 1, // Adjust the quantity as needed
           jobId: jobId, // Include jobId in the request
         }
