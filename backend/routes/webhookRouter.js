@@ -11,7 +11,7 @@ const setRawBody = (req, res, buf, encoding) => {
   }
 };
 
-router.post("/", bodyParser.raw({ type: "application/json" }), webhookController.handleWebhook);
+router.post("/", webhookController.handleWebhook);
 router.get("/", webhookController.checkHook);
 
 module.exports = router;
