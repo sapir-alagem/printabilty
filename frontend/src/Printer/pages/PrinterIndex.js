@@ -82,7 +82,6 @@ const PrinterIndex = () => {
                 printers={printers} 
                 onDelete={handleDelete} 
                 onDownloadQR={handleDownloadQR} 
-                updatePrinterStatus={updatePrinterStatus} 
                 companyId={companyId} />
         </div>
     );
