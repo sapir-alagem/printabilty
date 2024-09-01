@@ -1,7 +1,7 @@
 const QRCode = require("qrcode");
 const qrCodeService = require("../services/qrCodeService");
 const printerService = require("../services/printerService");
-const config = require('../config/config.js');
+const config = require("../config/config.js");
 
 const generateQrCode = async (req, res) => {
   try {
@@ -14,7 +14,7 @@ const generateQrCode = async (req, res) => {
     }
 
     const printer_id = printer._id;
-    const value = `${config.backUrl}/UploadFile?company_id=${company_id}&printer_name=${printer_name}`;
+    const value = `${config.appUrl}/UploadFile?company_id=${company_id}&printer_name=${printer_name}`;
 
     const data = {
       value,
