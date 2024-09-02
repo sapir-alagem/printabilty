@@ -121,7 +121,7 @@ def on_print_request(data):
 def start_websocket_client():
     websocket.enableTrace(True)
     # Include an ID or data in the URL as a query parameter
-    ws = websocket.WebSocketApp("ws://192.168.0.199:5000",
+    ws = websocket.WebSocketApp("wss://printabilty-backend.up.railway.app",
                                 on_message=on_message,
                                 on_error=on_error,
                                 on_close=on_close,
