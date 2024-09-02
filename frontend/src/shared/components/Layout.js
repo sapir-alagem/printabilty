@@ -1,10 +1,12 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 function Layout({ children }) {
   return (
-    <div className="d-flex" style={{ height: "100vh" }}>
+    <div
+      className="d-flex"
+      style={{ minHeight: "100vh", backgroundColor: "#EFF7FF" }}
+    >
       <Sidebar />
       <div
         className="flex-grow-1"
