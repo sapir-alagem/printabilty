@@ -111,6 +111,7 @@ const html = (password) => `
 
 async function sendEmail(email, password) {
   try {
+    console.log("Sending email to:", email);
     const transporter = nodeMailer.createTransport({
       //use gmail
       service: "gmail",
@@ -139,6 +140,7 @@ async function sendEmail(email, password) {
         },
       ],
     });
+    console.log("Email sent: ", info);
   } catch (error) {
     console.log(error);
   }
