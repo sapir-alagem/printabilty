@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import useLogout from "../../hooks/useLogout";
 import EditCompanyModal from "../../Company/components/EditCompanyModal";
@@ -22,6 +22,9 @@ const Sidebar = () => {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+  // Check if the user's role includes "super admin"
+  const isSuperAdmin = auth?.role?.includes("super admin");
 
   return (
     <>
@@ -49,17 +52,19 @@ const Sidebar = () => {
         </a>
         <hr />
         <ul className="nav flex-column mb-auto">
-          <li className="nav-item">
-            <a
-              href="#"
-              className="nav-link text-white ml-4 active"
-              onClick={() => navigate("/companies")}
-              aria-current="page"
-            >
-              <i className="bi bi-building-fill me-2"></i>
-              Companies
-            </a>
-          </li>
+          {isSuperAdmin && (
+            <li className="nav-item">
+              <a
+                href="#"
+                className="nav-link text-white ml-4 active"
+                onClick={() => navigate("/companies")}
+                aria-current="page"
+              >
+                <i className="bi bi-building-fill me-2"></i>
+                Companies
+              </a>
+            </li>
+          )}
         </ul>
 
         <ul className="nav flex-column mt-auto">
