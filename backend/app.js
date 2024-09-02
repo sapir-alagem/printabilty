@@ -1,6 +1,6 @@
-require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
+require("dotenv").config();
 const cors = require("cors");
 const corsOptions = require("./config/corsOptions");
 const paymentRoutes = require("./routes/payment_routes.js");

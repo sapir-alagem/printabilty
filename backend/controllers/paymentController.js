@@ -3,9 +3,7 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const config = require("../config/config.js");
 
 const createCheckoutSession = async (req, res) => {
-  const { price, quantity, jobId, currency } = req.body;
-
-  const unit_amount = parseInt(price * 100);
+  const { price, quantity, jobId } = req.body;
 
   try {
     console.log("config:" + config.appUrl);
@@ -14,11 +12,11 @@ const createCheckoutSession = async (req, res) => {
       line_items: [
         {
           price_data: {
-            currency: currency,
+            currency: "ils",
             product_data: {
               name: "Print Service",
             },
-            unit_amount: unit_amount,
+            unit_amount: price * 100,
           },
           quantity: quantity,
         },

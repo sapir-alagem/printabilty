@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useCheckout } from "./CheckoutContext";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
-import useAxiosPrivate from "../hooks/useAxiosPrivate.js";
 import config from "../config.js";
 
 const stripePromise = loadStripe(
@@ -12,7 +11,6 @@ const stripePromise = loadStripe(
 const CheckoutButton = () => {
   const { printDetails, price, savePrintDetails } = useCheckout();
   const [isDisabled, setIsDisabled] = useState(false);
-  const axiosPrivate = useAxiosPrivate();
 
   const handleCheckout = async () => {
     try {
@@ -26,10 +24,6 @@ const CheckoutButton = () => {
 
       // Ensure the price is rounded to 2 decimal places
       const roundedPrice = parseFloat(price).toFixed(2);
-      const result = await axiosPrivate.get(
-        `/companies/${printDetails.companyId}`
-      );
-      const currency = result.data.company.paymentsCurrency;
 
       // Proceed to create checkout session
       const checkoutResponse = await axios.post(
@@ -38,7 +32,6 @@ const CheckoutButton = () => {
           price: roundedPrice, // Use the rounded price
           quantity: 1, // Adjust the quantity as needed
           jobId: jobId, // Include jobId in the request
-          currency: currency, // Include currency in the request
         }
       );
 
