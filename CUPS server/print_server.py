@@ -98,7 +98,7 @@ def on_print_request(data):
 
         # Prepare options for print job
         options = {
-            "ColorModel": "RGB" if color_mode == 'color' else 'Gray',
+            "ColorModel": "RGB" if color_mode == 'Color' else 'Gray',
             "sides": "two-sided-long-edge" if print_both_sides else "None",
             "copies" : str(copies)
         }
