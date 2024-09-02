@@ -121,7 +121,7 @@ async function sendEmail(email, password) {
       },
     });
 
-    const info = transporter.sendMail({
+    const info = await transporter.sendMail({
       from: "Printabillity <printability2@gmail.com>",
       to: email,
       subject: "Welcome to Printabillity",
