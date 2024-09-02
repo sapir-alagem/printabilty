@@ -6,7 +6,6 @@ import "./App.css";
 
 import Companies from "./Company/pages/Companies";
 import NewCompany from "./Company/pages/NewCompany";
-import SignupForm from "./Company/pages/CompanySignupForm";
 import SuccessSingup from "./Company/pages/succesfulSingup";
 import UploadFile from "./File/Pages/UploadFilePage";
 import FileUploadComponent from "./File/components/FileUploader";
@@ -46,7 +45,6 @@ function App() {
         <Route path="/SingUp" element={<SingUp />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/companies/new" element={<NewCompany />} />
-        <Route path="/companies/new/form" element={<SignupForm />} />
         <Route path="/companies/new/success" element={<SuccessSingup />} />
         <Route path="/PrinterSuspended" element={<PrinterSuspended />} />
 

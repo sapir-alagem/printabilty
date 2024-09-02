@@ -20,7 +20,7 @@ const Earnings = ({ companyId, timeframe }) => {
     fetchEarnings();
   }, [companyId, timeframe]); // Re-run when companyId or timeframe changes
 
-  return <h3>${earnings.toFixed(2)}</h3>;
+  return <h3> 💸 {earnings.toFixed(2)}</h3>;
 };
 
 export default Earnings;
