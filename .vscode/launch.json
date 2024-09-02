@@ -12,26 +12,20 @@
       "webRoot": "${workspaceFolder}"
     },
 
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch backend",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "C:\\Users\\safirma\\Documents\\GitHub\\printabilty\\backend\\app.js"
-        },
-
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "http://localhost:3000",
-      "webRoot": "${workspaceFolder}"
     {
       "type": "node",
       "request": "launch",
-      "name": "Launch backend",
+      "name": "Launch backend idan",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "C:\\Users\\Owner\\OneDrive\\מסמכים\\Github\\printabilty\\backend\\app.js",
+      //make sure to take .env file from the root folder
+      "envFile": "C:\\Users\\Owner\\OneDrive\\מסמכים\\Github\\printabilty\\backend\\.env"
+    },
+
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch backend maya",
       "skipFiles": ["<node_internals>/**"],
       "program": "C:\\Users\\Owner\\OneDrive\\מסמכים\\Github\\printabilty\\backend\\app.js"
     }
