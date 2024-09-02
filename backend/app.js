@@ -25,10 +25,10 @@ const app = express();
 
 app.use(credentials);
 app.use(cors(corsOptions));
-app.use("/webhook", webhookRouter);
 app.use(express.json());
 app.use(cookieParser());
 
+app.use("/webhook", webhookRouter);
 app.use("/print_jobs", PrintJobsRoutes);
 app.use("/companies", companyRoutes);
 app.use("/uploads", UploadRoutes);

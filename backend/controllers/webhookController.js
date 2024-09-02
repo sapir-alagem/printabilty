@@ -12,16 +12,8 @@ const checkHook = async (req, res, next) => {
 };
 
 function handleWebhook(request, response) {
-  const sig = request.headers["stripe-signature"];
-
-  let event;
-
-  try {
-    event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
-  } catch (err) {
-    console.error(`Webhook signature verification failed.`, err.message);
-    return response.status(400).send(`Webhook Error: ${err.message}`);
-  }
+  // Parse the request body as JSON
+  const event = request.body;
 
   // Handle the event
   if (event.type === "checkout.session.completed") {

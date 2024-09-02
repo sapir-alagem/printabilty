@@ -77,10 +77,12 @@ const Companies = () => {
         onChange={handleSearchChange}
         className="form-control my-4"
       />
-      <CompaniesList
-        items={filteredItems}
-        onDeleteCompany={handleDeleteCompany}
-      />
+      <div style={{ maxHeight: "250px", overflowY: "auto" }}>
+        <CompaniesList
+          items={filteredItems}
+          onDeleteCompany={handleDeleteCompany}
+        />
+      </div>
     </div>
   );
 };

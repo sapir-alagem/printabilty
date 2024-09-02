@@ -4,7 +4,6 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import "./App.css";
 
-import LandingPage from "./pages/LandingPage";
 import Companies from "./Company/pages/Companies";
 import NewCompany from "./Company/pages/NewCompany";
 import SignupForm from "./Company/pages/CompanySignupForm";
@@ -54,21 +53,37 @@ function App() {
         {/* protected routes*/}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={["super admin"]} />}>
-            <Route path="/companies" element={
-              <Layout>
-                <Companies />
-              </Layout>
-            } />
+            <Route
+              path="/companies"
+              element={
+                <Layout>
+                  <Companies />
+                </Layout>
+              }
+            />
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={["company admin", "super admin"]} />}>
-            <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
-            <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
-            <Route path="/companies/:companyId/dashboard" element={
-              <Layout>
-                <CompanyDashboard />
-              </Layout>
-            } />
+          <Route
+            element={
+              <RequireAuth allowedRoles={["company admin", "super admin"]} />
+            }
+          >
+            <Route
+              path="/companies/:companyId/qrcodes"
+              element={<QRCodeIndex />}
+            />
+            <Route
+              path="/companies/:companyId/printers"
+              element={<PrinterIndex />}
+            />
+            <Route
+              path="/companies/:companyId/dashboard"
+              element={
+                <Layout>
+                  <CompanyDashboard />
+                </Layout>
+              }
+            />
             <Route
               path="/companies/:companyId/printers/:printerId/edit"
               element={<PrinterForm />}
