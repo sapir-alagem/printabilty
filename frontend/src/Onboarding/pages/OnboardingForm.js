@@ -21,15 +21,15 @@ const Onboarding = () => {
     companyType: "",
     customerType: "",
     paymentsCurrency: "ILS",
-    blackAndWhitePageCost: "0.15",
-    coloredPageCost: "0.6",
+    blackAndWhitePageCost: 0.3,
+    coloredPageCost: 0.6,
   });
 
   const handleChange = (event) => {
-    const { name, value, type, checked } = event.target;
+    const { name, value} = event.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: value,
     }));
   };
 

@@ -16,6 +16,7 @@ const registerRouter = require("./routes/register_routes.js");
 const authRouter = require("./routes/auth_routes.js");
 const refreshTokenRouter = require("./routes/refreshToken_routes.js");
 const logoutRouter = require("./routes/logout_routes.js");
+const DashboardRouter = require("./routes/dashboard_routes.js");
 const cookieParser = require("cookie-parser");
 const { setupWebSocketServer } = require("./services/web_socket_service.js");
 const credentials = require("./middleWare/credentials.js");
@@ -38,6 +39,7 @@ app.use("/register", registerRouter);
 app.use("/auth", authRouter);
 app.use("/refresh", refreshTokenRouter);
 app.use("/logout", logoutRouter);
+app.use("/dashboard", DashboardRouter);
 
 app.use(errorHandler);
 

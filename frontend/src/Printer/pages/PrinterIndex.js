@@ -124,7 +124,7 @@ const PrinterIndex = () => {
   return (
     <div>
       <div className="d-flex m-4 mb-0 align-items-center">
-        <h5 className="mr-auto">Printer Management</h5>
+        <h4 className="mr-auto">Printer Management</h4>
         <Button variant="primary" onClick={() => setShowModal(true)}>
           Add Printer
         </Button>
