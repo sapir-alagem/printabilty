@@ -23,7 +23,6 @@ const Sidebar = () => {
     setShowModal(false);
   };
 
-  // Check if the user's role includes "super admin"
   const isSuperAdmin = auth?.role?.includes("super admin");
 
   return (
@@ -33,14 +32,13 @@ const Sidebar = () => {
         style={{
           width: "280px",
           backgroundColor: "#3799FA",
-          position: "fixed", // Fixed position
+          position: "fixed",
           top: 0,
           bottom: 0,
           left: 0,
         }}
       >
-        <a
-          href="/"
+        <div
           className="d-flex justify-content-center mb-3 mb-md-0 text-white text-decoration-none"
           style={{ width: "100%" }}
         >
@@ -49,7 +47,7 @@ const Sidebar = () => {
             alt="Logo"
             style={{ width: "75%", height: "auto" }}
           />
-        </a>
+        </div>
         <hr />
         <ul className="nav flex-column mb-auto">
           {isSuperAdmin && (

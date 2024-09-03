@@ -87,7 +87,7 @@ const Login = () => {
       >
         <h1 className="display-4 fw-bold lh-1 text-center mb-3">Welcome Back,</h1>
         <img src="/assets/white_logo.svg" alt="Logo" className="img-fluid" />
-        <p className="lead text-center mt-4" style={{ maxWidth: "400px" }}>
+        <p className="lead text-center mt-4" style={{ maxWidth: "500px" }}>
           Empower your business and elevate customer convenience
           with our mobile-friendly, self-service printing solution.
         </p>
