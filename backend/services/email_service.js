@@ -1,4 +1,6 @@
 const nodeMailer = require("nodemailer");
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const html = (password) => `
     <!DOCTYPE html>
 <html lang="en">
@@ -85,34 +87,49 @@ const html = (password) => `
 
 async function sendEmail(email, password) {
   try {
-    const transporter = nodeMailer.createTransport({
-      //use gmail
-      service: "gmail",
-      auth: {
-        user: "printability2@gmail.com",
-        pass: process.env.GMAIL_APP_PASSWORD,
-      },
-    });
-
-    const info = transporter.sendMail({
-      from: "Printabillity <printability2@gmail.com>",
-      to: email,
+    const msg = {
+      to: email, // Change to your recipient
+      from: "printability2@gmail.com", // Change to your verified sender
       subject: "Welcome to Printabillity",
+      text: "and easy to do anywhere, even with Node.js",
       html: html(password),
-      //add attachment
-      attachments: [
-        {
-          filename: "Printer setup Guide.pdf",
-          path: __dirname + "/../email attachments/Printer setup Guide.pdf",
-          contentType: "application/pdf",
-        },
-        {
-          filename: "CUPS server.zip",
-          path: __dirname + "/../email attachments/print_server.zip",
-          contentType: "application/zip",
-        },
-      ],
-    });
+    };
+    sgMail
+      .send(msg)
+      .then(() => {
+        console.log("Email sent");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    // const transporter = nodeMailer.createTransport({
+    //   //use gmail
+    //   service: "gmail",
+    //   auth: {
+    //     user: "printability2@gmail.com",
+    //     pass: process.env.GMAIL_APP_PASSWORD,
+    //   },
+    // });
+
+    // const info = transporter.sendMail({
+    //   from: "Printabillity <printability2@gmail.com>",
+    //   to: email,
+    //   subject: "Welcome to Printabillity",
+    //   html: html(password),
+    //   //add attachment
+    //   attachments: [
+    //     {
+    //       filename: "Printer setup Guide.pdf",
+    //       path: __dirname + "/../email attachments/Printer setup Guide.pdf",
+    //       contentType: "application/pdf",
+    //     },
+    //     {
+    //       filename: "CUPS server.zip",
+    //       path: __dirname + "/../email attachments/print_server.zip",
+    //       contentType: "application/zip",
+    //     },
+    //   ],
+    // });
   } catch (error) {
     console.log(error);
   }

@@ -13,6 +13,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.568.0",
     "@pspdfkit/nodejs": "^0.0.5",
+    "@sendgrid/mail": "^8.1.3",
     "aws-sdk": "^2.1610.0",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
