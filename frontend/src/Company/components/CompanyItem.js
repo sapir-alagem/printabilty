@@ -16,7 +16,7 @@ const CompanyItem = (props) => {
     if (!confirmDelete) {
       return;
     }
-    
+
     try {
       await axiosPrivate.delete(`/companies/${props.id}`);
       props.onDelete(props.id);
@@ -27,7 +27,7 @@ const CompanyItem = (props) => {
 
   return (
     <tr>
-      <td>{props.name}</td>
+      <td className="pl-4">{props.name}</td>
       <td>{props.id}</td>
       <td>{props.printersCount}</td>
       <td>

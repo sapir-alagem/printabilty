@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import CompanyItem from "./CompanyItem";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import Spinner from "react-bootstrap/Spinner"; // Import Spinner
+import Spinner from "react-bootstrap/Spinner";
 
 const CompaniesList = (props) => {
   const axiosPrivate = useAxiosPrivate();
@@ -43,7 +43,7 @@ const CompaniesList = (props) => {
         <table className="table table-hover">
           <thead>
             <tr>
-              <th>Name</th>
+              <th className="pl-4">Name</th>
               <th>ID</th>
               <th>Numbers of Printers</th>
               <th>Actions</th>
