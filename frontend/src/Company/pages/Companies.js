@@ -68,7 +68,7 @@ const Companies = () => {
   }
 
   return (
-    <div className="p-5 m-4">
+    <div className="d-flex flex-column" style={{ height: "100vh", padding: "1rem 2rem" }}>
       <h1>Companies</h1>
       <input
         type="text"

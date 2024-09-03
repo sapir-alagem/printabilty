@@ -5,12 +5,12 @@ function Layout({ children }) {
   return (
     <div
       className="d-flex"
-      style={{ minHeight: "100vh", backgroundColor: "#EFF7FF" }}
+      style={{ minHeight: "100vh", backgroundColor: "#EFF7FF", overflow: "hidden" }}
     >
       <Sidebar />
       <div
         className="flex-grow-1"
-        style={{ marginLeft: "280px", padding: "20px" }}
+        style={{ marginLeft: "280px", display: "flex", flexDirection: "column", height: "100%" }}
       >
         {children}
       </div>
