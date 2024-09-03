@@ -1,15 +1,28 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
 
 const CancelPage = () => {
+  const navigate = useNavigate();
   return (
     <div className="container mt-5">
       <div className="text-center">
-        <h1 className="display-4">Payment Canceled</h1>
+        <h1 className="display-4">
+          Payment Canceled{" "}
+          <span role="img" aria-label="sad face">
+            😔
+          </span>
+        </h1>
         <p className="lead">Your payment was canceled. Please try again.</p>
-        <Link to="/" className="btn btn-primary mt-3">
-          Go to Home
-        </Link>
+        <Button
+          color="primary"
+          variant="contained"
+          onClick={() => {
+            navigate(-4);
+          }}
+        >
+          try again
+        </Button>
       </div>
     </div>
   );

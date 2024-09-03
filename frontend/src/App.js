@@ -4,10 +4,8 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import "./App.css";
 
-import LandingPage from "./pages/LandingPage";
 import Companies from "./Company/pages/Companies";
 import NewCompany from "./Company/pages/NewCompany";
-import SignupForm from "./Company/pages/CompanySignupForm";
 import SuccessSingup from "./Company/pages/succesfulSingup";
 import UploadFile from "./File/Pages/UploadFilePage";
 import FileUploadComponent from "./File/components/FileUploader";
@@ -47,28 +45,43 @@ function App() {
         <Route path="/SingUp" element={<SingUp />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/companies/new" element={<NewCompany />} />
-        <Route path="/companies/new/form" element={<SignupForm />} />
         <Route path="/companies/new/success" element={<SuccessSingup />} />
         <Route path="/PrinterSuspended" element={<PrinterSuspended />} />
 
         {/* protected routes*/}
         <Route element={<PersistLogin />}>
           <Route element={<RequireAuth allowedRoles={["super admin"]} />}>
-            <Route path="/companies" element={
-              <Layout>
-                <Companies />
-              </Layout>
-            } />
+            <Route
+              path="/companies"
+              element={
+                <Layout>
+                  <Companies />
+                </Layout>
+              }
+            />
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={["company admin", "super admin"]} />}>
-            <Route path="/companies/:companyId/qrcodes" element={<QRCodeIndex />} />
-            <Route path="/companies/:companyId/printers" element={<PrinterIndex />} />
-            <Route path="/companies/:companyId/dashboard" element={
-              <Layout>
-                <CompanyDashboard />
-              </Layout>
-            } />
+          <Route
+            element={
+              <RequireAuth allowedRoles={["company admin", "super admin"]} />
+            }
+          >
+            <Route
+              path="/companies/:companyId/qrcodes"
+              element={<QRCodeIndex />}
+            />
+            <Route
+              path="/companies/:companyId/printers"
+              element={<PrinterIndex />}
+            />
+            <Route
+              path="/companies/:companyId/dashboard"
+              element={
+                <Layout>
+                  <CompanyDashboard />
+                </Layout>
+              }
+            />
             <Route
               path="/companies/:companyId/printers/:printerId/edit"
               element={<PrinterForm />}

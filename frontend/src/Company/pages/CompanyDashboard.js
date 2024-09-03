@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import PrinterIndex from "../../Printer/pages/PrinterIndex";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import EarningChart from "../components/EarningChart";
+import PrintsHistoryChart from "../components/PrintsHistoryChart";
+import NumbersDashborad from "../components/NumbersDashborad";
+import DashCard from "../components/DashCard";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const CompanyDashboard = () => {
@@ -54,87 +58,66 @@ const CompanyDashboard = () => {
       className="p-5 w-100 m-0"
       style={{ backgroundColor: "#EFF7FF", minHeight: "100vh" }}
     >
-      <h1 className="mb-4">Company Dashboard</h1>
       {company ? (
         <>
+          <h1> Hey, {company.name}! &#x1F44B;</h1>
+          <br></br>
           <div className="row mb-4 gx-3">
             <div className="col-md-4 d-flex">
-              <div className="card flex-fill">
-                <div className="card-body">
-                  <h5 className="card-title mb-4">Company Info</h5>
-                  <p className="card-text">
-                    Company Name:
-                    <span className="text-primary ml-3">{company.name}</span>
-                  </p>
-                  <p className="card-text">
-                    Company ID:
-                    <span className="text-primary ml-3">{companyId}</span>
-                    <OverlayTrigger
-                      placement="top"
-                      overlay={
-                        <Tooltip id={`tooltip-copy-to-clipboard`}>
-                          {tooltipText}
-                        </Tooltip>
-                      }
-                    >
-                      <button className="btn btn-xs" onClick={copyToClipboard}>
-                        <i className="bi bi-copy"></i>
-                      </button>
-                    </OverlayTrigger>
-                  </p>
-                </div>
-              </div>
+              <DashCard>
+                <h4 className="mr-auto">Company Info</h4>
+                <p className="card-text">
+                  Company Name:
+                  <span className="text-primary ml-3">{company.name}</span>
+                </p>
+                <p className="card-text">
+                  Company ID:
+                  <span className="text-primary ml-3">{companyId}</span>
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`tooltip-copy-to-clipboard`}>
+                        {tooltipText}
+                      </Tooltip>
+                    }
+                  >
+                    <button className="btn btn-xs" onClick={copyToClipboard}>
+                      <i className="bi bi-copy"></i>
+                    </button>
+                  </OverlayTrigger>
+                  <NumbersDashborad companyId={companyId} />
+                </p>
+              </DashCard>
             </div>
 
             <div className="col-md-8 d-flex">
-              <div className="card flex-fill">
-                <div className="card-body">
-                  <PrinterIndex companyId={companyId} />
-                </div>
-              </div>
+              <DashCard>
+                <PrinterIndex companyId={companyId} />
+              </DashCard>
             </div>
           </div>
 
           <div className="row gx-3">
             <div className="col-md-4 d-flex">
-              <div className="card flex-fill">
-                <div className="card-body">
-                  <h5 className="card-title">KIP payments</h5>
-                </div>
-              </div>
+              <DashCard>
+                <h4 className="mr-auto">Earnings</h4>
+                <EarningChart companyId={companyId} />
+              </DashCard>
             </div>
 
             <div className="col-md-8 d-flex">
-              <div className="card flex-fill">
-                <div className="card-body">
-                  <h5 className="card-title">Print History</h5>
-                  <table className="table table-hover">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>Printer</th>
-                        <th>Price -- render $</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>1</td>
-                        <td>Event A</td>
-                        <td>2024-08-01</td>
-                        <td>Details of Event A</td>
-                        <td>Details of Event A</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <DashCard>
+                <h4 className="mr-auto">Prints History</h4>
+                <PrintsHistoryChart companyId={companyId} />
+              </DashCard>
             </div>
           </div>
         </>
       ) : (
-        <div>No company details available.</div>
+        <div>
+          <h1 className="mb-4">Company Dashboard</h1>
+          No company details available.
+        </div>
       )}
     </div>
   );

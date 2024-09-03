@@ -1,14 +1,19 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 function Layout({ children }) {
-  const location = useLocation();
-
   return (
-    <div className="d-flex" style={{ height: "100vh" }}>
+    <div
+      className="d-flex"
+      style={{ minHeight: "100vh", backgroundColor: "#EFF7FF" }}
+    >
       <Sidebar />
-      <div className="flex-grow-1">{children}</div>
+      <div
+        className="flex-grow-1"
+        style={{ marginLeft: "280px", padding: "20px" }}
+      >
+        {children}
+      </div>
     </div>
   );
 }
