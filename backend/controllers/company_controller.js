@@ -79,11 +79,9 @@ const updateCompany = async (req, res, next) => {
 const deleteCompany = async (req, res, next) => {
   try {
     const companyId = req.params.id;
-    //delete company's printers, users, and other data
     const deletePrinters = await PrinterService.deletePrinters(companyId);
     const deleteUsers = await UserService.deleteUsers(companyId);
     const deleteCompany = await CompanyService.deleteCompany(companyId);
-    //return the rest of the company's that are not deleted
     const companies = await CompanyService.getAllCompanies();
     res.status(200).json(companies);
   } catch (error) {

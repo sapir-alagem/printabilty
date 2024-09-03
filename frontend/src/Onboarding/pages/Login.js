@@ -66,7 +66,7 @@ const Login = () => {
         setErrMsg("An error occurred");
       }
       if (errRef.current) {
-        errRef.current.focus(); // Ensure the ref is attached before calling focus
+        errRef.current.focus(); 
       }
     }
   };

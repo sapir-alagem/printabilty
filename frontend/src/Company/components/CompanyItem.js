@@ -12,6 +12,11 @@ const CompanyItem = (props) => {
   };
 
   const deleteCompanyHandler = async () => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this company?");
+    if (!confirmDelete) {
+      return;
+    }
+    
     try {
       await axiosPrivate.delete(`/companies/${props.id}`);
       props.onDelete(props.id);
