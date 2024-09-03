@@ -13,6 +13,8 @@ const Onboarding = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const [activeStep, setActiveStep] = useState(1);
   const [progress, setProgress] = useState(16);
+  const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [companyId, setCompanyId] = useState(urlParams.get("companyId"));
 
   const [formData, setFormData] = useState({
@@ -26,7 +28,7 @@ const Onboarding = () => {
   });
 
   const handleChange = (event) => {
-    const { name, value} = event.target;
+    const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -51,11 +53,12 @@ const Onboarding = () => {
   };
 
   const handleNext = async () => {
+    setDisabled(true);
     if (activeStep < 3) {
       handleStepChange(activeStep + 1);
     } else if (activeStep === 3) {
       try {
-        axios.post("/register", {
+        await axios.post("/register", {
           email: formData.companyMail,
           role: ["company admin"],
           companyId: companyId,

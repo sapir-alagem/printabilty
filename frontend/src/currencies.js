@@ -421,4 +421,4 @@ const paymentsCurrencysMap = [
   },
 ];
 
-module.exports = paymentsCurrencysMap;
+export default paymentsCurrencysMap;
