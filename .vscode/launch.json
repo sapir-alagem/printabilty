@@ -12,15 +12,14 @@
       "webRoot": "${workspaceFolder}"
     },
 
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Launch backend",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "C:\\Users\\safirma\\Documents\\GitHub\\printabilty\\backend\\app.js"
-        },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch backend idan tulu",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "C:\\Users\\User\\Documents\\GitHub\\printabilty\\backend\\app.js",
+      "envFile": "C:\\Users\\User\\Documents\\GitHub\\printabilty\\backend\\.env"
+    },
 
     {
       "type": "chrome",
@@ -28,6 +27,7 @@
       "name": "Launch Chrome against localhost",
       "url": "http://localhost:3000",
       "webRoot": "${workspaceFolder}"
+    },
     {
       "type": "node",
       "request": "launch",

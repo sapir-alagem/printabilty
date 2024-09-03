@@ -1,6 +1,7 @@
-const nodeMailer = require("nodemailer");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const fs = require("fs");
+
 const html = (password) => `
     <!DOCTYPE html>
 <html lang="en">
@@ -113,52 +114,69 @@ const html = (password) => `
 
 async function sendEmail(email, password) {
   try {
-    const msg = {
-      to: email, // Change to your recipient
-      from: "printability2@gmail.com", // Change to your verified sender
-      subject: "Welcome to Printabillity",
-      text: "and easy to do anywhere, even with Node.js",
-      html: html(password),
-    };
-    sgMail
-      .send(msg)
-      .then(() => {
-        console.log("Email sent");
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    // const transporter = nodeMailer.createTransport({
-    //   //use gmail
-    //   service: "gmail",
-    //   auth: {
-    //     user: "printability2@gmail.com",
-    //     pass: process.env.GMAIL_APP_PASSWORD,
-    //   },
-    // });
+    // Read and encode attachments
+    const printerSetupGuide = fs
+      .readFileSync(__dirname + "/../email attachments/Printer setup Guide.pdf")
+      .toString("base64");
+    const cupsServerZip = fs
+      .readFileSync(__dirname + "/../email attachments/print_server.zip")
+      .toString("base64");
 
-    // const info = transporter.sendMail({
-    //   from: "Printabillity <printability2@gmail.com>",
-    //   to: email,
-    //   subject: "Welcome to Printabillity",
-    //   html: html(password),
-    //   //add attachment
-    //   attachments: [
-    //     {
-    //       filename: "Printer setup Guide.pdf",
-    //       path: __dirname + "/../email attachments/Printer setup Guide.pdf",
-    //       contentType: "application/pdf",
-    //     },
-    //     {
-    //       filename: "CUPS server.zip",
-    //       path: __dirname + "/../email attachments/print_server.zip",
-    //       contentType: "application/zip",
-    //     },
-    //   ],
-    // });
+    const msg = {
+      to: email,
+      from: "printability2@gmail.com",
+      subject: "Welcome to Printabillity",
+      text: `Your password is ${password}. You can now log in to your account.`,
+      html: html(password), // Ensure this function generates proper HTML
+      attachments: [
+        {
+          content: printerSetupGuide,
+          filename: "Printer setup Guide.pdf",
+          type: "application/pdf",
+          disposition: "attachment",
+        },
+        {
+          content: cupsServerZip,
+          filename: "CUPS server.zip",
+          type: "application/zip",
+          disposition: "attachment",
+        },
+      ],
+    };
+
+    await sgMail.send(msg);
+    console.log("Email sent");
   } catch (error) {
-    console.log(error);
+    console.error("Error sending email:", error);
   }
+  // const transporter = nodeMailer.createTransport({
+  //   //use gmail
+  //   service: "gmail",
+  //   auth: {
+  //     user: "printability2@gmail.com",
+  //     pass: process.env.GMAIL_APP_PASSWORD,
+  //   },
+  // });
+
+  // const info = transporter.sendMail({
+  //   from: "Printabillity <printability2@gmail.com>",
+  //   to: email,
+  //   subject: "Welcome to Printabillity",
+  //   html: html(password),
+  //   //add attachment
+  //   attachments: [
+  //     {
+  //       filename: "Printer setup Guide.pdf",
+  //       path: __dirname + "/../email attachments/Printer setup Guide.pdf",
+  //       contentType: "application/pdf",
+  //     },
+  //     {
+  //       filename: "CUPS server.zip",
+  //       path: __dirname + "/../email attachments/print_server.zip",
+  //       contentType: "application/zip",
+  //     },
+  //   ],
+  // });
 }
 
 module.exports = { sendEmail };
