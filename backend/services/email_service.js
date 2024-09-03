@@ -26,14 +26,15 @@ const html = (password) => `
         }
         .header {
             text-align: center;
-            padding-bottom: 20px;
+            padding-bottom: 1px;
             border-bottom: 1px solid #ddd;
         }
         .header img {
-            max-width: 150px;
+            max-width: 300px;
         }
         .content {
-            padding: 20px 0;
+            padding: 20px;
+            
         }
         .content h1 {
             font-size: 24px;
