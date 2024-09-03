@@ -66,7 +66,7 @@ const html = (password) => `
 <body>
     <div class="email-container">
         <div class="header">
-            <img src="https://printability.vercel.app/public/assets/B_full_logo_no_BG.png" alt="Printability Logo">
+            <img src="https://printabillty-file-uploads.s3.eu-north-1.amazonaws.com/assets/B+full+logo+no+BG+.png" alt="Printability Logo">
         </div>
         <div class="content">
             <h1>Welcome to Printablity!</h1>
