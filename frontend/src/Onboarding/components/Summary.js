@@ -1,14 +1,19 @@
-import React from 'react';
+import React from "react";
 
-const Summary = ({formData}) => {
-    return (
-        <div className="content">
-            <h2>Registration Successful!</h2>
-            <p>A guide with a download link has been sent to your email:{formData.companyMail}</p>
-            <p>After installation, return here</p>
-            <p>to access your dashboard and start setting up your printers network.</p>
-        </div>
-    );
+const Summary = ({ formData }) => {
+  return (
+    <div className="content">
+      <h2>🎉 Registration Successful! 🎉</h2>
+      <p>
+        We've sent a guide and the agent to your email:{" "}
+        <strong>{formData.companyMail}</strong> 📧
+      </p>
+      <p>Once you've installed everything, come back here to:</p>
+      <p>Access your dashboard 🖥️</p>
+      <p>Start setting up your printer network 🖨️</p>
+      <p>We're excited to see you get started! 🚀</p>
+    </div>
+  );
 };
 
 export default Summary;
