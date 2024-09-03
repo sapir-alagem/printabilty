@@ -58,7 +58,7 @@ const Onboarding = () => {
       handleStepChange(activeStep + 1);
     } else if (activeStep === 3) {
       try {
-        await axios.post("/register", {
+        axios.post("/register", {
           email: formData.companyMail,
           role: ["company admin"],
           companyId: companyId,
