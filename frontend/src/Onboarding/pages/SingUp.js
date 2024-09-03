@@ -43,9 +43,9 @@ const SignUp = () => {
       >
         <h1 className="display-4 fw-bold lh-1 text-center mb-3">Welcome To</h1>
         <img src="/assets/white_logo.svg" alt="Logo" className="img-fluid" />
-        <p className="fs-5 text-center mt-4" style={{ maxWidth: "400px" }}>
-          Empower your business and elevate customer convenience with our
-          mobile-friendly, self-service printing solution.
+        <p className="lead text-center mt-4" style={{ maxWidth: "400px" }}>
+          Empower your business and elevate customer convenience
+          with our mobile-friendly, self-service printing solution.
         </p>
       </div>
       <div
@@ -58,7 +58,7 @@ const SignUp = () => {
             e.preventDefault();
             handleSignUpClick();
           }}
-          style={{ maxWidth: "400px" }}
+          style={{ maxWidth: "500px" }}
         >
           <h3 className="display-6 fw-bold lh-3 text-body-emphasis mb-3">
             Let's get started
