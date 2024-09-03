@@ -66,7 +66,7 @@ const html = (password) => `
 <body>
     <div class="email-container">
         <div class="header">
-            <img src="https://printability.vercel.app/public/assets/B full logo no BG .png" alt="Printability Logo">
+            <img src="https://printability.vercel.app/public/assets/B_full_logo_no_BG.png" alt="Printability Logo">
         </div>
         <div class="content">
             <h1>Welcome to Printablity!</h1>
@@ -118,7 +118,7 @@ async function sendEmail(email, password) {
     };
 
     await sgMail.send(msg);
-    console.log("Email sent");
+    console.log("Email sent to " + email);
   } catch (error) {
     console.error("Error sending email:", error);
   }
