@@ -80,76 +80,92 @@ const Login = () => {
   }, [persist]);
 
   return (
-    <div className="container col-xl-10 col-xxl-8 px-4 py-4">
-      <div className="row align-items-stretch g-lg-5 py-5">
-        <div className="col-lg-7 d-flex flex-column align-items-center text-center bg-info border rounded border-dark p-4">
-          <div className="column-content">
-            <h1 className="display-4 fw-bold lh-1 text-body-emphasis mb-3">Welcome To</h1>
-            <LogoBlackNoBackground />
-            <p className="fs-4 text-black">
-              Below is an example form built entirely with Bootstrap’s form controls. Each required
-              form group has a validation state that can be triggered by attempting to submit the
-              form without completing it.
-            </p>
+    <div className="container-fluid min-vh-100 d-flex flex-column flex-md-row p-0">
+      <div
+        className="d-flex flex-column justify-content-center align-items-center text-white p-4 p-md-5"
+        style={{ backgroundColor: "#3799FA", flexBasis: "50%" }}
+      >
+        <h1 className="display-4 fw-bold lh-1 text-center mb-3">Welcome Back,</h1>
+        <img src="/assets/white_logo.svg" alt="Logo" className="img-fluid" />
+        <p className="fs-5 text-center mt-4" style={{ maxWidth: "400px" }}>
+          Log in to continue managing your business and enhancing customer convenience.
+        </p>
+      </div>
+      <div
+        className="d-flex justify-content-center align-items-center p-4"
+        style={{ flexBasis: "50%", backgroundColor: "white" }}
+      >
+        <form
+          className="w-100"
+          onSubmit={handleSubmit}
+          style={{ maxWidth: "400px" }}
+        >
+          <h3 className="display-6 fw-bold lh-3 text-body-emphasis mb-3">
+            Login to your account
+          </h3>
+          <p>
+            Don’t have an account? <a href="/">Sign Up</a>
+          </p>
+
+          <div className="form-floating mb-3">
+            <input
+              type="email"
+              className="form-control"
+              id="floatingInput"
+              placeholder="name@example.com"
+              ref={userRef}
+              required
+              onChange={(e) => setUser(e.target.value)}
+            />
+            <label htmlFor="floatingInput">Email address</label>
           </div>
-        </div>
-        <div className="col-md-10 mx-auto col-lg-5">
-          <form className="p-4 p-md-5 border rounded-3 bg-body-tertiary" onSubmit={handleSubmit}>
-            <h3 className="display-6 fw-bold lh-3 text-body-emphasis mb-3">Welcome Back,</h3>
-            <p>
-              Don’t have an account? <a href="/">Sign Up</a>
-            </p>
-            <div className="form-floating mb-3">
-              <input
-                type="email"
-                className="form-control"
-                id="floatingInput"
-                placeholder="name@example.com"
-                ref={userRef}
-                required
-                onChange={(e) => setUser(e.target.value)}
-              />
-              <label htmlFor="floatingInput">Email address</label>
-            </div>
-            <div className="form-floating mb-3">
-              <input
-                type="password"
-                className="form-control"
-                id="floatingPassword"
-                placeholder="Password"
-                required
-                onChange={(e) => setPwd(e.target.value)}
-              />
-              <label htmlFor="floatingPassword">Password</label>
-            </div>
-            <button className="w-100 btn btn-lg btn-info" type="submit">
-              Login
-            </button>
-            <div className="form-check" style={{ padding: "20px" }}>
-              <input
-                type="checkbox"
-                className="form-check-input"
-                id="trustDevice"
-                onChange={togglePersist}
-                checked={persist}
-              />
-              <label className="form-check-label" htmlFor="trustDevice">
-                Trust this device
-              </label>
-            </div>
-            <hr className="my-4" />
-            <small className="text-body-secondary">
-              By clicking Sign up, you agree to the terms of use.
-            </small>
-            {/* Error Message */}
-            <p ref={errRef} tabIndex="-1" aria-live="assertive" className="text-danger">
-              {errMsg}
-            </p>
-          </form>
-        </div>
+          <div className="form-floating mb-3">
+            <input
+              type="password"
+              className="form-control"
+              id="floatingPassword"
+              placeholder="Password"
+              required
+              onChange={(e) => setPwd(e.target.value)}
+            />
+            <label htmlFor="floatingPassword">Password</label>
+          </div>
+          <button
+            className="w-100 btn btn-lg text-white"
+            style={{ backgroundColor: "#3799FA" }}
+            type="submit"
+          >
+            Login
+          </button>
+          <div className="form-check mt-3">
+            <input
+              type="checkbox"
+              className="form-check-input"
+              id="trustDevice"
+              onChange={togglePersist}
+              checked={persist}
+            />
+            <label className="form-check-label" htmlFor="trustDevice">
+              Trust this device
+            </label>
+          </div>
+          <hr className="my-4" />
+          <small className="text-muted">
+            By clicking Login, you agree to the terms of use.
+          </small>
+          <p
+            ref={errRef}
+            tabIndex="-1"
+            aria-live="assertive"
+            className="text-danger mt-3"
+          >
+            {errMsg}
+          </p>
+        </form>
       </div>
     </div>
   );
+
 };
 
 export default Login;
