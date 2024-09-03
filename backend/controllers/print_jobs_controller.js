@@ -37,35 +37,6 @@ const sanityCheck = (req, res, next) => {
   res.json({ message: "testing" });
 };
 
-// const sendPrintJob = (req, res, next) => {
-//   // Assuming the file URL is in the request body
-//   let data = JSON.stringify({
-//     file_url: req.body.file_url,
-//     printer_name: req.body.printer_name,
-//   });
-
-//   let config = {
-//     method: "post",
-//     maxBodyLength: Infinity,
-//     url: "http://127.0.0.1:12345/print", //the agent url
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     data: data,
-//   };
-
-//   axios
-//     .request(config)
-//     .then((response) => {
-//       console.log(JSON.stringify(response.data));
-//       res.json({ message: "It works!" });
-//     })
-//     .catch((error) => {
-//       console.log(error);
-//       res.json({ error: error });
-//     });
-// };
-
 const calcualtePrintJob = async (req, res) => {
   try {
     const result = await printJobsService.printJobCalculator(req);
@@ -85,7 +56,6 @@ module.exports = {
   newPrintJob,
   createPrintJob,
   getPrintJobs,
-  // sendPrintJob,
   calcualtePrintJob,
   sanityCheck,
 };

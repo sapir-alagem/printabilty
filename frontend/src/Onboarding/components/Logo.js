@@ -1,4 +1,3 @@
-// IconComponent.jsx
 import React from 'react';
 
 const LogoBlackNoBackground = () => (

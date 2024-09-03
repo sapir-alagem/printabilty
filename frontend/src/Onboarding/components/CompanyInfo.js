@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {
     FaBook, FaCoffee, FaBuilding, FaSchool, FaUsers, FaDoorOpen,
     FaUserGraduate, FaUserTie, FaUser, FaUserSecret, FaUserAstronaut, FaIndustry
-} from 'react-icons/fa'; // Import icons
+} from 'react-icons/fa';
 
 const CompanyInfo = ({ formData, handleChange }) => {
     return (

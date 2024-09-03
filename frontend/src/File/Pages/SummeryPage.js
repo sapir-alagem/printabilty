@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCheckout } from "../../Payments/CheckoutContext"; // Adjust the path as necessary
+import { useCheckout } from "../../Payments/CheckoutContext";
 import CheckoutButton from "../../Payments/CheckoutButton";
 import * as pdfjsLib from "pdfjs-dist";
 import pdfjsWorker from "pdfjs-dist/build/pdf.worker.entry";
@@ -56,7 +56,6 @@ function SummaryPage() {
         const blob = await response.blob();
         const file = new File([blob], fileUrl.split("/").pop());
 
-        // Check the file type and extract page count accordingly
         if (file.name.endsWith(".pdf")) {
           const loadingTask = pdfjsLib.getDocument(fileUrl);
           const pdf = await loadingTask.promise;

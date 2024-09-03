@@ -64,11 +64,10 @@ const PrinterIndex = () => {
         }
       );
 
-      setShowModal(false); // Close the modal
-      setPrinterName(""); // Clear input
-      setError(null); // Clear any existing error messages
+      setShowModal(false);
+      setPrinterName("");
+      setError(null);
 
-      // Update the printers state
       setPrinters((prevPrinters) => [...prevPrinters, response.data]);
     } catch (error) {
       setError(error.response.data.message);
@@ -81,12 +80,10 @@ const PrinterIndex = () => {
         `/companies/${companyId}/printers/${printerId}/qrcodes`
       );
 
-      const qrCodeData = response.data.code; // base64 string of the QR code
+      const qrCodeData = response.data.code;
 
-      // Extract the data URL part (remove the data URL prefix)
       const base64Data = qrCodeData.split(",")[1];
 
-      // Convert base64 to binary data
       const byteCharacters = atob(base64Data);
       const byteNumbers = new Array(byteCharacters.length);
       for (let i = 0; i < byteCharacters.length; i++) {
@@ -94,21 +91,17 @@ const PrinterIndex = () => {
       }
       const byteArray = new Uint8Array(byteNumbers);
 
-      // Create a Blob from the binary data
       const blob = new Blob([byteArray], { type: "image/png" });
 
-      // Create a URL from the Blob
       const url = URL.createObjectURL(blob);
 
-      // Create a link element
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${printerName}.png`; // Set the file name
-      document.body.appendChild(a); // Append the link to the body
-      a.click(); // Trigger the download
-      document.body.removeChild(a); // Remove the link from the body
+      a.download = `${printerName}.png`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
 
-      // Revoke the object URL after the download
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Error downloading QR code:", error);

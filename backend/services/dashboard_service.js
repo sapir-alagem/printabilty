@@ -1,5 +1,3 @@
-// services/earningsService.js
-
 const { ObjectId } = require("mongodb");
 const { getClient } = require("../utils/mongo");
 
@@ -8,7 +6,7 @@ const getCompanyEarningsByDay = async (companyId) => {
   try {
     const db = client.db("printability");
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set to the start of the day
+    today.setHours(0, 0, 0, 0);
 
     const result = await db
       .collection("print_jobs")
@@ -16,7 +14,7 @@ const getCompanyEarningsByDay = async (companyId) => {
         {
           $match: {
             companyId: companyId,
-            created_at: { $gte: today }, // Filter for today's date
+            created_at: { $gte: today },
           },
         },
         {
@@ -39,7 +37,7 @@ const getCompanyEarningsByWeek = async (companyId) => {
   try {
     const db = client.db("printability");
     const lastWeek = new Date();
-    lastWeek.setDate(lastWeek.getDate() - 7); // Set to 7 days ago
+    lastWeek.setDate(lastWeek.getDate() - 7);
     lastWeek.setHours(0, 0, 0, 0);
 
     const result = await db
@@ -48,7 +46,7 @@ const getCompanyEarningsByWeek = async (companyId) => {
         {
           $match: {
             companyId: companyId,
-            created_at: { $gte: lastWeek }, // Filter for the past 7 days
+            created_at: { $gte: lastWeek },
           },
         },
         {
@@ -71,7 +69,7 @@ const getCompanyEarningsByMonth = async (companyId) => {
   try {
     const db = client.db("printability");
     const lastMonth = new Date();
-    lastMonth.setDate(lastMonth.getDate() - 30); // Set to 30 days ago
+    lastMonth.setDate(lastMonth.getDate() - 30);
     lastMonth.setHours(0, 0, 0, 0);
 
     const result = await db
@@ -80,7 +78,7 @@ const getCompanyEarningsByMonth = async (companyId) => {
         {
           $match: {
             companyId: companyId,
-            created_at: { $gte: lastMonth }, // Filter for the past 30 days
+            created_at: { $gte: lastMonth },
           },
         },
         {

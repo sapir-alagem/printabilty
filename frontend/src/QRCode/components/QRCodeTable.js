@@ -6,7 +6,7 @@ import "./QRCodeTable.css";
 
 const QRCodeTable = ({ qrCodes, onObsolete, onDownload }) => {
   const [copiedText, setCopiedText] = useState("");
-  const [loading, setLoading] = useState(null); // Add loading state
+  const [loading, setLoading] = useState(null);
 
   const handleCopy = (text) => {
     navigator.clipboard
@@ -15,7 +15,7 @@ const QRCodeTable = ({ qrCodes, onObsolete, onDownload }) => {
         setCopiedText(text);
         setTimeout(() => {
           setCopiedText("");
-        }, 2000); // Hide the tooltip after 2 seconds
+        }, 2000);
       })
       .catch((err) => {
         console.error("Failed to copy text: ", err);
@@ -29,13 +29,13 @@ const QRCodeTable = ({ qrCodes, onObsolete, onDownload }) => {
   );
 
   const handleDownload = async (id, printerName) => {
-    setLoading(id); // Set loading state to the current QR code ID
+    setLoading(id);
     try {
       await onDownload(id, printerName);
     } catch (error) {
       console.error("Download failed:", error);
     } finally {
-      setLoading(null); // Reset loading state after download completes
+      setLoading(null);
     }
   };
 

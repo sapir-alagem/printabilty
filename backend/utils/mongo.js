@@ -15,7 +15,6 @@ async function connect() {
 }
 
 async function checkConnection() {
-  // Check connection
   const isConnected = client.topology && client.topology.isConnected();
   console.log(
     isConnected ? "Connected to MongoDB" : "Not connected to MongoDB"

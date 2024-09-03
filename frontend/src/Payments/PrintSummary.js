@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
-import { CheckoutProvider, useCheckout } from "./CheckoutContext"; // Ensure useCheckout is imported
+import { CheckoutProvider, useCheckout } from "./CheckoutContext";
 import CheckoutButton from "./CheckoutButton";
 
 const PrintSummary = () => {

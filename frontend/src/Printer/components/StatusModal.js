@@ -7,7 +7,7 @@ const StatusModal = ({ show, handleClose, printer, updatePrinterStatus }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         updatePrinterStatus(printer._id, status);
-        handleClose(); // Close the modal after submission
+        handleClose();
     };
 
     return (

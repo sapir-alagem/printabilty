@@ -5,17 +5,14 @@ const express = require("express");
 const router = express.Router();
 const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
-// POST /webhook route handler
 const checkHook = async (req, res, next) => {
   console.log("GET Request in webhook");
   res.status(200).json({ message: "OK" });
 };
 
 function handleWebhook(request, response) {
-  // Parse the request body as JSON
   const event = request.body;
 
-  // Handle the event
   if (event.type === "checkout.session.completed") {
     const session = event.data.object;
     const jobId = session.metadata.jobId;
@@ -29,7 +26,6 @@ function handleWebhook(request, response) {
       });
   }
 
-  // Return a response to acknowledge receipt of the event
   response.status(200).json({ received: true });
 }
 

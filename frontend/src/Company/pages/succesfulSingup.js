@@ -6,7 +6,6 @@ const RegistrationSuccess = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
-  // Extract query parameters
   const companyEmail = params.get("companyEmail");
   const companyName = params.get("companyName");
 

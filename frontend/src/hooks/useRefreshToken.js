@@ -18,13 +18,11 @@ const useRefreshToken = () => {
       }));
       return response.data.accessToken;
     } catch (error) {
-      // Check if the error response is 403
       if (error.response && error.response.status === 403) {
         setAuth({});
         localStorage.removeItem("auth");
         window.location.href = "/login";
       } else {
-        // Handle other errors if necessary
         console.error("An error occurred:", error);
       }
     }
