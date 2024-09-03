@@ -77,7 +77,7 @@ const Companies = () => {
         onChange={handleSearchChange}
         className="form-control my-4"
       />
-      <div style={{ maxHeight: "250px", overflowY: "auto" }}>
+      <div style={{ overflowY: "auto" }}>
         <CompaniesList
           items={filteredItems}
           onDeleteCompany={handleDeleteCompany}
