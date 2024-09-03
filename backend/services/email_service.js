@@ -70,19 +70,20 @@ const html = (password) => `
             <img src="https://printabillty-file-uploads.s3.eu-north-1.amazonaws.com/assets/B+full+logo+no+BG+.png" alt="Printability Logo">
         </div>
         <div class="content">
-            <h1>Welcome to Printablity!</h1>
-            <p>Thank you for joining Printability. We're thrilled to have you on board and can't wait for you to start exploring everything we have to offer.</p>
-            <p>Whether you're looking for a print service, or just getting started, we've got you covered. If you ever have any questions, feel free to reach out to our support team at printability2@gmail.com.</p>
-            <p>Here is your temporary password: ${password}</p>
-            <a href="https://printabilty.vercel.app/login" class="cta-button">Get Started</a>
-            <p>We look forward to helping you achieve your goals.</p>
-            <p>Best regards,<br>Printablity Team</p>
+            <h1>🎉 Welcome to Printability! 🎉</h1>
+            <p>Thank you for joining Printability! We're excited to have you with us and can't wait for you to explore all the amazing features we offer. 🚀</p>
+            <p>Whether you're ready to start using our print services or just getting started, we're here to support you every step of the way. If you have any questions, feel free to reach out to our support team at <a href="mailto:printability2@gmail.com">printability2@gmail.com</a> 📧.</p>
+            <p>Here is your temporary password: <strong>${password}</strong> 🔑</p>
+            <a href="https://printabilty.vercel.app/login" class="cta-button">Get Started 🚀</a>
+            <p>We’re looking forward to helping you achieve your goals and making your experience fantastic! 🌟</p>
+            <p>Best regards,<br>The Printability Team</p>
         </div>
         <div class="footer">
-            <p>&copy; 2024 Printablity. All rights reserved.</p>
+            <p>&copy; 2024 Printability. All rights reserved. 🌟</p>
         </div>
     </div>
 </body>
+
 </html>
     `;
 
