@@ -85,16 +85,6 @@ return (
                     <Form.Control type="number" step="0.01" placeholder="Enter cost" name="coloredPageCost"
                         value={company.coloredPageCost} onChange={handleChange} required />
                 </Form.Group>
-                <Form.Group controlId="formPaymentsCurrency" className="mb-3">
-                    <Form.Label>Payments Currency</Form.Label>
-                    <Form.Control as="select" name="paymentsCurrency" value={company.paymentsCurrency} onChange={handleChange} required>
-                        {currencyList.map((currency) => (
-                            <option key={currency.code} value={currency.code}>
-                                {currency.code} - {currency.name}
-                            </option>
-                        ))}
-                    </Form.Control>
-                </Form.Group>
                 <Button variant="primary" type="submit">
                     Save Changes
                 </Button>
