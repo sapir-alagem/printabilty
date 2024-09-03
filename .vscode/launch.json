@@ -22,6 +22,15 @@
     },
 
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch backend idan home",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "C:\\Users\\Owner\\OneDrive\\מסמכים\\Github\\printabilty\\backend\\app.js",
+      "envFile": "C:\\Users\\Owner\\OneDrive\\מסמכים\\Github\\printabilty\\backend\\.env"
+    },
+
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome against localhost",

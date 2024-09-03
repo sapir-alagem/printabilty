@@ -3,16 +3,15 @@ const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
 const config = require("../config/config.js");
 
 const createCheckoutSession = async (req, res) => {
-  const { price, quantity, jobId } = req.body;
+  const { price, quantity, jobId, currency } = req.body;
 
   try {
-    console.log("config:" + config.appUrl);
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
         {
           price_data: {
-            currency: "ils",
+            currency: currency,
             product_data: {
               name: "Print Service",
             },
@@ -31,6 +30,7 @@ const createCheckoutSession = async (req, res) => {
 
     res.send({ id: session.id });
   } catch (error) {
+    console.error("Error creating checkout session:", error.message);
     res.status(500).send({ error: error.message });
   }
 };

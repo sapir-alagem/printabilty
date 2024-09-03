@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useCheckout } from "./CheckoutContext";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
+import useAxiosPrivate from "../hooks/useAxiosPrivate.js";
 import config from "../config.js";
 
 const stripePromise = loadStripe(
@@ -11,10 +12,14 @@ const stripePromise = loadStripe(
 const CheckoutButton = () => {
   const { printDetails, price, savePrintDetails } = useCheckout();
   const [isDisabled, setIsDisabled] = useState(false);
+  const axiosPrivate = useAxiosPrivate();
 
   const handleCheckout = async () => {
     try {
       setIsDisabled(true); // Disable the button to prevent multiple clicks
+      const currency = await axiosPrivate
+        .get(`/companies/${printDetails.companyId}`)
+        .then((res) => res.data.company.paymentsCurrency);
 
       // Save print details to the database
       const response = await savePrintDetails(printDetails);
@@ -32,6 +37,7 @@ const CheckoutButton = () => {
           price: roundedPrice, // Use the rounded price
           quantity: 1, // Adjust the quantity as needed
           jobId: jobId, // Include jobId in the request
+          currency: currency, // Use the appropriate currency
         }
       );
 
