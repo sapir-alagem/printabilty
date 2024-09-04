@@ -11,7 +11,7 @@ const createCheckoutSession = async (req, res) => {
       line_items: [
         {
           price_data: {
-            currency: "ILS",
+            currency: currency,
             product_data: {
               name: "Print Service",
             },
