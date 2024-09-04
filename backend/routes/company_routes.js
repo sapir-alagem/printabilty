@@ -9,6 +9,10 @@ router.delete("/:id", verifyJWT, companyController.deleteCompany);
 router.get("/", verifyJWT, companyController.getAllCompanies);
 router.get("/:id/countPrinters", companyController.countPrinters);
 router.post("/currency", companyController.getCompanyCurrency);
+router.post(
+  "/currencyAbbreviation",
+  companyController.getCompanyCurrencyAbbreviation
+);
 router.post("/update", companyController.updateCompany);
 
 module.exports = router;

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useCheckout } from "./CheckoutContext";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
-import useAxiosPrivate from "../hooks/useAxiosPrivate.js";
+import axios from "../api/axios";
 import config from "../config.js";
 
 const stripePromise = loadStripe(
@@ -12,14 +11,16 @@ const stripePromise = loadStripe(
 const CheckoutButton = () => {
   const { printDetails, price, savePrintDetails } = useCheckout();
   const [isDisabled, setIsDisabled] = useState(false);
-  const axiosPrivate = useAxiosPrivate();
 
   const handleCheckout = async () => {
     try {
       setIsDisabled(true);
-      const currency = await axiosPrivate
-        .get(`/companies/${printDetails.companyId}`)
-        .then((res) => res.data.company.paymentsCurrency);
+      const currency = await axios
+        .post(`/companies/currencyAbbreviation`, {
+          companyId: printDetails.companyId,
+        })
+        .then((res) => res.data.currency)
+        .catch((error) => console.error("Error fetching currency:", error));
 
       const response = await savePrintDetails(printDetails);
       const jobId = response.jobId;
