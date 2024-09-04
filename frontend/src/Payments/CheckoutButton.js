@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useCheckout } from "./CheckoutContext";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "axios";
+import axios from "../api/axios";
 import config from "../config.js";
 
 const stripePromise = loadStripe(
