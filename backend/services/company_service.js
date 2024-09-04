@@ -72,6 +72,20 @@ async function getCompanyCurrency(companyId) {
   }
 }
 
+async function getCompanyCurrencyAbbreviation(companyId) {
+  const client = await getClient();
+
+  try {
+    const db = client.db("printability");
+    const col = db.collection("companies");
+    const company = await col.findOne({ _id: new ObjectId(companyId) });
+    return company.paymentsCurrency;
+  } catch (error) {
+    console.error("Error retrieving company currency abbreviation:", error);
+    throw error;
+  }
+}
+
 async function updateCompany(details) {
   const client = await getClient();
 
@@ -125,4 +139,5 @@ module.exports = {
   updateCompany,
   deleteCompany,
   countCompanyPrinters,
+  getCompanyCurrencyAbbreviation,
 };

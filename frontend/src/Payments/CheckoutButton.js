@@ -16,8 +16,11 @@ const CheckoutButton = () => {
     try {
       setIsDisabled(true);
       const currency = await axios
-        .get(`/companies/${printDetails.companyId}`)
-        .then((res) => res.data.company.paymentsCurrency);
+        .post(`/companies/currencyAbbreviation`, {
+          companyId: printDetails.companyId,
+        })
+        .then((res) => res.data.currency)
+        .catch((error) => console.error("Error fetching currency:", error));
 
       const response = await savePrintDetails(printDetails);
       const jobId = response.jobId;
