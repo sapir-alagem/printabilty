@@ -84,18 +84,26 @@ const Login = () => {
       <div className="row align-items-stretch g-lg-5 py-5">
         <div className="col-lg-7 d-flex flex-column align-items-center text-center bg-info border rounded border-dark p-4">
           <div className="column-content">
-            <h1 className="display-4 fw-bold lh-1 text-body-emphasis mb-3">Welcome To</h1>
+            <h1 className="display-4 fw-bold lh-1 text-body-emphasis mb-3">
+              Welcome To
+            </h1>
             <LogoBlackNoBackground />
             <p className="fs-4 text-black">
-              Below is an example form built entirely with Bootstrap’s form controls. Each required
-              form group has a validation state that can be triggered by attempting to submit the
-              form without completing it.
+              Below is an example form built entirely with Bootstrap’s form
+              controls. Each required form group has a validation state that can
+              be triggered by attempting to submit the form without completing
+              it.
             </p>
           </div>
         </div>
         <div className="col-md-10 mx-auto col-lg-5">
-          <form className="p-4 p-md-5 border rounded-3 bg-body-tertiary" onSubmit={handleSubmit}>
-            <h3 className="display-6 fw-bold lh-3 text-body-emphasis mb-3">Welcome Back,</h3>
+          <form
+            className="p-4 p-md-5 border rounded-3 bg-body-tertiary"
+            onSubmit={handleSubmit}
+          >
+            <h3 className="display-6 fw-bold lh-3 text-body-emphasis mb-3">
+              Welcome Back,
+            </h3>
             <p>
               Don’t have an account? <a href="/">Sign Up</a>
             </p>
@@ -142,7 +150,12 @@ const Login = () => {
               By clicking Sign up, you agree to the terms of use.
             </small>
             {/* Error Message */}
-            <p ref={errRef} tabIndex="-1" aria-live="assertive" className="text-danger">
+            <p
+              ref={errRef}
+              tabIndex="-1"
+              aria-live="assertive"
+              className="text-danger"
+            >
               {errMsg}
             </p>
           </form>

@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
 import { Button, Card, ProgressBar } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import CompanyInfo from "../components/CompanyInfo";
+import CustomerType from "../components/CustomersType";
 import PricingConfiguration from "../components/PricingConfiguration";
-import Summary from "../components/Summary";
+import OrganizationType from "../components/OrganizationType";
 import "./StepButtons.css";
 import axios from "../../api/axios";
 
 const Onboarding = () => {
-  //get companyId from URL
   const urlParams = new URLSearchParams(window.location.search);
   const [activeStep, setActiveStep] = useState(1);
   const [progress, setProgress] = useState(16);
@@ -26,14 +24,14 @@ const Onboarding = () => {
   });
 
   const handleChange = (event) => {
-    const { name, value} = event.target;
+    const { name, value } = event.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
-  const handleStepChange = async (step) => {
+  const handleStepChange = (step) => {
     setActiveStep(step);
     switch (step) {
       case 1:
@@ -55,13 +53,13 @@ const Onboarding = () => {
       handleStepChange(activeStep + 1);
     } else if (activeStep === 3) {
       try {
-        axios.post("/register", {
+        await axios.post("/register", {
           email: formData.companyMail,
           role: ["company admin"],
           companyId: companyId,
         });
 
-        axios.post("/companies/update", {
+        await axios.post("/companies/update", {
           companyId: companyId,
           type: formData.companyType,
           customerType: formData.customerType,
@@ -120,11 +118,21 @@ const Onboarding = () => {
         {activeStep === 1 && (
           <Card>
             <Card.Body>
-              <CompanyInfo formData={formData} handleChange={handleChange} />
+              <OrganizationType
+                formData={formData}
+                handleChange={handleChange}
+              />
             </Card.Body>
           </Card>
         )}
         {activeStep === 2 && (
+          <Card>
+            <Card.Body>
+              <CustomerType formData={formData} handleChange={handleChange} />
+            </Card.Body>
+          </Card>
+        )}
+        {activeStep === 3 && (
           <Card>
             <Card.Body>
               <PricingConfiguration
@@ -134,22 +142,24 @@ const Onboarding = () => {
             </Card.Body>
           </Card>
         )}
-        {activeStep === 3 && (
-          <Card>
-            <Card.Body>
-              <Summary formData={formData} />
-            </Card.Body>
-          </Card>
-        )}
       </div>
 
       <div className="text-center mt-4">
-        <Button variant="secondary" onClick={handlePrevious}>
-          Previous
-        </Button>
-        <Button variant="primary" onClick={handleNext} className="ml-2">
-          Next
-        </Button>
+        {activeStep === 1 && (
+          <Button variant="primary" onClick={handleNext}>
+            Next
+          </Button>
+        )}
+        {activeStep > 1 && (
+          <>
+            <Button variant="secondary" onClick={handlePrevious}>
+              Previous
+            </Button>
+            <Button variant="primary" onClick={handleNext} className="ml-2">
+              {activeStep === 3 ? "Submit" : "Next"}
+            </Button>
+          </>
+        )}
       </div>
     </div>
   );

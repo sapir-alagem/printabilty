@@ -100,7 +100,6 @@ const CompanyDashboard = () => {
           <div className="row gx-3">
             <div className="col-md-4 d-flex">
               <DashCard>
-                <h4 className="mr-auto">Earnings</h4>
                 <EarningChart companyId={companyId} />
               </DashCard>
             </div>
