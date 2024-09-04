@@ -23,10 +23,10 @@ const handleNewUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create the user in the database
-    await userService.createUser({ email, hashedPassword, role, companyId });
+    userService.createUser({ email, hashedPassword, role, companyId });
 
     // Send the email with the new password
-    await emailService.sendEmail(email, password);
+    emailService.sendEmail(email, password);
 
     // Return a success response
     return res.status(201).json({ message: "User created successfully" });

@@ -11,7 +11,6 @@ const createCompany = async (req, res, next) => {
       message: "Company created successfully",
       companyId,
     });
-
   } catch (error) {
     console.error("Error creating company:", error);
 
@@ -79,9 +78,9 @@ const updateCompany = async (req, res, next) => {
 const deleteCompany = async (req, res, next) => {
   try {
     const companyId = req.params.id;
-    const deletePrinters = await PrinterService.deletePrinters(companyId);
-    const deleteUsers = await UserService.deleteUsers(companyId);
-    const deleteCompany = await CompanyService.deleteCompany(companyId);
+    await PrinterService.deletePrinters(companyId);
+    await UserService.deleteUsers(companyId);
+    await CompanyService.deleteCompany(companyId);
     const companies = await CompanyService.getAllCompanies();
     res.status(200).json(companies);
   } catch (error) {
