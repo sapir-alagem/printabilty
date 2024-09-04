@@ -20,9 +20,9 @@ const handleNewUser = async (req, res) => {
     const password = Math.random().toString(36).slice(-8);
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await userService.createUser({ email, hashedPassword, role, companyId });
+    userService.createUser({ email, hashedPassword, role, companyId });
 
-    await emailService.sendEmail(email, password);
+    emailService.sendEmail(email, password);
 
     return res.status(201).json({ message: "User created successfully" });
   } catch (error) {
