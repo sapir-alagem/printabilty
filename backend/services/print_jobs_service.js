@@ -1,17 +1,15 @@
 const { getClient } = require("../utils/mongo");
 const { ObjectId } = require("mongodb");
 const axios = require("axios");
-const { sendMessageToClient } = require("./web_socket_service"); // Ensure the correct path
+const { sendMessageToClient } = require("./web_socket_service");
 const { getCompany } = require("./company_service.js");
 
-// this is exemple for storing data into the db
 async function createPrintJob(printJobData) {
   const client = await getClient();
 
   try {
     const db = client.db("printability");
     const col = db.collection("print_jobs");
-    //add timsstamp to the printJobData that human can read
     printJobData.created_at = new Date();
     const result = await col.insertOne(printJobData);
     return result.insertedId;
@@ -21,15 +19,13 @@ async function createPrintJob(printJobData) {
   }
 }
 
-// this is exemple for importing data from the db
 async function getPrintJobs(jobId) {
   const client = await getClient();
 
   try {
     const db = client.db("printability");
     const col = db.collection("print_jobs");
-    //const print_jobs = await col.find(jobId).toArray();
-    const print_job = await col.findOne({ _id: new ObjectId(jobId) }); // this returns null
+    const print_job = await col.findOne({ _id: new ObjectId(jobId) });
     return print_job;
   } catch (error) {
     console.error("Error retrieving print jobs:", error);
@@ -55,16 +51,13 @@ async function sendPrintJobToPrinter(printJob) {
 
 async function processPrintJob(jobId) {
   try {
-    // Retrieve print job details from the database using the provided jobId
     const printJob = await getPrintJobs(jobId);
 
-    // Check if print job exists
     if (!printJob) {
       console.error("Print job not found.");
       return;
     }
 
-    // Send the print job to the printer
     await sendPrintJobToPrinter(printJob);
 
     console.log("Print job sent successfully.");
@@ -94,12 +87,10 @@ async function printJobCalculator(printJob) {
     let price = singlePagePrice * numOfPages * numOfCopies;
 
     currency = company.paymentsCurrency.toLowerCase();
-    //if price is less 50 cent return 50 cent
     convetrate = await axios.get(
       `https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/${currency}.json`
     );
     if (convetrate.data[currency].usd * price < 0.5) {
-      //return 50 cent in the currency
       price = 0.5 / convetrate.data[currency].usd;
     }
 

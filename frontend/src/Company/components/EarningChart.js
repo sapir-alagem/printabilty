@@ -4,27 +4,25 @@ import Button from "@mui/joy/Button";
 import Earnings from "./Earnings";
 
 const EarningChart = ({ companyId }) => {
-  // State to hold the iframe source URL
   const [iframeSrc, setIframeSrc] = useState("");
   const [timeframe, setTimeframe] = useState("month");
 
-  // Function to generate the URL based on the selected period
   useEffect(() => {
     const baseUrl =
       "https://charts.mongodb.com/charts-project-0-urzoidt/embed/charts";
     const chartId = "66c9a6d7-01a8-4c40-8bbc-35cb644f23b6";
-    const maxDataAge = 60; // Adjust as needed
+    const maxDataAge = 60;
     const theme = "light";
     const autoRefresh = true;
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set to start of today
+    today.setHours(0, 0, 0, 0);
 
     const lastWeek = new Date(today);
-    lastWeek.setDate(today.getDate() - 7); // Set to start of last week
+    lastWeek.setDate(today.getDate() - 7);
 
     const lastMonth = new Date(today);
-    lastMonth.setDate(today.getDate() - 30); // Set to start of last month
+    lastMonth.setDate(today.getDate() - 30);
 
     let startDate;
 

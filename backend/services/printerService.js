@@ -8,7 +8,6 @@ async function createPrinter(printerData) {
     const db = client.db("printability");
     const col = db.collection("printers");
 
-    // Insert the new printer
     const result = await col.insertOne(printerData);
   } catch (error) {
     console.error("Error updating number of printers:", error);
@@ -103,7 +102,6 @@ async function updatePrinter(id, updates) {
     let document = await col.findOne({ _id: objectId });
     console.log("Document before update:", document);
 
-    // check if the document need to be updated
     if (document.name === updates.name && document.status === updates.status) {
       console.log("No updates needed.");
       return true;

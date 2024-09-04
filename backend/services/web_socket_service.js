@@ -12,11 +12,9 @@ async function setupWebSocketServer(server) {
         const data = JSON.parse(message);
         const { company_id } = data;
 
-        // Track the client with companyId as key
         const clientKey = `${company_id}`;
         clients.set(clientKey, ws);
 
-        // Optionally, send an initial message to the connected client
         sendMessageToClient(company_id, { message: "Hello, client!" });
       });
 

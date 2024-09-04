@@ -103,7 +103,7 @@ export default function CustomFileUpload() {
         disabled={isDisabled}
       >
         {isLoading ? (
-          <div className="loader"></div> // Add your loader here
+          <div className="loader"></div>
         ) : (
           "Upload"
         )}

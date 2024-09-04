@@ -49,5 +49,4 @@ const server = app.listen(port, () => {
   console.log(`App listening on port: ${port}`);
 });
 
-// Setup WebSocket server
 setupWebSocketServer(server);

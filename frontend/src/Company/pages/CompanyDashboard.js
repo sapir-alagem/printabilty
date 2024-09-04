@@ -33,10 +33,10 @@ const CompanyDashboard = () => {
   }, [companyId]);
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(companyId); // Replace with your text
+    navigator.clipboard.writeText(companyId);
     setTooltipText("Copied!");
     setTimeout(() => {
-      setTooltipText("Copy"); // Reset tooltip text after 1.5 seconds
+      setTooltipText("Copy");
     }, 1500);
   };
 
