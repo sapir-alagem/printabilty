@@ -216,14 +216,14 @@ function SummaryPage() {
                 className="btn btn-danger"
                 onClick={() => navigate(-1)}
               >
-                REMOVE
+                Remove
               </button>
               <button
                 type="button"
                 className="btn btn-primary"
                 onClick={handlePreview}
               >
-                Delete Printer
+                Preview
               </button>
               <CheckoutButton /> {/* Use CheckoutButton here */}
             </div>
