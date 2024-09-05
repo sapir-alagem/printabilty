@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import CompaniesList from "../components/CompaniesList";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import Loader from "../../shared/components/Loader";
 
 const Companies = () => {
   const [items, setItems] = useState([]);
@@ -60,7 +61,7 @@ const Companies = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (error) {
@@ -68,7 +69,10 @@ const Companies = () => {
   }
 
   return (
-    <div className="d-flex flex-column" style={{ height: "100vh", padding: "1rem 2rem" }}>
+    <div
+      className="d-flex flex-column"
+      style={{ height: "100vh", padding: "1rem 2rem" }}
+    >
       <h1>Companies</h1>
       <input
         type="text"

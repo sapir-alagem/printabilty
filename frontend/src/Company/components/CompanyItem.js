@@ -2,6 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 const CompanyItem = (props) => {
   const axiosPrivate = useAxiosPrivate();
@@ -12,7 +14,9 @@ const CompanyItem = (props) => {
   };
 
   const deleteCompanyHandler = async () => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this company?");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this company?"
+    );
     if (!confirmDelete) {
       return;
     }
@@ -26,29 +30,39 @@ const CompanyItem = (props) => {
   };
 
   return (
-    <tr>
-      <td className="pl-4">{props.name}</td>
-      <td>{props.id}</td>
-      <td>{props.printersCount}</td>
-      <td>
-        <OverlayTrigger placement="top" overlay={<Tooltip id={`tooltip-view-dashboard`}>View Dashboard</Tooltip>}>
+    <Tr>
+      <Td className="pl-4">{props.name}</Td>
+      <Td>{props.id}</Td>
+      <Td>{props.printersCount}</Td>
+      <Td>
+        <OverlayTrigger
+          placement="top"
+          overlay={
+            <Tooltip id={`tooltip-view-dashboard`}>View Dashboard</Tooltip>
+          }
+        >
           <button className="btn btn-icon" onClick={viewDashboardHandler}>
             <i className="bi bi-eye"></i>
           </button>
         </OverlayTrigger>
 
-        <OverlayTrigger placement="top" overlay={
+        <OverlayTrigger
+          placement="top"
+          overlay={
             <Tooltip id={`tooltip-delete-company-${props.id}`}>
               Delete company
             </Tooltip>
           }
         >
-          <button className="btn btn-icon btn-sm" onClick={deleteCompanyHandler}>
+          <button
+            className="btn btn-icon btn-sm"
+            onClick={deleteCompanyHandler}
+          >
             <i className="bi bi-trash"></i>
           </button>
         </OverlayTrigger>
-      </td>
-    </tr>
+      </Td>
+    </Tr>
   );
 };
 

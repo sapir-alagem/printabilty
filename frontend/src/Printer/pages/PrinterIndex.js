@@ -3,6 +3,8 @@ import PrinterTable from "../components/PrinterTable";
 import { useParams } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { Modal, Button, Form, Alert } from "react-bootstrap";
+import { isMobile } from "react-device-detect";
+import Loader from "../../shared/components/Loader";
 
 const PrinterIndex = () => {
   const { companyId } = useParams();
@@ -11,18 +13,21 @@ const PrinterIndex = () => {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [printerName, setPrinterName] = useState("");
+  const [refresh, setRefresh] = useState(false);
   const [alert, setAlert] = useState(null);
   const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     fetchPrinters();
-  }, [companyId]);
+  }, [refresh]);
 
   const fetchPrinters = async () => {
     try {
+      setLoading(true);
       const response = await axiosPrivate.get(
         `/companies/${companyId}/printers`
       );
+
       setPrinters(response.data);
     } catch (error) {
       setError("Error fetching printers");
@@ -69,6 +74,8 @@ const PrinterIndex = () => {
       setError(null);
 
       setPrinters((prevPrinters) => [...prevPrinters, response.data]);
+
+      setRefresh(!refresh);
     } catch (error) {
       setError(error.response.data.message);
     }
@@ -111,17 +118,26 @@ const PrinterIndex = () => {
   const handleCloseAlert = () => setError(null);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
     <div>
-      <div className="d-flex m-4 mb-0 align-items-center">
-        <h4 className="mr-auto">Printer Management</h4>
-        <Button variant="primary" onClick={() => setShowModal(true)}>
-          Add Printer
-        </Button>
-      </div>
+      {isMobile ? (
+        <div className="d-flex flex-column m-4 mb-0">
+          <h4 className="mb-2">Printer Management</h4>
+          <Button variant="primary" onClick={() => setShowModal(true)}>
+            Add Printer
+          </Button>
+        </div>
+      ) : (
+        <div className="d-flex m-4 mb-0 align-items-center">
+          <h4 className="mr-auto">Printer Management</h4>
+          <Button variant="primary" onClick={() => setShowModal(true)}>
+            Add Printer
+          </Button>
+        </div>
+      )}
       {error && (
         <Alert variant="danger" dismissible onClose={handleCloseAlert}>
           {error}
@@ -158,13 +174,21 @@ const PrinterIndex = () => {
             </Form.Group>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleGenerate}>
-            Add Printer
-          </Button>
+        <Modal.Footer className="d-flex justify-content-center">
+          <div className="d-flex justify-content-center">
+            <div className="btn-group" role="group">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => setShowModal(false)}
+              >
+                Cancel
+              </button>
+              <button className="btn btn-primary" onClick={handleGenerate}>
+                Add Printer
+              </button>
+            </div>
+          </div>
         </Modal.Footer>
       </Modal>
     </div>

@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-device-detect": "^2.2.3",
+    "react-responsive": "^10.0.0",
+    "react-super-responsive-table": "^6.0.0"
+  }
+}

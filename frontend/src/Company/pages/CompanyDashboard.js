@@ -6,7 +6,9 @@ import EarningChart from "../components/EarningChart";
 import PrintsHistoryChart from "../components/PrintsHistoryChart";
 import NumbersDashborad from "../components/NumbersDashborad";
 import DashCard from "../components/DashCard";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { isMobile } from "react-device-detect";
+import Loader from "../../shared/components/Loader";
 
 const CompanyDashboard = () => {
   const { companyId } = useParams();
@@ -43,7 +45,7 @@ const CompanyDashboard = () => {
   if (loading)
     return (
       <div className="container mt-4">
-        <div>Loading...</div>
+        <Loader />
       </div>
     );
   if (error)
@@ -63,7 +65,10 @@ const CompanyDashboard = () => {
           <h1> Hey, {company.name}! &#x1F44B;</h1>
           <br></br>
           <div className="row mb-4 gx-3">
-            <div className="col-md-4 d-flex">
+            <div
+              className="col-md-4 d-flex"
+              style={{ marginBottom: isMobile ? "20px" : "0" }}
+            >
               <DashCard>
                 <h4 className="mr-auto">Company Info</h4>
                 <p className="card-text">
@@ -71,7 +76,7 @@ const CompanyDashboard = () => {
                   <span className="text-primary ml-3">{company.name}</span>
                 </p>
                 <p className="card-text">
-                  Company ID:
+                  {isMobile ? "ID:" : "Company ID:"}
                   <span className="text-primary ml-3">{companyId}</span>
                   <OverlayTrigger
                     placement="top"
@@ -81,9 +86,19 @@ const CompanyDashboard = () => {
                       </Tooltip>
                     }
                   >
-                    <button className="btn btn-xs" onClick={copyToClipboard}>
-                      <i className="bi bi-copy"></i>
-                    </button>
+                    {isMobile ? (
+                      <Button
+                        variant="primary"
+                        onClick={copyToClipboard}
+                        style={{ width: "100%", marginTop: "1rem" }}
+                      >
+                        Copy Id
+                      </Button>
+                    ) : (
+                      <button className="btn btn-xs" onClick={copyToClipboard}>
+                        <i className="bi bi-copy"></i>
+                      </button>
+                    )}
                   </OverlayTrigger>
                   <NumbersDashborad companyId={companyId} />
                 </p>
@@ -98,17 +113,22 @@ const CompanyDashboard = () => {
           </div>
 
           <div className="row gx-3">
-            <div className="col-md-4 d-flex">
+            <div
+              className="col-md-4 d-flex"
+              style={{ marginBottom: isMobile ? "20px" : "0" }}
+            >
               <DashCard>
                 <EarningChart companyId={companyId} />
               </DashCard>
             </div>
 
             <div className="col-md-8 d-flex">
-              <DashCard>
-                <h4 className="mr-auto">Prints History</h4>
-                <PrintsHistoryChart companyId={companyId} />
-              </DashCard>
+              {!isMobile ? (
+                <DashCard>
+                  <h4 className="mr-auto">Prints History</h4>
+                  <PrintsHistoryChart companyId={companyId} />
+                </DashCard>
+              ) : null}
             </div>
           </div>
         </>

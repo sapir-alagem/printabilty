@@ -8,7 +8,10 @@ import {
   Tooltip,
   OverlayTrigger,
 } from "react-bootstrap";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { isMobile } from "react-device-detect";
 
 const PrinterTable = ({
   initialPrinters,
@@ -157,103 +160,187 @@ const PrinterTable = ({
           {alert.message}
         </Alert>
       )}
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>Printer Name</th>
-            <th>Status</th>
-            <th>Created at</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
+      <Table className="table table-hover">
+        <Thead>
+          <Tr>
+            <Th>{isMobile ? "Printer" : "Printer Name"}</Th>
+            <Th>Status</Th>
+            <Th>Created at</Th>
+            <Th>Actions</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
           {printers.map((printer) => (
-            <tr key={printer._id}>
-              <td>{printer.name}</td>
-              <td>
-                <Form.Check
-                  type="switch"
-                  id={`status-switch-${printer._id}`}
-                  checked={printer.status === "active"}
-                  onChange={() => handleChangeStatus(printer)}
-                />
-              </td>
-              <td>
+            <Tr key={printer._id}>
+              <Td>{printer.name}</Td>
+              {isMobile ? (
+                <Td style={{ marginBottom: "20px" }}>
+                  <Form.Check
+                    type="switch"
+                    id={`status-switch-${printer._id}`}
+                    checked={printer.status === "active"}
+                    onChange={() => handleChangeStatus(printer)}
+                  />
+                </Td>
+              ) : (
+                <Td>
+                  <Form.Check
+                    type="switch"
+                    id={`status-switch-${printer._id}`}
+                    checked={printer.status === "active"}
+                    onChange={() => handleChangeStatus(printer)}
+                  />
+                </Td>
+              )}
+
+              <Td>
                 {printer.created_at
                   ? new Date(printer.created_at).toLocaleDateString()
                   : "N/A"}
-              </td>
-              <td>
-                <OverlayTrigger
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`tooltip-edit-${printer._id}`}>
-                      Edit Printer
-                    </Tooltip>
-                  }
-                >
-                  <button
-                    className="btn btn-icon btn-sm"
-                    onClick={() => handleEditClick(printer)}
-                  >
-                    <i className="bi bi-pencil"></i>
-                  </button>
-                </OverlayTrigger>
+              </Td>
+              {isMobile ? (
+                <Td colSpan="4">
+                  <div className="d-flex justify-content-around">
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-edit-${printer._id}`}>
+                          Edit Printer
+                        </Tooltip>
+                      }
+                    >
+                      <button
+                        className="btn btn-icon btn-sm"
+                        onClick={() => handleEditClick(printer)}
+                      >
+                        <i className="bi bi-pencil"></i>
+                      </button>
+                    </OverlayTrigger>
 
-                <OverlayTrigger
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`tooltip-sanity-check-${printer._id}`}>
-                      Sanity Check
-                    </Tooltip>
-                  }
-                >
-                  <button
-                    className="btn btn-icon btn-sm"
-                    onClick={() => sanityCheck(companyId, printer.name)}
-                  >
-                    <i className="bi bi-clipboard-check"></i>
-                  </button>
-                </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-sanity-check-${printer._id}`}>
+                          Sanity Check
+                        </Tooltip>
+                      }
+                    >
+                      <button
+                        className="btn btn-icon btn-sm"
+                        onClick={() => sanityCheck(companyId, printer.name)}
+                      >
+                        <i className="bi bi-clipboard-check"></i>
+                      </button>
+                    </OverlayTrigger>
 
-                <OverlayTrigger
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`tooltip-download-qr-${printer._id}`}>
-                      Download QR Code
-                    </Tooltip>
-                  }
-                >
-                  <button
-                    className="btn btn-icon btn-sm"
-                    onClick={() => onDownloadQR(printer._id, printer.name)}
-                  >
-                    <i className="bi bi-qr-code"></i>
-                  </button>
-                </OverlayTrigger>
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-download-qr-${printer._id}`}>
+                          Download QR Code
+                        </Tooltip>
+                      }
+                    >
+                      <button
+                        className="btn btn-icon btn-sm"
+                        onClick={() => onDownloadQR(printer._id, printer.name)}
+                      >
+                        <i className="bi bi-qr-code"></i>
+                      </button>
+                    </OverlayTrigger>
 
-                <OverlayTrigger
-                  placement="top"
-                  overlay={
-                    <Tooltip id={`tooltip-print-${printer._id}`}>
-                      Print on this printer
-                    </Tooltip>
-                  }
-                >
-                  <button
-                    className="btn btn-icon btn-sm"
-                    onClick={() =>
-                      onPrintOnThisPrinter(companyId, printer.name)
+                    <OverlayTrigger
+                      placement="top"
+                      overlay={
+                        <Tooltip id={`tooltip-print-${printer._id}`}>
+                          Print on this printer
+                        </Tooltip>
+                      }
+                    >
+                      <button
+                        className="btn btn-icon btn-sm"
+                        onClick={() =>
+                          onPrintOnThisPrinter(companyId, printer.name)
+                        }
+                      >
+                        <i className="bi bi-printer"></i>
+                      </button>
+                    </OverlayTrigger>
+                  </div>
+                </Td>
+              ) : (
+                <Td>
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`tooltip-edit-${printer._id}`}>
+                        Edit Printer
+                      </Tooltip>
                     }
                   >
-                    <i className="bi bi-printer"></i>
-                  </button>
-                </OverlayTrigger>
-              </td>
-            </tr>
+                    <button
+                      className="btn btn-icon btn-sm"
+                      onClick={() => handleEditClick(printer)}
+                    >
+                      <i className="bi bi-pencil"></i>
+                    </button>
+                  </OverlayTrigger>
+
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`tooltip-sanity-check-${printer._id}`}>
+                        Sanity Check
+                      </Tooltip>
+                    }
+                  >
+                    <button
+                      className="btn btn-icon btn-sm"
+                      onClick={() => sanityCheck(companyId, printer.name)}
+                    >
+                      <i className="bi bi-clipboard-check"></i>
+                    </button>
+                  </OverlayTrigger>
+
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`tooltip-download-qr-${printer._id}`}>
+                        Download QR Code
+                      </Tooltip>
+                    }
+                  >
+                    <button
+                      className="btn btn-icon btn-sm"
+                      onClick={() => onDownloadQR(printer._id, printer.name)}
+                    >
+                      <i className="bi bi-qr-code"></i>
+                    </button>
+                  </OverlayTrigger>
+
+                  <OverlayTrigger
+                    placement="top"
+                    overlay={
+                      <Tooltip id={`tooltip-print-${printer._id}`}>
+                        Print on this printer
+                      </Tooltip>
+                    }
+                  >
+                    <button
+                      className="btn btn-icon btn-sm"
+                      onClick={() =>
+                        onPrintOnThisPrinter(companyId, printer.name)
+                      }
+                    >
+                      <i className="bi bi-printer"></i>
+                    </button>
+                  </OverlayTrigger>
+                </Td>
+              )}
+            </Tr>
           ))}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
 
       {/* Edit Printer Modal */}
       {currentPrinter && (
@@ -293,19 +380,27 @@ const PrinterTable = ({
                   <option value="suspended">Suspended</option>
                 </Form.Select>
               </Form.Group>
-              <Button variant="secondary" onClick={handleModalClose}>
-                Cancel
-              </Button>
-              <Button
-                variant="danger"
-                onClick={() => handleDelete(currentPrinter._id)}
-                className="ms-3"
-              >
-                Delete Printer
-              </Button>
-              <Button variant="primary" type="submit" className="ms-3">
-                Save Changes
-              </Button>
+              <div className="d-flex justify-content-center">
+                <div className="btn-group" role="group">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={handleModalClose}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => handleDelete(currentPrinter._id)}
+                  >
+                    Delete Printer
+                  </button>
+                  <button className="btn btn-primary" type="submit">
+                    Save Changes
+                  </button>
+                </div>
+              </div>
             </Form>
           </Modal.Body>
         </Modal>
