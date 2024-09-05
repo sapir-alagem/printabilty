@@ -58,7 +58,16 @@ const CompanyDashboard = () => {
   return (
     <div
       className="p-5 w-100 m-0"
-      style={{ backgroundColor: "#EFF7FF", minHeight: "100vh" }}
+      style={{
+        backgroundColor: "#EFF7FF",
+        minHeight: "100vh",
+        ...(isMobile && {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }),
+      }}
     >
       {company ? (
         <>
