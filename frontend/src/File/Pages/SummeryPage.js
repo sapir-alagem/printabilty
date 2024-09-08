@@ -208,14 +208,25 @@ function SummaryPage() {
               </strong>
             </div>
           </div>
-          <div className="d-flex justify-content-between p-3">
-            <button className="btn btn-danger" onClick={() => navigate(-1)}>
-              REMOVE
-            </button>
-            <button className="btn btn-primary" onClick={handlePreview}>
-              PREVIEW
-            </button>
-            <CheckoutButton /> {/* Use CheckoutButton here */}
+
+          <div className="d-flex justify-content-center">
+            <div className="btn-group" role="group">
+              <button
+                type="button"
+                className="btn btn-danger"
+                onClick={() => navigate(-1)}
+              >
+                Remove
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handlePreview}
+              >
+                Preview
+              </button>
+              <CheckoutButton /> {/* Use CheckoutButton here */}
+            </div>
           </div>
         </div>
       </div>

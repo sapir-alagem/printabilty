@@ -48,27 +48,25 @@ const CheckoutButton = () => {
   };
 
   return (
-    <div>
-      <button
-        onClick={handleCheckout}
-        className="btn btn-success"
-        type="button"
-        disabled={isDisabled}
-      >
-        {isDisabled ? (
-          <>
-            <span
-              className="spinner-border spinner-border-sm"
-              role="status"
-              aria-hidden="true"
-            ></span>
-            Loading...
-          </>
-        ) : (
-          "Checkout"
-        )}
-      </button>
-    </div>
+    <button
+      onClick={handleCheckout}
+      className="btn btn-success"
+      type="button"
+      disabled={isDisabled}
+    >
+      {isDisabled ? (
+        <>
+          <span
+            className="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          Processing...
+        </>
+      ) : (
+        "Checkout"
+      )}
+    </button>
   );
 };
 

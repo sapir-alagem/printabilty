@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Table from "react-bootstrap/Table";
 import CompanyItem from "./CompanyItem";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import Spinner from "react-bootstrap/Spinner";
+import { Table, Thead, Tbody, Tr, Th, Td } from "react-super-responsive-table";
+import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 
 const CompaniesList = (props) => {
   const axiosPrivate = useAxiosPrivate();
@@ -40,16 +41,16 @@ const CompaniesList = (props) => {
   } else {
     return (
       <div>
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              <th className="pl-4">Name</th>
-              <th>ID</th>
-              <th>Numbers of Printers</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+        <Table className="table table-hover">
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>ID</Th>
+              <Th># Printers</Th>
+              <Th>Actions</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
             {items.map((company) => (
               <CompanyItem
                 key={company._id}
@@ -65,8 +66,8 @@ const CompaniesList = (props) => {
                 onDelete={props.onDeleteCompany}
               />
             ))}
-          </tbody>
-        </table>
+          </Tbody>
+        </Table>
       </div>
     );
   }
