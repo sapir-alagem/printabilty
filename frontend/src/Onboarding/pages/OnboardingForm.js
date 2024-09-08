@@ -108,11 +108,6 @@ const Onboarding = ({ companyId, email }) => {
     });
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-    setShowConfetti(false);
-  };
-
   const handleLogin = () => {
     navigate("/login");
   };
@@ -182,7 +177,7 @@ const Onboarding = ({ companyId, email }) => {
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
               color="inherit"
-              disabled={activeStep === 0}
+              disabled={activeStep === 0 && activeStep === steps.length - 1}
               onClick={handleBack}
               sx={{ mr: 1 }}
             >
