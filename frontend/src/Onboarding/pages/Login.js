@@ -66,7 +66,7 @@ const Login = () => {
         setErrMsg("An error occurred");
       }
       if (errRef.current) {
-        errRef.current.focus(); 
+        errRef.current.focus();
       }
     }
   };
@@ -85,11 +85,13 @@ const Login = () => {
         className="d-flex flex-column justify-content-center align-items-center text-white p-4 p-md-5"
         style={{ backgroundColor: "#3799FA", flexBasis: "50%" }}
       >
-        <h1 className="display-4 fw-bold lh-1 text-center mb-3">Welcome Back,</h1>
+        <h1 className="display-4 fw-bold lh-1 text-center mb-3">
+          Welcome Back,
+        </h1>
         <img src="/assets/white_logo.svg" alt="Logo" className="img-fluid" />
         <p className="lead text-center mt-4" style={{ maxWidth: "500px" }}>
-          Empower your business and elevate customer convenience
-          with our mobile-friendly, self-service printing solution.
+          Empower your business and elevate customer convenience with our
+          mobile-friendly, self-service printing solution.
         </p>
       </div>
       <div
@@ -166,7 +168,6 @@ const Login = () => {
       </div>
     </div>
   );
-
 };
 
 export default Login;

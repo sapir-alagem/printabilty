@@ -1,30 +1,45 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { Button, Card, ProgressBar } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import CompanyInfo from "../components/CompanyInfo";
-import PricingConfiguration from "../components/PricingConfiguration";
-import Summary from "../components/Summary";
-import "./StepButtons.css";
+import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress"; // Add loader
+import OrganizationType from "../components/OrganizationType";
+import CustomersType from "../components/CustomersType";
+import PricingConfiguration from "../components/PricingConfiguration";
+import BankingForm from "../components/BankingForm";
+import SuccessfulRegistration from "../components/SuccessfulRegistration";
+import CelebrationConfetti from "../components/CelebrationConfetti";
 
-const Onboarding = () => {
-  //get companyId from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const [activeStep, setActiveStep] = useState(1);
-  const [progress, setProgress] = useState(16);
-  const [disabled, setDisabled] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [companyId, setCompanyId] = useState(urlParams.get("companyId"));
+const Onboarding = ({ companyId, email }) => {
+  const [activeStep, setActiveStep] = useState(0);
+  const [skipped, setSkipped] = useState(new Set());
+  const [loading, setLoading] = useState(false); // Add loader state
+  const [showConfetti, setShowConfetti] = useState(false);
+  const navigate = useNavigate();
+  const steps = [
+    "Organization Type",
+    "Customers Type",
+    "Banking Details",
+    "Service Pricing",
+  ];
+
+  const isStepOptional = (step) => step === 2;
+  const isStepSkipped = (step) => skipped.has(step);
 
   const [formData, setFormData] = useState({
-    companyName: urlParams.get("name"),
-    companyMail: urlParams.get("email"),
     companyType: "",
     customerType: "",
     paymentsCurrency: "ILS",
     blackAndWhitePageCost: 0.3,
     coloredPageCost: 0.6,
+    bankName: "",
+    accountNumber: "",
+    billingAddress: "",
   });
 
   const handleChange = (event) => {
@@ -35,126 +50,157 @@ const Onboarding = () => {
     }));
   };
 
-  const handleStepChange = async (step) => {
-    setActiveStep(step);
-    switch (step) {
-      case 1:
-        setProgress(16);
-        break;
-      case 2:
-        setProgress(50);
-        break;
-      case 3:
-        setProgress(100);
-        break;
-      default:
-        setProgress(16);
-    }
-  };
-
   const handleNext = async () => {
-    setDisabled(true);
-    if (activeStep < 3) {
-      handleStepChange(activeStep + 1);
-    } else if (activeStep === 3) {
+    if (activeStep === steps.length - 1) {
+      setLoading(true);
+
       try {
-        axios.post("/register", {
-          email: formData.companyMail,
+        await axios.post("/register", {
+          email: email,
           role: ["company admin"],
           companyId: companyId,
         });
 
-        axios.post("/companies/update", {
+        await axios.post("/companies/update", {
           companyId: companyId,
           type: formData.companyType,
           customerType: formData.customerType,
           paymentsCurrency: formData.paymentsCurrency,
           blackAndWhitePageCost: formData.blackAndWhitePageCost,
           coloredPageCost: formData.coloredPageCost,
+          bankName: formData.bankName,
+          accountNumber: formData.accountNumber,
+          billingAddress: formData.billingAddress,
         });
 
-        window.location.href = "/login";
+        setLoading(false);
+        setShowConfetti(true);
+        setActiveStep(steps.length); // Ensure you are setting the step to the end
       } catch (error) {
+        setLoading(false);
         alert(error.response.data.message);
       }
+    } else {
+      let newSkipped = skipped;
+      if (isStepSkipped(activeStep)) {
+        newSkipped = new Set(newSkipped.values());
+        newSkipped.delete(activeStep);
+      }
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setSkipped(newSkipped);
     }
   };
 
-  const handlePrevious = () => {
-    if (activeStep > 1) {
-      handleStepChange(activeStep - 1);
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
+  };
+
+  const handleReset = () => {
+    setActiveStep(0);
+    setShowConfetti(false);
+  };
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
+  const renderStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return (
+          <OrganizationType formData={formData} handleChange={handleChange} />
+        );
+      case 1:
+        return (
+          <CustomersType formData={formData} handleChange={handleChange} />
+        );
+      case 2:
+        return <BankingForm formData={formData} handleChange={handleChange} />;
+      case 3:
+        return (
+          <PricingConfiguration
+            formData={formData}
+            handleChange={handleChange}
+          />
+        );
+      default:
+        return <Typography>Unknown step</Typography>;
     }
   };
 
   return (
-    <div className="container mt-4">
-      <div className="progress-buttons-wrapper position-relative">
-        <ProgressBar
-          now={progress}
-          variant="info"
-          className="progress-bar-custom"
-        />
-        <div className="grid-container">
-          <div className="grid-item">
+    <Box sx={{ width: "100%" }}>
+      <Stepper activeStep={activeStep}>
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          if (isStepOptional(index)) {
+            labelProps.optional = (
+              <Typography variant="caption">Optional</Typography>
+            );
+          }
+          if (isStepSkipped(index)) {
+            stepProps.completed = false;
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+      {activeStep === steps.length && showConfetti ? (
+        <React.Fragment>
+          <CelebrationConfetti />
+          <SuccessfulRegistration formData={formData} />
+          <Button onClick={handleLogin} variant="contained" color="primary">
+            Log In
+          </Button>
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          {loading ? (
+            <Box sx={{ display: "flex", justifyContent: "center", pt: 2 }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            renderStepContent(activeStep)
+          )}
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Button
-              className={`step-button ${activeStep === 1 ? "active" : ""}`}
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
             >
-              1
+              Back
             </Button>
-          </div>
-          <div className="grid-item">
-            <Button
-              className={`step-button ${activeStep === 2 ? "active" : ""}`}
-            >
-              2
+            <Box sx={{ flex: "1 1 auto" }} />
+            {isStepOptional(activeStep) && (
+              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                Skip
+              </Button>
+            )}
+            <Button onClick={handleNext}>
+              {activeStep === steps.length - 1 ? "Finish" : "Next"}
             </Button>
-          </div>
-          <div className="grid-item">
-            <Button
-              className={`step-button ${activeStep === 3 ? "active" : ""}`}
-            >
-              3
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      <div className="text-center mt-5">
-        {activeStep === 1 && (
-          <Card>
-            <Card.Body>
-              <CompanyInfo formData={formData} handleChange={handleChange} />
-            </Card.Body>
-          </Card>
-        )}
-        {activeStep === 2 && (
-          <Card>
-            <Card.Body>
-              <PricingConfiguration
-                formData={formData}
-                handleChange={handleChange}
-              />
-            </Card.Body>
-          </Card>
-        )}
-        {activeStep === 3 && (
-          <Card>
-            <Card.Body>
-              <Summary formData={formData} />
-            </Card.Body>
-          </Card>
-        )}
-      </div>
-
-      <div className="text-center mt-4">
-        <Button variant="secondary" onClick={handlePrevious}>
-          Previous
-        </Button>
-        <Button variant="primary" onClick={handleNext} className="ml-2">
-          Next
-        </Button>
-      </div>
-    </div>
+          </Box>
+        </React.Fragment>
+      )}
+    </Box>
   );
 };
 

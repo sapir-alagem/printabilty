@@ -10,7 +10,7 @@ async function createCompany(companyData) {
     const col = db.collection("companies");
     const company = await col.findOne({ name: companyData.name });
     if (company) {
-      throw new Error("Company already exists)");
+      throw new Error("Company already exists");
     }
 
     const email = await col.findOne({ email: companyData.email });

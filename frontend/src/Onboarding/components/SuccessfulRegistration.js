@@ -1,12 +1,12 @@
 import React from "react";
 
-const Summary = ({ formData }) => {
+const SuccessfulRegistration = ({ formData }) => {
   return (
     <div className="content">
       <h2>🎉 Registration Successful! 🎉</h2>
       <p>
         We've sent a guide and the agent to your email:{" "}
-        <strong>{formData.companyMail}</strong> 📧
+        <strong>{formData.email}</strong> 📧
       </p>
       <p>Once you've installed everything, come back here to:</p>
       <p>Access your dashboard 🖥️</p>
@@ -16,4 +16,4 @@ const Summary = ({ formData }) => {
   );
 };
 
-export default Summary;
+export default SuccessfulRegistration;
