@@ -49,6 +49,7 @@ const EarningChart = ({ companyId }) => {
         $gte: { $date: startDateIso },
         $lte: { $date: todayIso },
       },
+      status: "completed",
     });
 
     const encodedFilter = encodeURIComponent(filter);

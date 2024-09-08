@@ -33,6 +33,30 @@ async function getPrintJobs(jobId) {
   }
 }
 
+async function updatePrintJob(jobId, details) {
+  const client = await getClient();
+
+  try {
+    const db = client.db("printability");
+    const col = db.collection("print_jobs");
+
+    // Update the print job with the given details
+    const result = await col.updateOne(
+      { _id: new ObjectId(jobId) },
+      { $set: details }
+    );
+
+    if (result.matchedCount === 0) {
+      throw new Error("No print job found with the provided ID.");
+    }
+
+    return result;
+  } catch (error) {
+    console.error("Error updating print job:", error);
+    throw error;
+  }
+}
+
 async function sendPrintJobToPrinter(printJob) {
   let data = {
     file_url: printJob.fileUrl,
@@ -103,7 +127,8 @@ async function printJobCalculator(printJob) {
 
 function doSanityCheck(companyId, printerName) {
   sendPrintJobToPrinter({
-    fileUrl: "https://printabillty-file-uploads.s3.eu-north-1.amazonaws.com/uploads/test.pdf",
+    fileUrl:
+      "https://printabillty-file-uploads.s3.eu-north-1.amazonaws.com/uploads/test.pdf",
     colorMode: "Color",
     printBothSides: true,
     printAllPages: true,
@@ -118,6 +143,7 @@ function doSanityCheck(companyId, printerName) {
 module.exports = {
   createPrintJob,
   getPrintJobs,
+  updatePrintJob,
   processPrintJob,
   printJobCalculator,
   doSanityCheck,

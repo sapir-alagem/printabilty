@@ -15,6 +15,7 @@ const getCompanyEarningsByDay = async (companyId) => {
           $match: {
             companyId: companyId,
             created_at: { $gte: today },
+            status: "completed",
           },
         },
         {
@@ -47,6 +48,7 @@ const getCompanyEarningsByWeek = async (companyId) => {
           $match: {
             companyId: companyId,
             created_at: { $gte: lastWeek },
+            status: "completed",
           },
         },
         {
@@ -79,6 +81,7 @@ const getCompanyEarningsByMonth = async (companyId) => {
           $match: {
             companyId: companyId,
             created_at: { $gte: lastMonth },
+            status: "completed",
           },
         },
         {

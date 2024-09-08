@@ -1,9 +1,34 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@mui/material";
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
 
 const CancelPage = () => {
+  const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const updateJobStatus = async (jobId) => {
+    try {
+      await axiosPrivate.post("print_jobs/update", {
+        jobId,
+        details: { status: "declined" },
+      });
+      console.log("Print job status updated to canceled.");
+    } catch (error) {
+      console.error("Failed to update print job status:", error);
+    }
+  };
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const jobId = queryParams.get("jobId");
+
+    if (jobId) {
+      updateJobStatus(jobId);
+    }
+  }, [location]);
+
   return (
     <div className="container mt-5">
       <div className="text-center">
@@ -21,7 +46,7 @@ const CancelPage = () => {
             navigate(-4);
           }}
         >
-          try again
+          Try Again
         </Button>
       </div>
     </div>

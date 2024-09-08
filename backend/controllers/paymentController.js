@@ -24,8 +24,8 @@ const createCheckoutSession = async (req, res) => {
       metadata: {
         jobId: jobId,
       },
-      success_url: `${config.appUrl}/success`,
-      cancel_url: `${config.appUrl}/cancel`,
+      success_url: `${config.appUrl}/success?jobId=${jobId}`,
+      cancel_url: `${config.appUrl}/cancel?jobId=${jobId}`,
     });
 
     res.send({ id: session.id });

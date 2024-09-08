@@ -36,6 +36,7 @@ function SummaryPage() {
       printer_name: queryParams.get("printer_name"),
       price,
       documentName,
+      status: "processing",
     });
   }, [
     fileUrl,
