@@ -14,6 +14,7 @@ const PrintsHistoryChart = ({ companyId }) => {
 
     const filter = JSON.stringify({
       companyId: companyId,
+      status: "completed",
     });
 
     const encodedFilter = encodeURIComponent(filter);
